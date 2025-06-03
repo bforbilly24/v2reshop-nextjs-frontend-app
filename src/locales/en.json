@@ -1,0 +1,29 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "explore": "Explore",
+    "contact": "Contact"
+  },
+  "footer": {
+    "contact": "Contact",
+    "by": "by",
+    "quick_links": "Quick Links",
+    "studio": "Studio",
+    "help_center": "Help Center",
+    "works": "Works",
+    "affiliate": "Affiliate",
+    "shop": "Shop",
+    "partners": "Partners",
+    "reviews": "Reviews",
+    "about": "About",
+    "contact_link": "Contact",
+    "career": "Career",
+    "blog": "Blog",
+    "faqs": "FAQs",
+    "terms_&_conditions": "Terms & Conditions",
+    "privacy_policy": "Privacy Policy",
+    "help": "Help",
+    "services": "Services"
+  }
+}

@@ -1,0 +1,67 @@
+'use client'
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/shadcn/accordion'
+import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
+import AnimationContainer from '@/components/global/animation-container'
+import Wrapper from '@/components/global/wrapper'
+import SectionBadge from '@/components/ui/section-badge'
+import { FAQABOUT } from '../data/about-us'
+
+function FaqSection() {
+  return (
+    <Wrapper className='py-20 lg:py-32 relative'>
+      <div className='flex flex-col items-center justify-center gap-y-5'>
+        <div className='flex w-full flex-col items-center justify-center text-center'>
+          <AnimationContainer animation='fadeUp' delay={0.2}>
+            <SectionBadge title='FAQ' />
+          </AnimationContainer>
+          <AnimationContainer animation='fadeUp' delay={0.3}>
+            <TypingAnimation
+              duration={50}
+              className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
+            >
+              Still have questions?
+            </TypingAnimation>
+          </AnimationContainer>
+          <AnimationContainer animation='fadeUp' delay={0.3}>
+            <p className='mt-6 max-w-lg text-center text-lg text-muted-foreground'>
+              Here are some of the most frequently asked questions we receive.
+              If you have a question that isn&apos;t answered here, please
+              don&apos;t hesitate to contact us.
+            </p>
+          </AnimationContainer>
+        </div>
+        <div className='w-full max-w-4xl pt-10'>
+          <Accordion type='single' collapsible className='w-full space-y-4'>
+            {FAQABOUT.map((faq, index) => (
+              <AnimationContainer
+                key={index}
+                animation='fadeUp'
+                delay={0.5 + index * 0.1}
+              >
+                <AccordionItem
+                  value={`item-${index}`}
+                  className='border-none bg-slate-100 dark:bg-slate-900 rounded-2xl px-6'
+                >
+                  <AccordionTrigger className='hover:no-underline py-6 text-lg text-left font-normal'>
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className='text-muted-foreground text-lg text-left'>
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </AnimationContainer>
+            ))}
+          </Accordion>
+        </div>
+      </div>
+    </Wrapper>
+  )
+}
+
+export { FaqSection }
