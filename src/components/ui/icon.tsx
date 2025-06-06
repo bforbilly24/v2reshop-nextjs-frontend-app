@@ -8,7 +8,13 @@ const Icon = React.forwardRef<
   React.ElementRef<typeof IconIfyIcon>,
   React.ComponentPropsWithoutRef<typeof IconIfyIcon>
 >(({ className, ...props }, ref) => {
-  return <IconIfyIcon className={cn('', className)} ref={ref} {...props} />
+  return (
+    <IconIfyIcon
+      className={cn('fill-current', className)}
+      ref={ref}
+      {...props}
+    />
+  )
 })
 Icon.displayName = 'Icon'
 
