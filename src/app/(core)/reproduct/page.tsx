@@ -1,4 +1,4 @@
-import { ReProduct } from '@/features/reproduct/reproduct'
+import { ReProduct } from '@/features/reproduct'
 
 export const metadata = {
   title: 'ReProduct | Re-shop',
