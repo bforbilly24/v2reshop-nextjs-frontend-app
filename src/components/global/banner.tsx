@@ -11,7 +11,6 @@ import SectionBadge from '@/components/ui/section-badge'
 import { TypingAnimation } from '../ui/magicui/typing-animation'
 import { Particles } from '../ui/particles'
 import RetroGrid from '../ui/retro-grid'
-import Wrapper from './wrapper'
 
 const HIGHLIGHTS = [
   {
@@ -66,8 +65,8 @@ const Banner: React.FC = () => {
 
         <div className='flex flex-col lg:flex-row items-center justify-center w-full z-10 gap-4 xl:gap-8'>
           <AnimationContainer
-            animation='fadeUp'
-            delay={0.3}
+            animation='fadeLeft'
+            delay={0.2}
             className='hidden lg:flex'
           >
             <Image
@@ -79,12 +78,12 @@ const Banner: React.FC = () => {
             />
           </AnimationContainer>
 
-          <div className='flex flex-col items-center justify-center gap-4'>
-            <AnimationContainer animation='fadeUp' delay={0.2}>
+          <div className='flex flex-col items-center justify-center mb-8 gap-y-4'>
+            <AnimationContainer animation='fadeDown' delay={0.2}>
               <SectionBadge title='Community' />
             </AnimationContainer>
             <div className='flex flex-col items-center justify-center'>
-              <AnimationContainer animation='fadeUp' delay={0.4}>
+              <AnimationContainer animation='fadeDown' delay={0.4}>
                 <TypingAnimation
                   duration={50}
                   className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
@@ -93,14 +92,14 @@ const Banner: React.FC = () => {
                 </TypingAnimation>
               </AnimationContainer>
 
-              <AnimationContainer animation='fadeUp' delay={0.5}>
-                <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 mt-4'>
+              <AnimationContainer animation='fadeDown' delay={0.6}>
+                <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
                   &quot;Create and join in to create a comfortable environment
                   and maintain it together.&quot;
                 </p>
               </AnimationContainer>
 
-              <AnimationContainer animation='fadeUp' delay={0.7}>
+              <AnimationContainer animation='fadeDown' delay={0.8}>
                 <div className='flex items-center mt-4'>
                   <div className='rounded-full px-4 py-2.5 bg-neutral-200/50 flex flex-wrap md:flex-row items-center justify-center gap-4'>
                     {HIGHLIGHTS.map((item, index) => (
@@ -125,8 +124,8 @@ const Banner: React.FC = () => {
                 </div>
               </AnimationContainer>
 
-              <AnimationContainer animation='fadeUp' delay={0.6}>
-                <div className='flex flex-row items-center justify-center gap-4 mt-6'>
+              <div className='flex flex-row items-center justify-center gap-4 mt-6'>
+                <AnimationContainer animation='fadeLeft' delay={1}>
                   <Button
                     asChild
                     onClick={handleClick}
@@ -136,7 +135,9 @@ const Banner: React.FC = () => {
                   >
                     <Link href=''>Register now</Link>
                   </Button>
+                </AnimationContainer>
 
+                <AnimationContainer animation='fadeRight' delay={1}>
                   <Button
                     asChild
                     size='lg'
@@ -145,8 +146,8 @@ const Banner: React.FC = () => {
                   >
                     <Link href=''>Learn More</Link>
                   </Button>
-                </div>
-              </AnimationContainer>
+                </AnimationContainer>
+              </div>
             </div>
           </div>
         </div>
