@@ -10,7 +10,7 @@ import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
 import AnimationContainer from '@/components/global/animation-container'
 import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
-import { FAQABOUT } from '../data/about-us'
+import { FAQABOUT } from '@/constant'
 
 const FaqSection: React.FC = () => {
   return (
