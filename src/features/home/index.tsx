@@ -3,7 +3,7 @@ import { Banner } from '@/components/global/banner'
 import { CategoriesSliderSection } from './components/categories-slider-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSliderSection } from './components/hero-slider-section'
-import { LatestProducts } from './components/latest-products'
+import { LatestProductsSection } from './components/latest-products-section'
 
 const Home = async () => {
   return (
@@ -29,7 +29,7 @@ const Home = async () => {
         <CategoriesSliderSection />
       </section>
       <section id='latest-products' className='w-full'>
-        <LatestProducts />
+        <LatestProductsSection />
       </section>
       <section id='banner' className='w-full'>
         {/* <div className='container mx-auto'> */}
