@@ -44,7 +44,7 @@ const HeroSliderSection: React.FC = () => {
                 key={index}
                 variant='ghost'
                 size='icon'
-                className='relative h-[27px] w-[27px] rounded-full'
+                className='relative size-8 rounded-full'
                 onClick={() => handlePaginationClick(index)}
               >
                 <div
@@ -108,7 +108,7 @@ const HeroSliderSection: React.FC = () => {
           {HEROSLIDERHOME.map((slide, index) => (
             <SplideSlide key={slide.id}>
               {/* <div className='relative h-[553px] w-[934px]'> */}
-              <div className='relative h-[40rem] w-[60rem]'>
+              <div className='relative h-[80vh] w-[70rem]'>
                 <Image
                   alt={slide.alt}
                   src={slide.image}
