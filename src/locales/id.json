@@ -1,0 +1,29 @@
+{
+  "navbar": {
+    "home": "Beranda",
+    "about": "Tentang Kami",
+    "explore": "Jelajahi",
+    "contact": "Kontak"
+  },
+  "footer": {
+    "contact": "Kontak",
+    "by": "oleh",
+    "quick_links": "Tautan Cepat",
+    "studio": "Studio",
+    "help_center": "Pusat Bantuan",
+    "works": "Karya",
+    "affiliate": "Afiliasi",
+    "shop": "Toko",
+    "partners": "Mitra",
+    "reviews": "Ulasan",
+    "about": "Tentang",
+    "contact_link": "Kontak",
+    "career": "Karir",
+    "blog": "Blog",
+    "faqs": "FAQ",
+    "terms_&_conditions": "Syarat & Ketentuan",
+    "privacy_policy": "Kebijakan Privasi",
+    "help": "Bantuan",
+    "services": "Layanan"
+  }
+}
