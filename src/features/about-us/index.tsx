@@ -18,7 +18,7 @@ const AboutUs = async () => {
         <PartnersSection />
       </section>
 
-      <section id='about' className='w-full'>
+      <section id='about' className='w-full relative'>
         <AboutSection />
       </section>
 
