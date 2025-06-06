@@ -1,6 +1,5 @@
 'use client'
 
-import { CATEGORIES, type CategoryItem } from '@/constant'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/react-splide/css'
 import Image from 'next/image'
@@ -10,9 +9,10 @@ import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
 import AnimationContainer from '@/components/global/animation-container'
 import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
+import { HOME_CATEGORIES, HomeCategoryItem } from '@/constant'
 
 type CategoryItemProps = {
-  category: CategoryItem
+  category: HomeCategoryItem
 }
 
 const CategoryItem = ({ category }: CategoryItemProps) => {
@@ -54,7 +54,7 @@ const CategoryItem = ({ category }: CategoryItemProps) => {
 }
 
 type CategoriesSliderProps = {
-  categories: CategoryItem[]
+  categories: HomeCategoryItem[]
 }
 
 const CategorySlider: React.FC<CategoriesSliderProps> = ({ categories }) => {
@@ -89,24 +89,24 @@ const CategorySlider: React.FC<CategoriesSliderProps> = ({ categories }) => {
 }
 
 type CategoriesSliderSectionProps = {
-  categories?: CategoryItem[]
+  categories?: HomeCategoryItem[]
   className?: string
 }
 
 const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = ({
   categories: providedCategories,
 }) => {
-  const categoriesToShow = providedCategories || CATEGORIES
+  const categoriesToShow = providedCategories || HOME_CATEGORIES
 
   return (
     <>
       <Wrapper>
         <div className='flex justify-between items-center mb-8 max-md:flex-col max-md:gap-4'>
-          <AnimationContainer animation='fadeLeft' delay={0.2}>
-            <SectionBadge title='Our Products' />
-          </AnimationContainer>
-          <div className='flex flex-col items-center justify-center'>
-            <AnimationContainer animation='fadeRight' delay={0.3}>
+          <div className='flex flex-col items-start justify-center mb-8 gap-y-4'>
+            <AnimationContainer animation='fadeLeft' delay={0.2}>
+              <SectionBadge title='Our Categories Product' />
+            </AnimationContainer>
+            <AnimationContainer animation='fadeLeft' delay={0.4}>
               <TypingAnimation
                 duration={50}
                 className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
@@ -121,9 +121,16 @@ const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = ({
               </TypingAnimation>
             </AnimationContainer>
           </div>
+          <AnimationContainer animation='fadeRight' delay={0.8}>
+            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
+              Explore our diverse range of categories, each designed to provide
+              the best solutions for your needs. From electronics to fashion,
+              we&apos;ve got you covered with top-quality products.
+            </p>
+          </AnimationContainer>
         </div>
       </Wrapper>
-      <AnimationContainer animation='fadeDown' delay={0.8}>
+      <AnimationContainer animation='fadeDown' delay={1}>
         <CategorySlider categories={categoriesToShow} />
       </AnimationContainer>
     </>
