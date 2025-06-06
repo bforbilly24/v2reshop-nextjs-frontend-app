@@ -12,17 +12,22 @@ const PartnersSection: React.FC = () => {
   return (
     <Wrapper className='py-20 lg:py-32'>
       <div className='flex flex-col items-center justify-center gap-y-4'>
-        <AnimationContainer animation='fadeLeft' delay={0.2}>
-          <SectionBadge title='Our Partners' />
-        </AnimationContainer>
-        <div className='flex flex-col items-center justify-center'>
-          <AnimationContainer animation='fadeRight' delay={0.3}>
+        <div className='flex flex-col items-center text-center justify-center mb-8 gap-y-4'>
+          <AnimationContainer animation='fadeDown' delay={0.2}>
+            <SectionBadge title='Our Partners' />
+          </AnimationContainer>
+          <AnimationContainer animation='fadeDown' delay={0.4}>
             <TypingAnimation
               duration={50}
               className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
             >
               Companies that trust us
             </TypingAnimation>
+          </AnimationContainer>
+          <AnimationContainer animation='fadeDown' delay={0.6}>
+            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
+              We know that good design means good business
+            </p>
           </AnimationContainer>
         </div>
         <div className='relative flex w-full flex-col items-center justify-center min-h-[200px] overflow-hidden'>
