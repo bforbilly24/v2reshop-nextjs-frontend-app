@@ -18,7 +18,7 @@ const FeaturesSection: React.FC = () => {
               <AnimationContainer animation='fadeLeft' delay={0.2}>
                 <SectionBadge title='Our Feature' />
               </AnimationContainer>
-              <AnimationContainer animation='fadeLeft' delay={0.3}>
+              <AnimationContainer animation='fadeLeft' delay={0.4}>
                 <TypingAnimation
                   duration={50}
                   className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
@@ -26,8 +26,16 @@ const FeaturesSection: React.FC = () => {
                   Best solutions for your dream.
                 </TypingAnimation>
               </AnimationContainer>
+              <AnimationContainer animation='fadeUp' delay={0.6}>
+                <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
+                  Discover our unique features designed to enhance your
+                  experience. From intuitive navigation to personalized content,
+                  we&apos;ve crafted every detail to ensure you get the most out
+                  of your journey with us.
+                </p>
+              </AnimationContainer>
             </div>
-            <AnimationContainer animation='fadeDown' delay={2}>
+            <AnimationContainer animation='fadeDown' delay={1}>
               <div className='grid grid-cols-1 md:grid-cols-1 gap-6'>
                 {FEATURES.map((service: FeatureItem, index: number) => (
                   <div
@@ -69,7 +77,7 @@ const FeaturesSection: React.FC = () => {
         </div>
         <div className='lg:col-span-6'>
           <div className='relative w-full h-[679px] lg:h-full'>
-            <AnimationContainer animation='fadeRight' delay={0.2}>
+            <AnimationContainer animation='fadeRight' delay={2}>
               <Image
                 src='/images/feature/feature-1.jpg'
                 alt='Service Image'
