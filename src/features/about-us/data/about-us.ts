@@ -173,11 +173,10 @@ const generateTestimonialContent = () => {
   return faker.helpers.arrayElement(testimonials)
 }
 
-// Generate testimonials
 const TESTIMONIALS = Array.from({ length: 6 }, (_, index) => ({
   content: generateTestimonialContent(),
   name: faker.person.firstName(),
-  username: `@${faker.internet.userName().toLowerCase()}`,
+  username: `@${faker.internet.username().toLowerCase()}`,
   image: `/images/person-${index + 1}.jpg`,
   rating: faker.number.int({ min: 4, max: 5 }),
 }))
