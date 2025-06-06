@@ -2,14 +2,27 @@ import { faker } from '@faker-js/faker'
 
 faker.seed(123)
 
-export const products = [
+type ProductItem = {
+  id: string
+  img: string
+  category: string
+  customized: boolean
+  name: string
+  desc: string
+  rating: string
+  price: string
+  oldPrice: string
+  percent: string
+  brand: string
+}
+
+const PRODUCTS: ProductItem[] = [
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/classical-black-tshirt.png',
     category: 'men',
     customized: true,
     name: 'Classical Black T-Shirt Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt.',
     rating: '4.8',
     price: '412.900',
@@ -23,7 +36,6 @@ export const products = [
     category: 'men',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -37,7 +49,6 @@ export const products = [
     category: 'Furniture',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '112.000',
@@ -51,7 +62,6 @@ export const products = [
     category: 'Furniture',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -65,7 +75,6 @@ export const products = [
     category: 'baby',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -79,7 +88,6 @@ export const products = [
     category: 'Furniture',
     customized: true,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -93,7 +101,6 @@ export const products = [
     category: 'Furniture',
     customized: true,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -107,7 +114,6 @@ export const products = [
     category: 'Furniture',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -121,7 +127,6 @@ export const products = [
     category: 'furniture',
     customized: false,
     name: 'Classical Black T-Shirt',
-    // subtitle: 'The best cotton black branded shirt.',
     desc: 'The best cotton black branded shirt',
     rating: '4.8',
     price: '12.000',
@@ -131,18 +136,13 @@ export const products = [
   },
 ]
 
-export type product = (typeof products)[number]
-
-export const getProducts = async () => {
-  return products
+type CategoryItem = {
+  label: string
+  value: string
+  count: string
 }
 
-export const getProductById = async (id: string) => {
-  return products.find((product) => product.id === id)
-}
-
-// Rest of your code remains the same...
-export const categories = [
+const CATEGORIES: CategoryItem[] = [
   { label: 'All', value: 'all', count: '9724' },
   { label: 'Men', value: 'men', count: '1312' },
   { label: 'Furniture', value: 'Furniture', count: '3752' },
@@ -152,21 +152,34 @@ export const categories = [
   { label: 'Furniture', value: 'furniture', count: '820' },
   { label: 'Mobile', value: 'mobile', count: '2460' },
 ]
-export type category = (typeof categories)[number]
 
-export const brands = [
+type BrandItem = {
+  label: string
+  value: string
+  count: string
+}
+
+const BRANDS: BrandItem[] = [
   { label: 'Apple', value: 'apple', count: '9724' },
   { label: 'Apex', value: 'apex', count: '1312' },
   { label: 'Easy', value: 'easy', count: '3752' },
   { label: 'Pixel', value: 'pixel', count: '985' },
   { label: 'Samsung', value: 'samsung', count: '2460' },
 ]
-export type brand = (typeof brands)[number]
 
-export const prices = [
+type PriceItem = {
+  label: string
+  value: {
+    min: number
+    max: number
+  }
+  count: string
+}
+
+const PRICES: PriceItem[] = [
   {
-    label: '0 -.000 199.000',
-    valu: {
+    label: '0 - 199.000',
+    value: {
       min: 0,
       max: 199,
     },
@@ -174,7 +187,7 @@ export const prices = [
   },
   {
     label: '200.000 - 449.000',
-    valu: {
+    value: {
       min: 200,
       max: 499,
     },
@@ -182,7 +195,7 @@ export const prices = [
   },
   {
     label: '450.000 - 599.000',
-    valu: {
+    value: {
       min: 450,
       max: 599,
     },
@@ -190,7 +203,7 @@ export const prices = [
   },
   {
     label: '600.000 - 799.000',
-    valu: {
+    value: {
       min: 600,
       max: 799,
     },
@@ -198,25 +211,34 @@ export const prices = [
   },
   {
     label: '800.000 & Above',
-    valu: {
+    value: {
       min: 800,
       max: 1000,
     },
     count: '745',
   },
 ]
-export type price = (typeof prices)[number]
 
-export const ratings = [
+type RatingItem = {
+  name: number
+  value: number
+  count: string
+}
+
+const RATINGS: RatingItem[] = [
   { name: 5, value: 5, count: '9724' },
   { name: 4, value: 4, count: '1312' },
   { name: 3, value: 3, count: '3752' },
   { name: 2, value: 2, count: '985' },
   { name: 1, value: 1, count: '2460' },
 ]
-export type rating = (typeof ratings)[number]
 
-export const selectOptions = [
+type SelectOptionItem = {
+  value: string
+  label: string
+}
+
+const SELECT_OPTIONS: SelectOptionItem[] = [
   {
     value: 'option1',
     label: 'Option 1',
@@ -230,9 +252,8 @@ export const selectOptions = [
     label: 'Option 3',
   },
 ]
-export type selectOption = (typeof selectOptions)[number]
 
-export const selectCategories = [
+const SELECT_CATEGORIES: SelectOptionItem[] = [
   {
     value: 'option1',
     label: 'Top Rated',
@@ -246,9 +267,13 @@ export const selectCategories = [
     label: 'Option 3',
   },
 ]
-export type selectCategory = (typeof selectCategories)[number]
 
-export const payments = [
+type PaymentItem = {
+  img: string
+  value: string
+}
+
+const PAYMENTS: PaymentItem[] = [
   {
     img: '/images/e-commerce/cart-icon/bkash.png',
     value: 'bkash',
@@ -310,16 +335,24 @@ export const payments = [
     value: 'vougepay',
   },
 ]
-export type payment = (typeof payments)[number]
 
-export type EcommerceNav = {
+type EcommerceNavItem = {
   label: string
   href: string
   active: boolean
   icon: string
 }
 
-export function getEcommerceNav(pathname: string): EcommerceNav[] {
+// Utility functions
+const getProducts = async (): Promise<ProductItem[]> => {
+  return PRODUCTS
+}
+
+const getProductById = async (id: string): Promise<ProductItem | undefined> => {
+  return PRODUCTS.find((product) => product.id === id)
+}
+
+const getEcommerceNav = (pathname: string): EcommerceNavItem[] => {
   return [
     {
       label: 'grid view',
@@ -334,4 +367,26 @@ export function getEcommerceNav(pathname: string): EcommerceNav[] {
       active: pathname === '/reproduct/list',
     },
   ]
+}
+
+export {
+  PRODUCTS,
+  type ProductItem,
+  CATEGORIES,
+  type CategoryItem,
+  BRANDS,
+  type BrandItem,
+  PRICES,
+  type PriceItem,
+  RATINGS,
+  type RatingItem,
+  SELECT_OPTIONS,
+  SELECT_CATEGORIES,
+  type SelectOptionItem,
+  PAYMENTS,
+  type PaymentItem,
+  type EcommerceNavItem,
+  getProducts,
+  getProductById,
+  getEcommerceNav,
 }
