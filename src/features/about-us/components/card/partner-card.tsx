@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { cn } from '@/lib/cn'
 import { Marquee } from '@/components/ui/magicui/marquee'
-import { Partner, partners } from '../../data/partner'
+import { PartnerItem, PARTNERS } from '@/constant'
 
 const PartnerCard = ({ image, alt }: { image: string; alt: string }) => {
   return (
@@ -30,8 +30,8 @@ const PartnerCard = ({ image, alt }: { image: string; alt: string }) => {
 }
 
 const PartnersSection: React.FC = () => {
-  const firstRow = partners.slice(0, Math.ceil(partners.length / 2))
-  const secondRow = partners.slice(Math.ceil(partners.length / 2))
+  const firstRow = PARTNERS.slice(0, Math.ceil(PARTNERS.length / 2))
+  const secondRow = PARTNERS.slice(Math.ceil(PARTNERS.length / 2))
 
   return (
     <div className='flex flex-col items-center justify-center gap-4 py-8'>
@@ -47,7 +47,7 @@ const PartnersSection: React.FC = () => {
           }}
         >
           <Marquee pauseOnHover vertical className='[--duration:20s]'>
-            {firstRow.map((partner: Partner) => (
+            {firstRow.map((partner: PartnerItem) => (
               <PartnerCard
                 key={partner.id}
                 image={partner.image}
@@ -56,7 +56,7 @@ const PartnersSection: React.FC = () => {
             ))}
           </Marquee>
           <Marquee reverse pauseOnHover vertical className='[--duration:20s]'>
-            {secondRow.map((partner: Partner) => (
+            {secondRow.map((partner: PartnerItem) => (
               <PartnerCard
                 key={partner.id}
                 image={partner.image}
@@ -65,7 +65,7 @@ const PartnersSection: React.FC = () => {
             ))}
           </Marquee>
           <Marquee reverse pauseOnHover vertical className='[--duration:20s]'>
-            {firstRow.map((partner: Partner) => (
+            {firstRow.map((partner: PartnerItem) => (
               <PartnerCard
                 key={partner.id}
                 image={partner.image}
@@ -74,7 +74,7 @@ const PartnersSection: React.FC = () => {
             ))}
           </Marquee>
           <Marquee pauseOnHover vertical className='[--duration:20s]'>
-            {secondRow.map((partner: Partner) => (
+            {secondRow.map((partner: PartnerItem) => (
               <PartnerCard
                 key={partner.id}
                 image={partner.image}
