@@ -8,13 +8,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { handleSmoothScroll } from '@/utils/smooth-scroll'
 import { Button } from '@/components/ui/shadcn/button'
+import { BoxReveal } from '@/components/ui/magicui/box-reveal'
+import { InteractiveHoverButton } from '@/components/ui/magicui/interactive-hover-button'
 import AnimationContainer from '@/components/global/animation-container'
 import Wrapper from '@/components/global/wrapper'
 import { Icon } from '@/components/ui/icon'
 import SectionBadge from '@/components/ui/section-badge'
 
 const heroImage = `relative w-full h-[60vh] md:h-[80vh] lg:h-screen before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-30 before:z-[1] before:pointer-events-none overflow-hidden`
-const heroContent = `absolute w-full max-w-7xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[2]`
+const heroContent = `absolute w-full max-w-7xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] h-full flex items-center justify-center`
 
 interface HeroSliderSectionProps {
   heroItems?: SlideItem[]
@@ -83,8 +85,8 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                     priority
                   />
                   <div className={heroContent}>
-                    <Wrapper>
-                      <div className='grid grid-cols-12 gap-4 mx-auto relative'>
+                    <Wrapper className='flex flex-col items-center justify-center'>
+                      <div className='grid grid-cols-12 gap-4 mx-auto w-full'>
                         <div className='col-span-2 text-white hidden xl:flex flex-col justify-between h-full'>
                           <span>{slide.heroYear}</span>
                           <ul className='space-y-4'>
@@ -97,11 +99,11 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                                 <Button
                                   variant='ghost'
                                   size='icon'
-                                  className='text-white hover:text-primary-500'
+                                  className='fill-background hover:fill-foreground'
                                 >
                                   <Icon
                                     icon={slide.twitterIcon}
-                                    className='w-5 h-5'
+                                    className='size-5'
                                   />
                                 </Button>
                               </Link>
@@ -115,11 +117,11 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                                 <Button
                                   variant='ghost'
                                   size='icon'
-                                  className='text-white hover:text-primary-500'
+                                  className='fill-background hover:fill-foreground'
                                 >
                                   <Icon
                                     icon={slide.facebookIcon}
-                                    className='w-5 h-5'
+                                    className='size-5'
                                   />
                                 </Button>
                               </Link>
@@ -133,11 +135,11 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                                 <Button
                                   variant='ghost'
                                   size='icon'
-                                  className='text-white hover:text-primary-500'
+                                  className='fill-background hover:fill-foreground'
                                 >
                                   <Icon
                                     icon={slide.googleIcon}
-                                    className='w-5 h-5'
+                                    className='size-5'
                                   />
                                 </Button>
                               </Link>
@@ -158,28 +160,29 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                             delay={0.8}
                             className='w-fit mt-8'
                           >
-                            <h2
-                              className='text-[50px] leading-[1.2] text-white mb-[30px] xl:text-[100px] xl:leading-[100px]'
-                              dangerouslySetInnerHTML={{
-                                __html: slide.heroTitle,
-                              }}
-                            />
+                            <BoxReveal boxColor='#10b981' duration={1}>
+                              <h2
+                                className='text-[50px] leading-[1.2] text-white mb-[30px] xl:text-[100px] xl:leading-[100px]'
+                                dangerouslySetInnerHTML={{
+                                  __html: slide.heroTitle,
+                                }}
+                              />
+                            </BoxReveal>
                           </AnimationContainer>
                           <AnimationContainer
                             animation='fadeLeft'
                             delay={1}
                             className='w-fit'
                           >
-                            <Button
-                              asChild
-                              variant='default'
-                              size='lg'
-                              className='bg-emerald-500 hover:bg-emerald-600 h-16 text-lg uppercase text-white mt-12'
-                            >
-                              <Link href='#about' onClick={handleSmoothScroll}>
-                                More About Us
-                              </Link>
-                            </Button>
+                            <Link href='/contact-us'>
+                              <InteractiveHoverButton
+                                icon='lucide:phone'
+                                className='bg-emerald-500 group-hover:text-emerald-500 rounded-md border-none hover h-16 text-lg uppercase text-white mt-12 px-8 py-2'
+                              >
+                                Contact Us
+                              </InteractiveHoverButton>
+                            </Link>
+                            {/* </Button> */}
                           </AnimationContainer>
                         </div>
 
@@ -210,26 +213,22 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                           </div>
                         </div>
                       </div>
+                      <div className='text-sm uppercase absolute bottom-4 right-4 lg:right-20'>
+                        <Button asChild variant='ghost' className='text-white'>
+                          <Link href='tel:contact@reshopid.com'>
+                            contact@reshopid.com
+                          </Link>
+                        </Button>
+                      </div>
                     </Wrapper>
                   </div>
 
-                  <div className='text-sm uppercase absolute bottom-4 right-4 lg:right-8 z-[2]'>
-                    <Button
-                      asChild
-                      variant='ghost'
-                      className='text-white hover:text-primary-500'
-                    >
-                      <Link href='tel:contact@reshopid.com'>
-                        contact@reshopid.com
-                      </Link>
-                    </Button>
-                  </div>
                   <div className='absolute bottom-4 left-1/2 -translate-x-1/2 z-[2]'>
                     <Link href='#about' onClick={handleSmoothScroll}>
                       <div className='flex flex-col items-center gap-0.5 group cursor-pointer'>
                         <Icon
                           icon='mdi:chevron-down'
-                          className='size-8 text-white animate-bounce'
+                          className='size-8 text-background animate-bounce'
                           style={{
                             animationDelay: '0s',
                             animationDuration: '2s',
@@ -238,7 +237,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                         />
                         <Icon
                           icon='mdi:chevron-down'
-                          className='size-8 text-white animate-bounce'
+                          className='size-8 text-background animate-bounce'
                           style={{
                             animationDelay: '0.3s',
                             animationDuration: '2s',
@@ -247,7 +246,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                         />
                         <Icon
                           icon='mdi:chevron-down'
-                          className='size-8 text-white animate-bounce'
+                          className='size-8 text-background animate-bounce'
                           style={{
                             animationDelay: '0.6s',
                             animationDuration: '2s',
