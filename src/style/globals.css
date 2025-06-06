@@ -115,35 +115,6 @@
 }
 
 /*----------------------------------------*/
-/*  - category
-/*----------------------------------------*/
-/* .category-area .splide {
-	@apply pb-[75px] md:pb-[100px];
-}
-.category-area .splide__pagination {
-	@apply !bottom-0;
-}
-.category-area .splide__pagination .splide__pagination__bullet {
-	@apply !m-[0_20px_0_0] h-[10px] w-[10px] leading-[10px] last:!mr-0;
-}
-.category-area .splide__pagination .splide__pagination__bullet--active {
-	@apply bg-primary;
-}
-
-.category-item {
-	@apply relative transition before:pointer-events-none before:absolute before:left-0 before:top-0 before:z-[1] before:h-full before:w-0 before:bg-primary before:duration-500 hover:before:w-full;
-}
-.category-content {
-	@apply absolute bottom-[40px] left-[40px] z-[2];
-} */
-/* .category-category {
-	@apply mb-[15px] block text-[14px] uppercase leading-6 text-white transition duration-500 group-hover:text-black;
-}
-.category-title {
-	@apply text-[36px] leading-[43px] text-white transition duration-500 group-hover:text-black;
-} */
-
-/*----------------------------------------*/
 /*  - ios / backdrop blur styles
 /*----------------------------------------*/
 @layer utilities {
@@ -166,10 +137,10 @@
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
-}
-/* iOS Backdrop Blur Support */
-@layer utilities {
-  /* Backdrop blur dengan fallback untuk iOS */
+
+  /* iOS Backdrop Blur Support */
+
+  /* Backdrop blur fallback iOS */
   .backdrop-blur-none {
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
@@ -210,7 +181,7 @@
     -webkit-backdrop-filter: blur(64px);
   }
 
-  /* Backdrop saturate untuk iOS */
+  /* Backdrop saturate iOS */
   .backdrop-saturate-0 {
     backdrop-filter: saturate(0);
     -webkit-backdrop-filter: saturate(0);
@@ -236,7 +207,7 @@
     -webkit-backdrop-filter: saturate(2);
   }
 
-  /* Backdrop brightness untuk iOS */
+  /* Backdrop brightness iOS */
   .backdrop-brightness-0 {
     backdrop-filter: brightness(0);
     -webkit-backdrop-filter: brightness(0);
@@ -292,7 +263,7 @@
     -webkit-backdrop-filter: brightness(2);
   }
 
-  /* Kombinasi backdrop filters untuk iOS */
+  /* backdrop filters iOS */
   .backdrop-blur-sm.backdrop-saturate-150 {
     backdrop-filter: blur(4px) saturate(1.5);
     -webkit-backdrop-filter: blur(4px) saturate(1.5);
@@ -323,7 +294,7 @@
     -webkit-backdrop-filter: blur(40px) saturate(1.5);
   }
 
-  /* Glass effect khusus untuk iOS */
+  /* Glass iOS */
   .glass-effect {
     backdrop-filter: blur(10px) saturate(180%) brightness(1.1);
     -webkit-backdrop-filter: blur(10px) saturate(180%) brightness(1.1);
@@ -337,4 +308,71 @@
     background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
+
 }
+/* Leaflet Map */
+/* .hs-leaflet.leaflet-touch .leaflet-control-layers,
+.hs-leaflet.leaflet-touch .leaflet-bar {
+  border-width: 0px;
+}
+.hs-leaflet.leaflet-touch .leaflet-bar a {
+  line-height: 1.5;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+.hs-leaflet.leaflet-touch .leaflet-bar a:first-child,
+.hs-leaflet.leaflet-touch .leaflet-bar a:last-child {
+  border-radius: 8px;
+}
+.hs-leaflet .leaflet-control-zoom-in,
+.hs-leaflet .leaflet-control-zoom-out {
+  font-weight: 400;
+  font-size: 18px;
+  color: #1f2937;
+  text-indent: 0px;
+}
+.hs-leaflet .leaflet-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hs-leaflet .leaflet-bar a {
+  border-width: 0;
+}
+.hs-leaflet .leaflet-bar a:hover,
+.hs-leaflet .leaflet-bar a:focus {
+  background-color: #e5e7eb;
+}
+.hs-leaflet .leaflet-popup-content-wrapper,
+.hs-leaflet .leaflet-popup-tip {
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.hs-leaflet .leaflet-popup-tip {
+  border-radius: 4px;
+}
+.hs-leaflet.leaflet-container a.leaflet-popup-close-button {
+  top: -10px;
+  right: -10px;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.hs-leaflet.leaflet-container a.leaflet-popup-close-button:hover {
+  background-color: #f3f4f6;
+}
+.hs-leaflet-unstyled-popover .leaflet-popup-content-wrapper {
+  display: flex;
+}
+.hs-leaflet-unstyled-popover .leaflet-popup-content {
+  padding: 0;
+  margin: 0;
+  background: none;
+  line-height: normal;
+  border-radius: 0;
+  font-size: inherit;
+  min-height: auto;
+} */
