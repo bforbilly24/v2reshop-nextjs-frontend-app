@@ -12,11 +12,11 @@ import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
 import { FAQABOUT } from '../data/about-us'
 
-function FaqSection() {
+const FaqSection: React.FC = () => {
   return (
     <Wrapper className='py-20 lg:py-32 relative'>
       <div className='flex flex-col items-center justify-center gap-y-5'>
-        <div className='flex w-full flex-col items-center justify-center text-center'>
+        <div className='flex flex-col items-center justify-center text-center mb-8 gap-y-4'>
           <AnimationContainer animation='fadeUp' delay={0.2}>
             <SectionBadge title='FAQ' />
           </AnimationContainer>
@@ -29,14 +29,14 @@ function FaqSection() {
             </TypingAnimation>
           </AnimationContainer>
           <AnimationContainer animation='fadeUp' delay={0.3}>
-            <p className='mt-6 max-w-lg text-center text-lg text-muted-foreground'>
+            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
               Here are some of the most frequently asked questions we receive.
               If you have a question that isn&apos;t answered here, please
               don&apos;t hesitate to contact us.
             </p>
           </AnimationContainer>
         </div>
-        <div className='w-full max-w-4xl pt-10'>
+        <div className='w-full max-w-4xl'>
           <Accordion type='single' collapsible className='w-full space-y-4'>
             {FAQABOUT.map((faq, index) => (
               <AnimationContainer
