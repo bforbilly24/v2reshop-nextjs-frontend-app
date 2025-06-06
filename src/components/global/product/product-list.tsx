@@ -1,13 +1,13 @@
+import { ProductItem } from '@/constant'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/shadcn/badge'
 import { Button } from '@/components/ui/shadcn/button'
 import { Card } from '@/components/ui/shadcn/card'
 import { Icon } from '@/components/ui/icon'
-import { product as ProductProps } from './data/product'
 import { ProductCounterButton } from './product-counter-button'
 
-const ProductList = ({ product }: { product: ProductProps }) => {
+const ProductList = ({ product }: { product: ProductItem }) => {
   return (
     <Card className='p-3 rounded-md 2xl:flex lg:flex md:flex-none sm:flex-none group shadow-none border gap-x-3'>
       <Link href={`/reproduct/${product.id}`}>

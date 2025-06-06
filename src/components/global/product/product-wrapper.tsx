@@ -1,5 +1,6 @@
 'use client'
 
+import { SELECT_CATEGORIES } from '@/constant'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/ui/shadcn/button'
 import { Label } from '@/components/ui/shadcn/label'
@@ -11,7 +12,6 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select'
 import { Icon } from '@/components/ui/icon'
-import { selectCategories, selectOptions } from './data/product'
 
 type EcommerceNav = {
   label: string
@@ -62,12 +62,12 @@ const ProductWrapper = ({
                   )}
                   onClick={onClick}
                 >
-                  <Icon icon={icon} className='w-6 h-6' />
+                  <Icon icon={icon} className='size-6' />
                 </Button>
               ))}
             </div>
-            <div className='flex-none sm:flex items-center gap-4 sm:space-y-0 space-y-2'>
-              <div className='flex gap-2 items-center'>
+            {/* <div className='flex-none sm:flex items-center sm:space-y-0 space-y-2'> */}
+            {/* <div className='flex gap-2 items-center'>
                 <Label htmlFor='select' className='text-sm font-normal'>
                   Show:
                 </Label>
@@ -83,28 +83,28 @@ const ProductWrapper = ({
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-              <div className='flex gap-2 items-center'>
-                <Label
-                  htmlFor='select'
-                  className='text-sm font-normal whitespace-nowrap'
-                >
-                  Sort by:
-                </Label>
-                <Select>
-                  <SelectTrigger className='bg-transparent w-[110px] border-default-200 h-10'>
-                    <SelectValue placeholder='Filters' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectCategories.map((selectCategory, i) => (
-                      <SelectItem key={i} value={selectCategory.value}>
-                        {selectCategory.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              </div> */}
+            <div className='flex gap-2 items-center'>
+              <Label
+                htmlFor='select'
+                className='text-sm font-normal whitespace-nowrap'
+              >
+                Sort by:
+              </Label>
+              <Select>
+                <SelectTrigger className='bg-transparent w-[110px] border-default-200 h-10'>
+                  <SelectValue placeholder='Filters' />
+                </SelectTrigger>
+                <SelectContent>
+                  {SELECT_CATEGORIES.map((selectCategory, i) => (
+                    <SelectItem key={i} value={selectCategory.value}>
+                      {selectCategory.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+            {/* </div> */}
           </div>
           <div>{children}</div>
         </div>
