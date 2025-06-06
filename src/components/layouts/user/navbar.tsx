@@ -2,6 +2,12 @@
 
 import { useState, useRef, useEffect, RefObject, forwardRef } from 'react'
 import {
+  ECOMMERCE_ACTION_LINKS,
+  ECOMMERCE_NAV_LINKS,
+  ECOMMERCE_NAVBAR_CONFIG,
+  NavbarItem,
+} from '@/constant'
+import {
   AnimatePresence,
   motion,
   useMotionValueEvent,
@@ -28,14 +34,8 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/shadcn/navigation-menu'
 import AnimationContainer from '@/components/global/animation-container'
-import { Icon } from '@/components/ui/icon'
-import {
-  NAV_LINKS,
-  ACTION_LINKS,
-  NAVBAR_CONFIG,
-  NavbarItem,
-} from './data/navbar-data'
 import Wrapper from '@/components/global/wrapper'
+import { Icon } from '@/components/ui/icon'
 
 const useClickOutside = (callback: () => void) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -54,7 +54,6 @@ const useClickOutside = (callback: () => void) => {
   return ref
 }
 
-// ListItem component for navigation menu items
 const ListItem = forwardRef<
   React.ElementRef<'a'>,
   React.ComponentPropsWithoutRef<'a'> & {
@@ -160,11 +159,11 @@ const NavBar = () => {
             transition={{ duration: 0.2 }}
           >
             <Link
-              href={NAVBAR_CONFIG.brand.href}
+              href={ECOMMERCE_NAVBAR_CONFIG.brand.href}
               className='flex items-center cursor-pointer'
             >
               <Image
-                alt={NAVBAR_CONFIG.brand.name}
+                alt={ECOMMERCE_NAVBAR_CONFIG.brand.name}
                 src='/images/brand/brand-name.png'
                 width={161}
                 height={48}
@@ -178,7 +177,7 @@ const NavBar = () => {
             <NavigationMenu>
               <NavigationMenuList className='flex items-center gap-2'>
                 <AnimatePresence>
-                  {NAV_LINKS.map((link, index) => (
+                  {ECOMMERCE_NAV_LINKS.map((link, index) => (
                     <AnimationContainer
                       key={link.title}
                       animation='fadeDown'
@@ -284,7 +283,7 @@ const NavBar = () => {
           {/* Action Items */}
           <AnimationContainer animation='fadeLeft' delay={0.1}>
             <div className='flex items-center gap-x-2'>
-              {ACTION_LINKS.map((item) => (
+              {ECOMMERCE_ACTION_LINKS.map((item) => (
                 <div key={item.title}>
                   {item.menu && item.menu.length > 0 ? (
                     <DropdownMenu>
@@ -365,9 +364,9 @@ const NavBar = () => {
         <div className='flex items-center justify-between w-full px-6'>
           <div className='flex items-center justify-between gap-x-4 w-full'>
             <AnimationContainer animation='fadeRight' delay={0.1}>
-              <Link href={NAVBAR_CONFIG.brand.href}>
+              <Link href={ECOMMERCE_NAVBAR_CONFIG.brand.href}>
                 <Image
-                  alt={NAVBAR_CONFIG.brand.name}
+                  alt={ECOMMERCE_NAVBAR_CONFIG.brand.name}
                   src='/images/brand/brand-name.png'
                   width={120}
                   height={36}
@@ -379,7 +378,7 @@ const NavBar = () => {
             <AnimationContainer animation='fadeLeft' delay={0.1}>
               <div className='flex items-center justify-center gap-x-4'>
                 {/* Search icon for mobile */}
-                {ACTION_LINKS.find(
+                {ECOMMERCE_ACTION_LINKS.find(
                   (item: NavbarItem) => item.title === 'Search'
                 ) && (
                   <Button
@@ -388,7 +387,7 @@ const NavBar = () => {
                     onClick={() => handleNavigation('/search')}
                     className='text-gray-700'
                   >
-                    {ACTION_LINKS.find(
+                    {ECOMMERCE_ACTION_LINKS.find(
                       (item: NavbarItem) => item.title === 'Search'
                     )?.icon && (
                       <Icon icon='lucide:search' className='h-5 w-5' />
@@ -425,7 +424,7 @@ const NavBar = () => {
               className='flex rounded-b-xl absolute top-16 bg-white/95 backdrop-blur-md inset-x-0 z-50 flex-col items-start justify-start gap-2 w-full px-6 py-6 shadow-xl border-t border-white/20'
             >
               {/* Main Navigation Items */}
-              {NAV_LINKS.map((item, idx) => (
+              {ECOMMERCE_NAV_LINKS.map((item, idx) => (
                 <div key={item.title} className='w-full'>
                   <AnimationContainer
                     animation='fadeRight'
@@ -504,7 +503,7 @@ const NavBar = () => {
 
               {/* Action Items */}
               <div className='w-full border-t border-gray-200 pt-4 mt-4'>
-                {ACTION_LINKS.filter(
+                {ECOMMERCE_ACTION_LINKS.filter(
                   (item: NavbarItem) => item.title !== 'Search'
                 ).map((item: NavbarItem, idx: number) => (
                   <AnimationContainer

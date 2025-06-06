@@ -1,8 +1,8 @@
 'use client'
 
+import { ECOMMERCE_FOOTER_DATA } from '@/constant'
 import Image from 'next/image'
 import Link from 'next/link'
-import { footerData } from './data/footer-data'
 
 const Footer: React.FC = () => {
   const currentYear: number = new Date().getFullYear()
@@ -22,10 +22,10 @@ const Footer: React.FC = () => {
             <div className='lg:col-span-1'>
               <div className='w-fit flex items-center justify-center'>
                 <Image
-                  src={footerData.logo.src}
-                  alt={footerData.logo.alt}
-                  width={footerData.logo.width}
-                  height={footerData.logo.height}
+                  src={ECOMMERCE_FOOTER_DATA.logo.src}
+                  alt={ECOMMERCE_FOOTER_DATA.logo.alt}
+                  width={ECOMMERCE_FOOTER_DATA.logo.width}
+                  height={ECOMMERCE_FOOTER_DATA.logo.height}
                 />
               </div>
             </div>
@@ -36,28 +36,30 @@ const Footer: React.FC = () => {
                 Contact
               </h3>
               <div className='space-y-4 text-sm text-muted-foreground uppercase tracking-wide'>
-                <p className='leading-relaxed'>{footerData.contact.address}</p>
+                <p className='leading-relaxed'>
+                  {ECOMMERCE_FOOTER_DATA.contact.address}
+                </p>
                 <div>
                   <Link
-                    href={footerData.contact.email.url}
+                    href={ECOMMERCE_FOOTER_DATA.contact.email.url}
                     className='hover:text-primary transition-colors'
                   >
-                    {footerData.contact.email.label}
+                    {ECOMMERCE_FOOTER_DATA.contact.email.label}
                   </Link>
                 </div>
                 <div>
                   <Link
-                    href={footerData.contact.phone.url}
+                    href={ECOMMERCE_FOOTER_DATA.contact.phone.url}
                     className='hover:text-priamry transition-colors'
                   >
-                    {footerData.contact.phone.label}
+                    {ECOMMERCE_FOOTER_DATA.contact.phone.label}
                   </Link>
                 </div>
               </div>
             </div>
 
             {/* Link Groups */}
-            {footerData.groups.map((group) => (
+            {ECOMMERCE_FOOTER_DATA.groups.map((group) => (
               <div key={group.title} className='lg:col-span-1'>
                 <h3 className='text-xl lg:text-2xl font-light text-primary mb-6'>
                   {group.title}
@@ -93,7 +95,7 @@ const Footer: React.FC = () => {
               {/* Social Links */}
               <div className='text-center'>
                 <ul className='flex justify-center space-x-6'>
-                  {footerData.social.map((social) => (
+                  {ECOMMERCE_FOOTER_DATA.social.map((social) => (
                     <li key={social.id}>
                       <Link
                         href={social.url}
@@ -113,7 +115,7 @@ const Footer: React.FC = () => {
               {/* Language Selector */}
               <div className='text-center md:text-right'>
                 <ul className='flex justify-center md:justify-end space-x-6'>
-                  {footerData.languages.map((lang) => (
+                  {ECOMMERCE_FOOTER_DATA.languages.map((lang) => (
                     <li key={lang.id}>
                       <Link
                         href={lang.url}
