@@ -6,7 +6,6 @@ import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
 import AnimationContainer from '@/components/global/animation-container'
 import { ProductBox } from '@/components/global/product/product-box'
 import { ProductList } from '@/components/global/product/product-list'
-// import { ProductPagination } from '@/components/global/product/product-pagination'
 import { ProductWrapper } from '@/components/global/product/product-wrapper'
 import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
@@ -23,7 +22,6 @@ const LatestProductsSection = () => {
       .slice(0, 8)
   }, [])
 
-  //   const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE)
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const paginatedProducts = sortedProducts.slice(
     startIndex,
@@ -69,8 +67,13 @@ const LatestProductsSection = () => {
           </p>
         </AnimationContainer>
       </div>
+
       <AnimationContainer animation='fadeDown' delay={1}>
-        <ProductWrapper getEcommerceNav={updatedGetEcommerceNav}>
+        <ProductWrapper
+          getEcommerceNav={updatedGetEcommerceNav}
+          showSidebar={false}
+          showSort={false}
+        >
           {viewMode === 'grid' ? (
             <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-3 h-max'>
               {paginatedProducts.map((product) => (
@@ -86,11 +89,6 @@ const LatestProductsSection = () => {
               ))}
             </div>
           )}
-          {/* <ProductPagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-        /> */}
         </ProductWrapper>
       </AnimationContainer>
     </Wrapper>
