@@ -13,35 +13,38 @@ type ProductItem = {
   price: string
   oldPrice: string
   percent: string
-  brand: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 const PRODUCTS: ProductItem[] = [
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/classical-black-tshirt.png',
-    category: 'men',
+    category: 'Material Building',
     customized: true,
     name: 'Classical Black T-Shirt Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt. The best cotton black branded shirt.',
-    rating: '4.8',
+    rating: '5.0',
     price: '412.900',
     oldPrice: '700.000',
     percent: '25%',
-    brand: 'apple',
+    createdAt: new Date('2024-01-15T10:30:00Z'),
+    updatedAt: new Date('2024-06-01T14:20:00Z'),
   },
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/black-t-shirt.png',
-    category: 'men',
+    category: 'Kitchen Set',
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '2.8',
     price: '12.000',
     oldPrice: '700.000',
     percent: '25%',
-    brand: 'apex',
+    createdAt: new Date('2024-02-20T08:15:00Z'),
+    updatedAt: new Date('2024-05-15T16:45:00Z'),
   },
   {
     id: faker.string.uuid(),
@@ -50,11 +53,12 @@ const PRODUCTS: ProductItem[] = [
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '1.0',
     price: '112.000',
     oldPrice: '700.000',
     percent: '5%',
-    brand: 'easy',
+    createdAt: new Date('2024-03-10T12:00:00Z'),
+    updatedAt: new Date('2024-06-05T09:30:00Z'),
   },
   {
     id: faker.string.uuid(),
@@ -63,50 +67,54 @@ const PRODUCTS: ProductItem[] = [
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '4.2',
     price: '12.000',
     oldPrice: '700.000',
     percent: '15%',
-    brand: 'pixel',
+    createdAt: new Date('2024-01-25T15:45:00Z'),
+    updatedAt: new Date('2024-04-20T11:10:00Z'),
   },
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/gray-t-shirt.png',
-    category: 'baby',
+    category: 'Material Building',
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '3.9',
     price: '12.000',
     oldPrice: '700.000',
     percent: '15%',
-    brand: 'apex',
+    createdAt: new Date('2024-04-05T07:20:00Z'),
+    updatedAt: new Date('2024-05-30T13:55:00Z'),
   },
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/red-t-shirt.png',
-    category: 'Furniture',
+    category: 'Kitchen Set',
     customized: true,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '4.7',
     price: '12.000',
     oldPrice: '700.000',
     percent: '65%',
-    brand: 'apple',
+    createdAt: new Date('2024-02-14T09:30:00Z'),
+    updatedAt: new Date('2024-06-03T17:25:00Z'),
   },
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/red-t-shirt.png',
-    category: 'Furniture',
+    category: 'Kitchen Set',
     customized: true,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
-    price: '12.000',
-    oldPrice: '700.000',
+    rating: '4.6',
+    price: '800.000',
+    oldPrice: '1.000.000',
     percent: '10%',
-    brand: 'easy',
+    createdAt: new Date('2024-03-22T14:10:00Z'),
+    updatedAt: new Date('2024-05-25T10:40:00Z'),
   },
   {
     id: faker.string.uuid(),
@@ -115,24 +123,26 @@ const PRODUCTS: ProductItem[] = [
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
-    price: '12.000',
-    oldPrice: '700.000',
+    rating: '4.3',
+    price: '1.200.000',
+    oldPrice: '2.000.000',
     percent: '25%',
-    brand: 'pixel',
+    createdAt: new Date('2024-01-30T11:50:00Z'),
+    updatedAt: new Date('2024-04-18T15:35:00Z'),
   },
   {
     id: faker.string.uuid(),
     img: '/images/e-commerce/product-card/yellow-jumper.png',
-    category: 'furniture',
+    category: 'Kitchen Set',
     customized: false,
     name: 'Classical Black T-Shirt',
     desc: 'The best cotton black branded shirt',
-    rating: '4.8',
+    rating: '4.1',
     price: '12.000',
     oldPrice: '700.000',
     percent: '30%',
-    brand: 'samsung',
+    createdAt: new Date('2024-04-12T16:25:00Z'),
+    updatedAt: new Date('2024-06-07T08:15:00Z'),
   },
 ]
 
@@ -143,28 +153,10 @@ type CategoryItem = {
 }
 
 const CATEGORIES: CategoryItem[] = [
-  { label: 'All', value: 'all', count: '9724' },
-  { label: 'Men', value: 'men', count: '1312' },
-  { label: 'Furniture', value: 'Furniture', count: '3752' },
-  { label: 'Child', value: 'child', count: '985' },
-  { label: 'Baby', value: 'baby', count: '745' },
-  { label: 'Footwear', value: 'footwear', count: '1280' },
-  { label: 'Furniture', value: 'furniture', count: '820' },
-  { label: 'Mobile', value: 'mobile', count: '2460' },
-]
-
-type BrandItem = {
-  label: string
-  value: string
-  count: string
-}
-
-const BRANDS: BrandItem[] = [
-  { label: 'Apple', value: 'apple', count: '9724' },
-  { label: 'Apex', value: 'apex', count: '1312' },
-  { label: 'Easy', value: 'easy', count: '3752' },
-  { label: 'Pixel', value: 'pixel', count: '985' },
-  { label: 'Samsung', value: 'samsung', count: '2460' },
+  { label: 'All', value: 'all', count: '9' },
+  { label: 'Kitchen Set', value: 'Kitchen Set', count: '4' },
+  { label: 'Furniture', value: 'Furniture', count: '3' },
+  { label: 'Material Building', value: 'Material Building', count: '2' },
 ]
 
 type PriceItem = {
@@ -183,15 +175,15 @@ const PRICES: PriceItem[] = [
       min: 0,
       max: 199,
     },
-    count: '9724',
+    count: '6',
   },
   {
     label: '200.000 - 449.000',
     value: {
       min: 200,
-      max: 499,
+      max: 449,
     },
-    count: '1312',
+    count: '1',
   },
   {
     label: '450.000 - 599.000',
@@ -199,7 +191,7 @@ const PRICES: PriceItem[] = [
       min: 450,
       max: 599,
     },
-    count: '3752',
+    count: '0',
   },
   {
     label: '600.000 - 799.000',
@@ -207,30 +199,40 @@ const PRICES: PriceItem[] = [
       min: 600,
       max: 799,
     },
-    count: '985',
+    count: '0',
   },
   {
     label: '800.000 & Above',
     value: {
       min: 800,
-      max: 1000,
+      max: 10000,
     },
-    count: '745',
+    count: '2',
   },
 ]
 
 type RatingItem = {
-  name: number
+  name: string
   value: number
   count: string
 }
 
 const RATINGS: RatingItem[] = [
-  { name: 5, value: 5, count: '9724' },
-  { name: 4, value: 4, count: '1312' },
-  { name: 3, value: 3, count: '3752' },
-  { name: 2, value: 2, count: '985' },
-  { name: 1, value: 1, count: '2460' },
+  { name: '5.0+ stars', value: 5.0, count: '1' },
+  { name: '4.5+ stars', value: 4.5, count: '4' },
+  { name: '4.0+ stars', value: 4.0, count: '8' },
+  { name: '3.8+ stars', value: 3.8, count: '9' },
+]
+
+type CustomizationItem = {
+  label: string
+  value: boolean
+  count: string
+}
+
+const CUSTOMIZATIONS: CustomizationItem[] = [
+  { label: 'Customized', value: true, count: '3' },
+  { label: 'Non-Customized', value: false, count: '6' },
 ]
 
 type SelectOptionItem = {
@@ -255,16 +257,36 @@ const SELECT_OPTIONS: SelectOptionItem[] = [
 
 const SELECT_CATEGORIES: SelectOptionItem[] = [
   {
-    value: 'option1',
-    label: 'Top Rated',
+    value: 'newest',
+    label: 'Newest First',
   },
   {
-    value: 'option2',
-    label: 'Option 2',
+    value: 'oldest',
+    label: 'Oldest First',
   },
   {
-    value: 'option3',
-    label: 'Option 3',
+    value: 'updated_newest',
+    label: 'Recently Updated',
+  },
+  {
+    value: 'updated_oldest',
+    label: 'Least Recently Updated',
+  },
+  {
+    value: 'price_low_high',
+    label: 'Price: Low to High',
+  },
+  {
+    value: 'price_high_low',
+    label: 'Price: High to Low',
+  },
+  {
+    value: 'rating_high_low',
+    label: 'Rating: High to Low',
+  },
+  {
+    value: 'rating_low_high',
+    label: 'Rating: Low to High',
   },
 ]
 
@@ -369,17 +391,72 @@ const getEcommerceNav = (pathname: string): EcommerceNavItem[] => {
   ]
 }
 
+const sortProducts = (
+  products: ProductItem[],
+  sortBy: string
+): ProductItem[] => {
+  const sortedProducts = [...products]
+
+  switch (sortBy) {
+    case 'newest':
+      return sortedProducts.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+    case 'oldest':
+      return sortedProducts.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )
+    case 'updated_newest':
+      return sortedProducts.sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      )
+    case 'updated_oldest':
+      return sortedProducts.sort(
+        (a, b) =>
+          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+      )
+    case 'price_low_high':
+      return sortedProducts.sort((a, b) => {
+        const priceA = parseFloat(a.price.replace(/\./g, ''))
+        const priceB = parseFloat(b.price.replace(/\./g, ''))
+        return priceA - priceB
+      })
+    case 'price_high_low':
+      return sortedProducts.sort((a, b) => {
+        const priceA = parseFloat(a.price.replace(/\./g, ''))
+        const priceB = parseFloat(b.price.replace(/\./g, ''))
+        return priceB - priceA
+      })
+    case 'rating_high_low':
+      return sortedProducts.sort(
+        (a, b) => parseFloat(b.rating) - parseFloat(a.rating)
+      )
+    case 'rating_low_high':
+      return sortedProducts.sort(
+        (a, b) => parseFloat(a.rating) - parseFloat(b.rating)
+      )
+    default:
+      // Default sort by rating (highest first)
+      return sortedProducts.sort(
+        (a, b) => parseFloat(b.rating) - parseFloat(a.rating)
+      )
+  }
+}
+
 export {
   PRODUCTS,
   type ProductItem,
   CATEGORIES,
   type CategoryItem,
-  BRANDS,
-  type BrandItem,
   PRICES,
   type PriceItem,
   RATINGS,
   type RatingItem,
+  CUSTOMIZATIONS,
+  type CustomizationItem,
   SELECT_OPTIONS,
   SELECT_CATEGORIES,
   type SelectOptionItem,
@@ -389,4 +466,5 @@ export {
   getProducts,
   getProductById,
   getEcommerceNav,
+  sortProducts,
 }

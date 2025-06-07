@@ -22,8 +22,8 @@ import {
   type ProductItem,
   CATEGORIES as ECOMMERCE_CATEGORIES,
   type CategoryItem as EcommerceCategoryItem,
-  BRANDS,
-  type BrandItem,
+  //   BRANDS,
+  //   type BrandItem,
   PRICES,
   type PriceItem,
   RATINGS,
@@ -37,6 +37,7 @@ import {
   getProducts,
   getProductById,
   getEcommerceNav,
+  sortProducts,
 } from '@/components/global/product/data/product'
 import {
   HEROSLIDERABOUT,
@@ -122,8 +123,8 @@ export {
   ProductItem,
   ECOMMERCE_CATEGORIES,
   EcommerceCategoryItem,
-  BRANDS,
-  BrandItem,
+  //   BRANDS,
+  //   BrandItem,
   PRICES,
   PriceItem,
   RATINGS,
@@ -137,4 +138,5 @@ export {
   getProducts,
   getProductById,
   getEcommerceNav,
+  sortProducts,
 }

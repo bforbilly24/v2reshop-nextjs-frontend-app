@@ -39,27 +39,30 @@ const ProductCounterButton = () => {
       {show && (
         <div className='flex gap-4 items-center '>
           <div className='flex-1 h-8 flex border border-1 border-default-900 delay-150 ease-in-out dark:border-default-600 divide-x-[1px] rtl:divide-x-reverse text-sm font-normal divide-default-900 dark:divide-default-600 rounded'>
-            <button
+            <Button
               onClick={handleDecreaseQuantity}
-              type='button'
+              variant={'outline'}
               disabled={count <= 1}
-              className='flex-none px-2 dark:text-white text-default-900 hover:bg-default-900 hover:text-white dark:hover:bg-default-700 disabled:cursor-not-allowed disabled:opacity-50 '
+              size={'icon'}
+              className='dark:text-white text-default-900 hover:bg-default-900 hover:text-white dark:hover:bg-default-700 disabled:cursor-not-allowed disabled:opacity-50 '
             >
               <Icon icon='eva:minus-fill' />
-            </button>
+            </Button>
 
             <div className='flex-1 w-[62px] text-center flex items-center justify-center'>
               {count}
             </div>
 
-            <button
+            <Button
               onClick={handleIncreaseQuantity}
               type='button'
+              variant={'outline'}
               disabled={count >= 10}
+              size={'icon'}
               className='flex-none px-2 disabled:cursor-not-allowed disabled:opacity-50 text-default-900 hover:bg-default-900 hover:text-white dark:text-white dark:hover:bg-default-700 rtl:dark:hover:rounded-l ltr:dark:hover:rounded-r'
             >
               <Icon icon='eva:plus-fill' />
-            </button>
+            </Button>
           </div>
         </div>
       )}

@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/shadcn/select'
 import { Icon } from '@/components/ui/icon'
+import { SidebarProduct } from './sidebar-product'
 
 type EcommerceNav = {
   label: string
@@ -20,13 +21,38 @@ type EcommerceNav = {
   onClick?: () => void
 }
 
+interface SidebarProps {
+  searchTerm: string
+  onSearchChange: (term: string) => void
+  selectedCategories: string[]
+  onCategoryChange: (categories: string[]) => void
+  selectedPriceRanges: string[]
+  onPriceRangeChange: (ranges: string[]) => void
+  selectedRatings: number[]
+  onRatingChange: (ratings: number[]) => void
+  selectedCustomizations: boolean[]
+  onCustomizationChange: (customizations: boolean[]) => void
+}
+
+interface ProductWrapperProps {
+  children: React.ReactNode
+  getEcommerceNav?: () => EcommerceNav[]
+  showSidebar?: boolean
+  showSort?: boolean 
+  sidebarProps?: SidebarProps
+  sortBy?: string
+  onSortChange?: (sortBy: string) => void
+}
+
 const ProductWrapper = ({
   children,
   getEcommerceNav,
-}: {
-  children: React.ReactNode
-  getEcommerceNav?: () => EcommerceNav[]
-}) => {
+  showSidebar = true,
+  showSort = true, 
+  sidebarProps,
+  sortBy = 'rating_high_low',
+  onSortChange,
+}: ProductWrapperProps) => {
   const menus = getEcommerceNav
     ? getEcommerceNav()
     : [
@@ -42,10 +68,41 @@ const ProductWrapper = ({
         },
       ]
 
+  const handleSortChange = (value: string) => {
+    if (onSortChange && typeof onSortChange === 'function') {
+      onSortChange(value)
+    }
+  }
+
   return (
     <div className='w-full'>
-      <div className='grid grid-cols-12 gap-5 w-full'>
-        <div className='lg:col-span-12 col-span-12'>
+      <div
+        className={cn(
+          'grid gap-5 w-full',
+          showSidebar ? 'grid-cols-12' : 'grid-cols-1'
+        )}
+      >
+        {showSidebar && sidebarProps && (
+          <div className='lg:col-span-3 col-span-12'>
+            <SidebarProduct
+              searchTerm={sidebarProps.searchTerm}
+              onSearchChange={sidebarProps.onSearchChange}
+              selectedCategories={sidebarProps.selectedCategories}
+              onCategoryChange={sidebarProps.onCategoryChange}
+              selectedPriceRanges={sidebarProps.selectedPriceRanges}
+              onPriceRangeChange={sidebarProps.onPriceRangeChange}
+              selectedRatings={sidebarProps.selectedRatings}
+              onRatingChange={sidebarProps.onRatingChange}
+              selectedCustomizations={sidebarProps.selectedCustomizations}
+              onCustomizationChange={sidebarProps.onCustomizationChange}
+            />
+          </div>
+        )}
+        <div
+          className={cn(
+            showSidebar ? 'lg:col-span-9 col-span-12' : 'col-span-12'
+          )}
+        >
           <div className='md:flex mb-6 md:space-y-0 space-y-4'>
             <div className='flex-1 flex items-center gap-3'>
               {menus?.map(({ active, icon, onClick }, index) => (
@@ -66,45 +123,32 @@ const ProductWrapper = ({
                 </Button>
               ))}
             </div>
-            {/* <div className='flex-none sm:flex items-center sm:space-y-0 space-y-2'> */}
-            {/* <div className='flex gap-2 items-center'>
-                <Label htmlFor='select' className='text-sm font-normal'>
-                  Show:
+
+            {showSort && (
+              <div className='flex gap-2 items-center'>
+                <Label
+                  htmlFor='sort-select'
+                  className='text-sm font-normal whitespace-nowrap'
+                >
+                  Sort by:
                 </Label>
-                <Select defaultValue={selectOptions[0].value}>
-                  <SelectTrigger className='bg-transparent w-[110px] border-default-200 h-10'>
-                    <SelectValue placeholder='Select Option' />
+                <Select value={sortBy} onValueChange={handleSortChange}>
+                  <SelectTrigger
+                    id='sort-select'
+                    className='bg-transparent w-[180px] border-default-200 h-10'
+                  >
+                    <SelectValue placeholder='Select sorting' />
                   </SelectTrigger>
                   <SelectContent>
-                    {selectOptions.map((selectOption, i) => (
-                      <SelectItem key={i} value={selectOption.value}>
-                        {selectOption.label}
+                    {SELECT_CATEGORIES.map((selectCategory, i) => (
+                      <SelectItem key={i} value={selectCategory.value}>
+                        {selectCategory.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-              </div> */}
-            <div className='flex gap-2 items-center'>
-              <Label
-                htmlFor='select'
-                className='text-sm font-normal whitespace-nowrap'
-              >
-                Sort by:
-              </Label>
-              <Select>
-                <SelectTrigger className='bg-transparent w-[110px] border-default-200 h-10'>
-                  <SelectValue placeholder='Filters' />
-                </SelectTrigger>
-                <SelectContent>
-                  {SELECT_CATEGORIES.map((selectCategory, i) => (
-                    <SelectItem key={i} value={selectCategory.value}>
-                      {selectCategory.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {/* </div> */}
+              </div>
+            )}
           </div>
           <div>{children}</div>
         </div>
