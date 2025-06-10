@@ -3,12 +3,13 @@
 import { useState, useMemo } from 'react'
 import { PRICES, PRODUCTS, sortProducts } from '@/constant'
 import { Button } from '@/components/ui/shadcn/button'
-import { ProductBox } from '@/components/global/product/product-box'
-import { ProductList } from '@/components/global/product/product-list'
-import { ProductPagination } from '@/components/global/product/product-pagination'
-import { ProductWrapper } from '@/components/global/product/product-wrapper'
 import Wrapper from '@/components/global/wrapper'
 import { Icon } from '@/components/ui/icon'
+import { ProductBox } from './product/product-box'
+import { ProductList } from './product/product-list'
+import { ProductPagination } from './product/product-pagination'
+import { ProductWrapper } from './product/product-wrapper'
+import { Empty } from '@/components/ui/empty'
 
 const ITEMS_PER_PAGE = 6
 
@@ -25,6 +26,13 @@ const ReProductSection = () => {
     boolean[]
   >([])
 
+  const getAverageRating = (product: { reviews: { starReview: number }[] }) => {
+    return product.reviews.length
+      ? product.reviews.reduce((sum, review) => sum + review.starReview, 0) /
+          product.reviews.length
+      : 0
+  }
+
   const isPriceInRange = (productPrice: string, priceLabel: string) => {
     const price = parseFloat(productPrice.replace(/\./g, ''))
     const priceRange = PRICES.find((p) => p.label === priceLabel)
@@ -33,6 +41,15 @@ const ReProductSection = () => {
 
     const { min, max } = priceRange.value
     return price >= min * 1000 && price <= max * 1000
+  }
+
+  const isRatingInRange = (productRating: number, ratingValue: number) => {
+    if (ratingValue === 5.0) return productRating === 5.0
+    if (ratingValue === 4.5) return productRating >= 4.5 && productRating <= 4.9
+    if (ratingValue === 4.0) return productRating >= 4.0 && productRating <= 4.4
+    if (ratingValue === 3.5) return productRating >= 3.5 && productRating <= 3.9
+    if (ratingValue === 3.0) return productRating >= 3.0 && productRating <= 3.4
+    return false
   }
 
   const filteredProducts = useMemo(() => {
@@ -53,14 +70,10 @@ const ReProductSection = () => {
       !selectedCategories.includes('all')
     ) {
       filtered = filtered.filter((product) =>
-        selectedCategories.some((category) => {
-          if (category === 'Kitchen Set')
-            return product.category === 'Kitchen Set'
-          if (category === 'Furniture') return product.category === 'Furniture'
-          if (category === 'Material Building')
-            return product.category === 'Material Building'
-          return product.category.toLowerCase() === category.toLowerCase()
-        })
+        selectedCategories.some(
+          (category) =>
+            product.category.toLowerCase() === category.toLowerCase()
+        )
       )
     }
 
@@ -74,8 +87,13 @@ const ReProductSection = () => {
 
     if (selectedRatings && selectedRatings.length > 0) {
       filtered = filtered.filter((product) => {
-        const productRating = parseFloat(product.rating)
-        return selectedRatings.some((rating) => productRating >= rating)
+        const productRating = getAverageRating(product)
+        return (
+          product.reviews.length > 0 &&
+          selectedRatings.some((rating) =>
+            isRatingInRange(productRating, rating)
+          )
+        )
       })
     }
 
@@ -183,11 +201,10 @@ const ReProductSection = () => {
         sortBy={sortBy}
         onSortChange={handleSortChange}
       >
-        {/* Enhanced Filter Summary */}
         {hasActiveFilters && (
-          <div className='mb-6 p-4 bg-default-50 rounded-lg border border-default-200'>
+          <div className='mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200'>
             <div className='flex items-center justify-between mb-3'>
-              <div className='text-sm text-default-600'>
+              <div className='text-sm text-gray-600'>
                 <span className='font-medium'>
                   Showing {filteredProducts.length} of {PRODUCTS.length}{' '}
                   products
@@ -205,7 +222,6 @@ const ReProductSection = () => {
               </Button>
             </div>
 
-            {/* Active Filters Display */}
             <div className='flex flex-wrap gap-2'>
               {selectedCategories &&
                 selectedCategories.map((category) => (
@@ -213,7 +229,7 @@ const ReProductSection = () => {
                     key={category}
                     className='inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full border border-primary/20'
                   >
-                    <Icon icon='heroicons:tag' className='w-3 h-3 mr-1' />
+                    <Icon icon='heroicons:tag' className='size-3 mr-1' />
                     {category}
                   </span>
                 ))}
@@ -222,11 +238,11 @@ const ReProductSection = () => {
                 selectedPriceRanges.map((price) => (
                   <span
                     key={price}
-                    className='inline-flex items-center px-3 py-1 bg-success/10 text-success text-xs font-medium rounded-full border border-success/20'
+                    className='inline-flex items-center px-3 py-1 bg-green-500/10 text-green-500 text-xs font-medium rounded-full border border-green-500/20'
                   >
                     <Icon
                       icon='heroicons:currency-dollar'
-                      className='w-3 h-3 mr-1'
+                      className='size-3 mr-1'
                     />
                     {price}
                   </span>
@@ -236,16 +252,16 @@ const ReProductSection = () => {
                 selectedRatings.map((rating) => (
                   <span
                     key={rating}
-                    className='inline-flex items-center px-3 py-1 bg-warning/10 text-warning text-xs font-medium rounded-full border border-warning/20'
+                    className='inline-flex items-center px-3 py-1 bg-yellow-500/10 text-yellow-500 text-xs font-medium rounded-full border border-yellow-500/20'
                   >
-                    <Icon icon='heroicons:star' className='w-3 h-3 mr-1' />
+                    <Icon icon='heroicons:star' className='size-3 mr-1' />
                     {rating}+ stars
                   </span>
                 ))}
 
               {selectedCustomizations && selectedCustomizations.length > 0 && (
-                <span className='inline-flex items-center px-3 py-1 bg-info/10 text-info text-xs font-medium rounded-full border border-info/20'>
-                  <Icon icon='heroicons:cog-6-tooth' className='w-3 h-3 mr-1' />
+                <span className='inline-flex items-center px-3 py-1 bg-blue-500/10 text-blue-500 text-xs font-medium rounded-full border border-blue-500/20'>
+                  <Icon icon='heroicons:cog-6-tooth' className='size-3 mr-1' />
                   {getCustomizationDisplayText(selectedCustomizations)}
                 </span>
               )}
@@ -253,40 +269,21 @@ const ReProductSection = () => {
           </div>
         )}
 
-        {/* No Results Message */}
         {filteredProducts.length === 0 ? (
-          <div className='text-center py-12'>
-            <div className='w-20 h-20 mx-auto mb-4 bg-default-100 rounded-full flex items-center justify-center'>
-              <Icon
-                icon='heroicons:magnifying-glass'
-                className='w-10 h-10 text-default-400'
-              />
-            </div>
-
-            <h3 className='text-xl font-semibold text-default-800 mb-2'>
-              No products found
-            </h3>
-            <p className='text-default-600 mb-6 max-w-md mx-auto'>
-              We couldn&apos;t find any products matching your current filters.
-              Try adjusting your search criteria or clearing some filters.
-            </p>
-            <Button
-              variant='default'
-              onClick={clearAllFilters}
-              className='min-w-32'
-            >
-              <Icon icon='heroicons:arrow-path' className='w-4 h-4 mr-2' />
-              Reset Filters
-            </Button>
-          </div>
+          <Empty
+            onClick={clearAllFilters}
+            ButtonText='Clear Filters'
+            Title='No products found'
+            Desc="We couldn't find any products matching your current filters. Try
+        adjusting your search criteria or clearing some filters."
+          />
         ) : (
           <>
-            {/* Results Summary */}
             <div className='mb-4 flex items-center justify-between'>
-              <div className='text-sm text-default-600'>
+              <div className='text-sm text-foreground'>
                 Page {currentPage} of {totalPages}
                 {totalPages > 1 && (
-                  <span className='text-default-500'>
+                  <span className='text-muted-foreground'>
                     {' '}
                     ({startIndex + 1}-
                     {Math.min(
@@ -298,7 +295,6 @@ const ReProductSection = () => {
                 )}
               </div>
 
-              {/* Quick customization filter buttons */}
               <div className='flex gap-2'>
                 <Button
                   variant={
@@ -321,7 +317,7 @@ const ReProductSection = () => {
                   onClick={() => setSelectedCustomizations([true])}
                   className='text-xs'
                 >
-                  <Icon icon='heroicons:cog-6-tooth' className='w-3 h-3 mr-1' />
+                  <Icon icon='heroicons:cog-6-tooth' className='size-3 mr-1' />
                   Customized
                 </Button>
                 <Button
@@ -337,14 +333,13 @@ const ReProductSection = () => {
                 >
                   <Icon
                     icon='heroicons:square-3-stack-3d'
-                    className='w-3 h-3 mr-1'
+                    className='size-3 mr-1'
                   />
                   Standard
                 </Button>
               </div>
             </div>
 
-            {/* Product Grid/List */}
             {viewMode === 'grid' ? (
               <div className='grid 2xl:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-3 h-max'>
                 {paginatedProducts.map((product) => (
@@ -364,7 +359,6 @@ const ReProductSection = () => {
               </div>
             )}
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <div className='mt-8'>
                 <ProductPagination
