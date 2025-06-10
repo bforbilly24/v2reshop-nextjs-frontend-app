@@ -18,28 +18,6 @@ import {
   type NavbarItem,
 } from '@/components/layouts/user/data/navbar'
 import {
-  PRODUCTS,
-  type ProductItem,
-  CATEGORIES as ECOMMERCE_CATEGORIES,
-  type CategoryItem as EcommerceCategoryItem,
-  //   BRANDS,
-  //   type BrandItem,
-  PRICES,
-  type PriceItem,
-  RATINGS,
-  type RatingItem,
-  SELECT_OPTIONS,
-  SELECT_CATEGORIES,
-  type SelectOptionItem,
-  PAYMENTS,
-  type PaymentItem,
-  type EcommerceNavItem,
-  getProducts,
-  getProductById,
-  getEcommerceNav,
-  sortProducts,
-} from '@/components/global/product/data/product'
-import {
   HEROSLIDERABOUT,
   type SlideItem,
   FAQABOUT,
@@ -69,6 +47,29 @@ import {
   type CategoryItem as HomeCategoryItem,
   type ServiceItem,
 } from '@/features/home/data/home'
+import {
+  PRODUCTS,
+  type ProductItem,
+  CATEGORIES as ECOMMERCE_CATEGORIES,
+  type CategoryItem as EcommerceCategoryItem,
+  PRICES,
+  type PriceItem,
+  RATINGS,
+  type RatingItem,
+  CUSTOMIZATIONS as ECOMMERCE_CUSTOMIZATIONS,
+  type CustomizationItem,
+  SELECT_OPTIONS,
+  SELECT_CATEGORIES,
+  type SelectOptionItem,
+  PAYMENTS,
+  type PaymentItem,
+  type EcommerceNavItem,
+  getProducts,
+  getProductById,
+  getEcommerceNav,
+  sortProducts,
+} from '@/features/reproduct/data/product'
+import { type SidebarProductProps } from '@/features/reproduct/data/sidebar'
 
 export {
   // Navbar Ecommerce
@@ -89,6 +90,9 @@ export {
   ECOMMERCE_FOOTER_SOCIAL,
   ECOMMERCE_FOOTER_LANGUAGES,
   type FooterLinkItem,
+
+  // Sidebar Product
+  SidebarProductProps,
 
   // Home data
   HEROSLIDERHOME,
@@ -123,12 +127,12 @@ export {
   ProductItem,
   ECOMMERCE_CATEGORIES,
   EcommerceCategoryItem,
-  //   BRANDS,
-  //   BrandItem,
   PRICES,
   PriceItem,
   RATINGS,
   RatingItem,
+  ECOMMERCE_CUSTOMIZATIONS,
+  CustomizationItem,
   SELECT_OPTIONS,
   SELECT_CATEGORIES,
   SelectOptionItem,

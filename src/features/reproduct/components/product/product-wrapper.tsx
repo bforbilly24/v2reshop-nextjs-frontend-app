@@ -111,9 +111,9 @@ const ProductWrapper = ({
                   size='icon'
                   variant='outline'
                   className={cn(
-                    'border border-default-400 text-default-400 hover:bg-transparent hover:text-default-400 h-11 w-11',
+                    'border border-gray-400 text-gray-400 hover:bg-transparent hover:text-gray-400 h-11 w-11',
                     {
-                      'text-default border-default hover:text-default hover:border-default':
+                      'text-foreground border-foreground hover:text-foreground hover:border-foreground':
                         active,
                     }
                   )}
@@ -135,7 +135,7 @@ const ProductWrapper = ({
                 <Select value={sortBy} onValueChange={handleSortChange}>
                   <SelectTrigger
                     id='sort-select'
-                    className='bg-transparent w-[180px] border-default-200 h-10'
+                    className='bg-transparent w-[180px] border-gray-200 h-10'
                   >
                     <SelectValue placeholder='Select sorting' />
                   </SelectTrigger>

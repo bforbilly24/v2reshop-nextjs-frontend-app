@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect, RefObject, forwardRef } from 'react'
+import { useState, useRef, useEffect, forwardRef, RefObject } from 'react'
 import {
   ECOMMERCE_ACTION_LINKS,
   ECOMMERCE_NAV_LINKS,
   ECOMMERCE_NAVBAR_CONFIG,
-  NavbarItem,
 } from '@/constant'
 import {
   AnimatePresence,
@@ -13,7 +12,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from 'framer-motion'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
@@ -36,21 +35,20 @@ import {
 import AnimationContainer from '@/components/global/animation-container'
 import Wrapper from '@/components/global/wrapper'
 import { Icon } from '@/components/ui/icon'
+import { ShoppingCartDrawer } from '@/features/shopping-cart/components/shopping-cart-drawer'
+import { useCart } from '@/features/shopping-cart/context/cart-context'
 
 const useClickOutside = (callback: () => void) => {
   const ref = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         callback()
       }
     }
-
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [callback])
-
   return ref
 }
 
@@ -88,6 +86,7 @@ const ListItem = forwardRef<
     </li>
   )
 })
+
 ListItem.displayName = 'ListItem'
 
 const NavBar = () => {
@@ -97,11 +96,11 @@ const NavBar = () => {
   const [openDropdowns, setOpenDropdowns] = useState<{
     [key: string]: boolean
   }>({})
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-
+  const { cartItems } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
-
   const mobileMenuRef = useClickOutside(() => {
     if (open) setOpen(false)
   })
@@ -120,9 +119,18 @@ const NavBar = () => {
   })
 
   const handleNavigation = (href: string) => {
-    router.push(href)
-    setOpen(false)
-    setOpenDropdowns({})
+    if (href === '/shopping-cart') {
+      setCartDrawerOpen(true)
+    } else {
+      router.push(href)
+      setOpen(false)
+      setOpenDropdowns({})
+    }
+  }
+
+  const handleNavigateToCartFromDrawer = () => {
+    setCartDrawerOpen(false)
+    router.push('/shopping-cart')
   }
 
   const toggleDropdown = (itemTitle: string) => {
@@ -131,7 +139,6 @@ const NavBar = () => {
 
   return (
     <header className='fixed w-full top-0 inset-x-0 z-50' ref={ref}>
-      {/* Desktop Navigation */}
       <motion.div
         animate={{
           width: visible ? '85%' : '100%',
@@ -142,17 +149,14 @@ const NavBar = () => {
           stiffness: 200,
           damping: 40,
         }}
-        style={{
-          minWidth: '800px',
-        }}
+        style={{ minWidth: '800px' }}
         className={cn(
           'hidden lg:flex bg-transparent self-start items-center justify-between py-4 rounded-none relative z-[999] mx-auto w-full backdrop-blur',
           visible &&
-            'bg-white/80 shadow-xl backdrop-blur-3xl py-3 border rounded-full border-white/20'
+            'bg-white/80 shadow-xl backdrop-blur-3xl py-3 border rounded-full border-white/200'
         )}
       >
         <Wrapper className='flex items-center justify-between w-full'>
-          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -171,8 +175,6 @@ const NavBar = () => {
               />
             </Link>
           </motion.div>
-
-          {/* Main Navigation */}
           <div className='flex items-center justify-center text-sm font-medium'>
             <NavigationMenu>
               <NavigationMenuList className='flex items-center gap-2'>
@@ -198,7 +200,6 @@ const NavBar = () => {
                             >
                               <Link href={link.href}>{link.title}</Link>
                             </NavigationMenuTrigger>
-
                             <NavigationMenuContent id={`${link.title}-menu`}>
                               <motion.div
                                 initial={{ opacity: 0, y: -10 }}
@@ -214,7 +215,6 @@ const NavBar = () => {
                                       : 'lg:grid-cols-3'
                                   )}
                                 >
-                                  {/* Special featured section for Explore menu */}
                                   {link.title === 'Explore' && (
                                     <li className='relative row-span-3 overflow-hidden rounded-lg pr-2'>
                                       <div className='absolute inset-0 z-10 h-full w-full bg-[linear-gradient(to_right,rgb(38,38,38,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgb(38,38,38,0.5)_1px,transparent_1px)] bg-[size:1rem_1rem]'></div>
@@ -241,8 +241,6 @@ const NavBar = () => {
                                       </NavigationMenuLink>
                                     </li>
                                   )}
-
-                                  {/* Menu items */}
                                   {link.menu.map((menuItem) => (
                                     <ListItem
                                       key={menuItem.title}
@@ -279,13 +277,31 @@ const NavBar = () => {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-
-          {/* Action Items */}
           <AnimationContainer animation='fadeLeft' delay={0.1}>
             <div className='flex items-center gap-x-2'>
               {ECOMMERCE_ACTION_LINKS.map((item) => (
                 <div key={item.title}>
-                  {item.menu && item.menu.length > 0 ? (
+                  {item.title === 'Cart' ? (
+                    <Button
+                      size='icon'
+                      variant='ghost'
+                      onClick={() => setCartDrawerOpen(true)}
+                      className={cn(
+                        'relative rounded-lg transition-all duration-500',
+                        isAboutUsNotScrolled
+                          ? 'text-white hover:text-slate-200 hover:bg-white/10'
+                          : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                      )}
+                    >
+                      <ShoppingCart className='size-5' />
+                      <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs rounded-full size-5 flex items-center justify-center'>
+                        {cartItems.reduce(
+                          (sum, item) => sum + item.quantity,
+                          0
+                        )}
+                      </span>
+                    </Button>
+                  ) : item.menu && item.menu.length > 0 ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -298,7 +314,7 @@ const NavBar = () => {
                               : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
                           )}
                         >
-                          {item.icon && <item.icon className='h-5 w-5' />}
+                          {item.icon && <item.icon className='size-5' />}
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className='w-min rounded-xl bg-white/95 backdrop-blur-md p-2 shadow-xl border border-white/20'>
@@ -330,7 +346,7 @@ const NavBar = () => {
                           : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
                       )}
                     >
-                      {item.icon && <item.icon className='h-5 w-5' />}
+                      {item.icon && <item.icon className='size-5' />}
                     </Button>
                   )}
                 </div>
@@ -339,8 +355,6 @@ const NavBar = () => {
           </AnimationContainer>
         </Wrapper>
       </motion.div>
-
-      {/* Mobile Navigation */}
       <motion.div
         animate={{
           y: visible ? 20 : 0,
@@ -374,12 +388,10 @@ const NavBar = () => {
                 />
               </Link>
             </AnimationContainer>
-
             <AnimationContainer animation='fadeLeft' delay={0.1}>
               <div className='flex items-center justify-center gap-x-4'>
-                {/* Search icon for mobile */}
                 {ECOMMERCE_ACTION_LINKS.find(
-                  (item: NavbarItem) => item.title === 'Search'
+                  (item) => item.title === 'Search'
                 ) && (
                   <Button
                     size='icon'
@@ -387,15 +399,20 @@ const NavBar = () => {
                     onClick={() => handleNavigation('/search')}
                     className='text-gray-700'
                   >
-                    {ECOMMERCE_ACTION_LINKS.find(
-                      (item: NavbarItem) => item.title === 'Search'
-                    )?.icon && (
-                      <Icon icon='lucide:search' className='h-5 w-5' />
-                    )}
+                    <Icon icon='lucide:search' className='size-5' />
                   </Button>
                 )}
-
-                {/* Menu toggle */}
+                <Button
+                  size='icon'
+                  variant='ghost'
+                  onClick={() => setCartDrawerOpen(true)}
+                  className='relative text-gray-700'
+                >
+                  <ShoppingCart className='size-5' />
+                  <span className='absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center'>
+                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                  </span>
+                </Button>
                 <Button
                   size='icon'
                   variant='ghost'
@@ -412,8 +429,6 @@ const NavBar = () => {
             </AnimationContainer>
           </div>
         </div>
-
-        {/* Mobile Menu */}
         <AnimatePresence>
           {open && (
             <motion.div
@@ -423,7 +438,6 @@ const NavBar = () => {
               exit={{ opacity: 0, height: 0 }}
               className='flex rounded-b-xl absolute top-16 bg-white/95 backdrop-blur-md inset-x-0 z-50 flex-col items-start justify-start gap-2 w-full px-6 py-6 shadow-xl border-t border-white/20'
             >
-              {/* Main Navigation Items */}
               {ECOMMERCE_NAV_LINKS.map((item, idx) => (
                 <div key={item.title} className='w-full'>
                   <AnimationContainer
@@ -470,13 +484,13 @@ const NavBar = () => {
                                     onClick={() =>
                                       handleNavigation(subItem.href)
                                     }
-                                    className='w-full justify-start text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg py-2 pl-4'
+                                    className='w-full justify-start text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-900 dark:hover:bg-gray-200 rounded-lg cursor-pointer py-4'
                                   >
                                     <div className='flex items-center gap-2'>
                                       {subItem.icon && (
                                         <subItem.icon className='h-4 w-4' />
                                       )}
-                                      {subItem.title}
+                                      <span>{subItem.title}</span>
                                     </div>
                                   </Button>
                                 </motion.div>
@@ -489,7 +503,7 @@ const NavBar = () => {
                       <Button
                         variant='ghost'
                         onClick={() => handleNavigation(item.href)}
-                        className='w-full justify-start text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg py-3'
+                        className='w-full justify-start text-gray-700 dark:text-gray-400 hover:bg-gray-800 dark:hover:bg-gray-300 rounded-lg cursor-pointer'
                       >
                         <div className='flex items-center gap-2'>
                           {item.icon && <item.icon className='h-4 w-4' />}
@@ -500,91 +514,16 @@ const NavBar = () => {
                   </AnimationContainer>
                 </div>
               ))}
-
-              {/* Action Items */}
-              <div className='w-full border-t border-gray-200 pt-4 mt-4'>
-                {ECOMMERCE_ACTION_LINKS.filter(
-                  (item: NavbarItem) => item.title !== 'Search'
-                ).map((item: NavbarItem, idx: number) => (
-                  <AnimationContainer
-                    key={item.title}
-                    animation='fadeUp'
-                    delay={0.1 * (idx + 1)}
-                    className='w-full'
-                  >
-                    {item.menu && item.menu.length > 0 ? (
-                      <div className='w-full'>
-                        <Button
-                          variant='ghost'
-                          className='w-full justify-between text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg py-3'
-                          onClick={() => toggleDropdown(item.title)}
-                        >
-                          <div className='flex items-center gap-2'>
-                            {item.icon && <item.icon className='size-4' />}
-                            {item.title}
-                          </div>
-                          <ChevronDown
-                            className={cn(
-                              'size-4 transition-transform duration-200',
-                              openDropdowns[item.title] && 'rotate-180'
-                            )}
-                          />
-                        </Button>
-                        <AnimatePresence>
-                          {openDropdowns[item.title] && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className='ml-6 space-y-1 mt-2'
-                            >
-                              {item.menu.map((subItem) => (
-                                <motion.div
-                                  key={subItem.title}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  exit={{ opacity: 0, x: -10 }}
-                                  transition={{ duration: 0.2 }}
-                                >
-                                  <Button
-                                    variant='ghost'
-                                    onClick={() =>
-                                      handleNavigation(subItem.href)
-                                    }
-                                    className='w-full justify-start text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-600 rounded-lg py-2'
-                                  >
-                                    <div className='flex items-center gap-2'>
-                                      {subItem.icon && (
-                                        <subItem.icon className='h-4 w-4' />
-                                      )}
-                                      {subItem.title}
-                                    </div>
-                                  </Button>
-                                </motion.div>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <Button
-                        variant='ghost'
-                        onClick={() => handleNavigation(item.href)}
-                        className='w-full justify-start text-gray-700 hover:bg-primary-50 hover:text-primary-600 rounded-lg py-3'
-                      >
-                        <div className='flex items-center gap-2'>
-                          {item.icon && <item.icon className='size-4' />}
-                          {item.title}
-                        </div>
-                      </Button>
-                    )}
-                  </AnimationContainer>
-                ))}
-              </div>
+              <div className='w-full border-t border-gray-200 pt-4 mt-2'></div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
+      <ShoppingCartDrawer
+        isOpen={cartDrawerOpen}
+        onClose={() => setCartDrawerOpen(false)}
+        onNavigateToCart={handleNavigateToCartFromDrawer}
+      />
     </header>
   )
 }

@@ -1,5 +1,5 @@
 import {
-  Search,
+//   Search,
   User,
   ShoppingCart,
   Waypoints,
@@ -82,11 +82,11 @@ const NAV_LINKS: NavbarItem[] = [
 ]
 
 const ACTION_LINKS: NavbarItem[] = [
-  {
-    title: 'Search',
-    href: '/search',
-    icon: Search,
-  },
+//   {
+//     title: 'Search',
+//     href: '/search',
+//     icon: Search,
+//   },
   {
     title: 'Account',
     href: '#',
