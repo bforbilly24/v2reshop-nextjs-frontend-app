@@ -10,7 +10,7 @@ const secondRow = TESTIMONIALS.slice(TESTIMONIALS.length / 2)
 
 const TestimonialsSection: React.FC = () => {
   return (
-    <div className='py-20 lg:py-32'>
+    <div className='py-20 lg:py-32 relative'>
       <div className='flex flex-col items-center justify-center text-center mb-8 gap-y-4'>
         <AnimationContainer animation='fadeUp' delay={0.2}>
           <SectionBadge title='Testimonials' />
@@ -34,10 +34,10 @@ const TestimonialsSection: React.FC = () => {
 
       <AnimationContainer animation='fadeUp' delay={0.8}>
         <div className='relative w-full'>
-          <div className='absolute -left-1 top-0 w-20 h-full bg-gradient-to-r from-background dark:from-foreground to-transparent z-10' />
-          <div className='absolute -right-1 top-0 w-20 h-full bg-gradient-to-l from-background dark:from-foreground to-transparent z-10' />
 
           <div className='relative flex h-full w-full flex-col items-center justify-center overflow-hidden'>
+          <div className='absolute -left-1 top-0 w-20 h-full bg-gradient-to-r from-background dark:from-foreground to-transparent z-10' />
+          <div className='absolute -right-1 top-0 w-20 h-full bg-gradient-to-l from-background dark:from-foreground to-transparent z-10' />
             <Marquee pauseOnHover className='[--duration:20s] select-none'>
               {firstRow.map((review, index) => (
                 <figure
