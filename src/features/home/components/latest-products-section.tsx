@@ -4,11 +4,11 @@ import { useState, useMemo } from 'react'
 import { PRODUCTS } from '@/constant'
 import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
 import AnimationContainer from '@/components/global/animation-container'
-import { ProductBox } from '@/components/global/product/product-box'
-import { ProductList } from '@/components/global/product/product-list'
-import { ProductWrapper } from '@/components/global/product/product-wrapper'
 import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
+import { ProductBox } from '@/features/reproduct/components/product/product-box'
+import { ProductList } from '@/features/reproduct/components/product/product-list'
+import { ProductWrapper } from '@/features/reproduct/components/product/product-wrapper'
 
 const ITEMS_PER_PAGE = 8
 
@@ -16,9 +16,16 @@ const LatestProductsSection = () => {
   const [currentPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
+  const getAverageRating = (product: { reviews: { starReview: number }[] }) => {
+    return product.reviews.length
+      ? product.reviews.reduce((sum, review) => sum + review.starReview, 0) /
+          product.reviews.length
+      : 0
+  }
+
   const sortedProducts = useMemo(() => {
     return PRODUCTS.slice()
-      .sort((a, b) => Number(b.rating) - Number(a.rating))
+      .sort((a, b) => getAverageRating(b) - getAverageRating(a))
       .slice(0, 8)
   }, [])
 
