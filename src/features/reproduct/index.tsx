@@ -1,10 +1,10 @@
-import { ReProductSection } from "./components/reproduct-section"
+import { ReProductSection } from './components/reproduct-section'
 
 const ReProduct = async () => {
   return (
     <>
-      <section id='features' className='w-full relative'>
-       <ReProductSection />
+      <section id='reproduct' className='w-full relative'>
+        <ReProductSection />
       </section>
     </>
   )
