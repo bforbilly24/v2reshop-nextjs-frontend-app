@@ -1,7 +1,7 @@
-// import '@/style/embla.css';
 import { ReactNode } from 'react'
 import '@/style/globals.css'
 import { Lato as Font } from 'next/font/google'
+import { BProgressProvider } from '@/components/providers/bprogress-provider'
 
 const font = Font({
   weight: ['400'],
@@ -31,7 +31,11 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html className={font.className}>
-      <body>{children}</body>
+      <body>
+        <BProgressProvider>
+          {children}
+        </BProgressProvider>
+      </body>
     </html>
   )
 }
