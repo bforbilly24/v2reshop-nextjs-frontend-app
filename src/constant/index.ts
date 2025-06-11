@@ -28,6 +28,11 @@ import {
   type PerkItem,
   TESTIMONIALS,
 } from '@/features/about-us/data/about-us'
+import {
+  LoginRequest,
+  LoginResponse,
+  AuthUser,
+} from '@/features/auth/data/auth'
 import { CONTACT } from '@/features/contact/data/contact'
 import {
   type LeafletMap,
@@ -47,6 +52,20 @@ import {
   type CategoryItem as HomeCategoryItem,
   type ServiceItem,
 } from '@/features/home/data/home'
+import {
+  COMMUNITIES,
+  COMMUNITY_CATEGORIES,
+  MEMBER_RANGES,
+} from '@/features/recommunity/data/community'
+import {
+  type CommunityItem,
+  type SidebarCommunityProps,
+  type DetailedCommunityItem,
+  type CommunityReview,
+  type MemberRange,
+  type CommunityCategory,
+  mapSideCommunityToItems,
+} from '@/features/recommunity/data/sidebar'
 import {
   PRODUCTS,
   type ProductItem,
@@ -72,6 +91,11 @@ import {
 import { type SidebarProductProps } from '@/features/reproduct/data/sidebar'
 
 export {
+  // Auth
+  type LoginRequest,
+  type LoginResponse,
+  type AuthUser,
+
   // Navbar Ecommerce
   ECOMMERCE_NAVBAR_CONFIG,
   ECOMMERCE_NAV_LINKS,
@@ -143,4 +167,18 @@ export {
   getProductById,
   getEcommerceNav,
   sortProducts,
+
+  // ReCommunity data
+  COMMUNITIES,
+  COMMUNITY_CATEGORIES,
+  MEMBER_RANGES,
+
+  // ReCommunity Sidebar
+  type CommunityItem as ReCommunityItem,
+  type SidebarCommunityProps as ReSidebarCommunityProps,
+  type DetailedCommunityItem as ReDetailedCommunityItem,
+  type CommunityReview as ReCommunityReview,
+  type MemberRange as ReMemberRange,
+  type CommunityCategory as ReCommunityCategory,
+  mapSideCommunityToItems as mapReSideCommunityToItems,
 }
