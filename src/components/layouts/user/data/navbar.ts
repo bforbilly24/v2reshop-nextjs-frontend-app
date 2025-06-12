@@ -1,8 +1,8 @@
 import {
-//   Search,
+  //   Search,
   User,
   ShoppingCart,
-  Waypoints,
+//   Waypoints,
   HandHeart,
   Home,
   Info,
@@ -10,8 +10,9 @@ import {
   Phone,
   LogOut,
   Box,
-  PartyPopper,
-  BookOpenCheck,
+//   PartyPopper,
+//   BookOpenCheck,
+  Lock,
 } from 'lucide-react'
 
 interface NavbarItem {
@@ -23,6 +24,7 @@ interface NavbarItem {
     tagline?: string
     href: string
     icon?: React.ComponentType<{ className?: string }>
+    isComingSoon?: boolean
   }[]
 }
 
@@ -56,21 +58,24 @@ const NAV_LINKS: NavbarItem[] = [
       },
       {
         title: 'Re-Charity',
-        tagline: 'Explore our premium services and solutions.',
+        tagline: 'Explore our charity services and solutions.',
         href: '/coming-soon',
-        icon: Waypoints,
+        icon: Lock,
+        isComingSoon: true,
       },
       {
         title: 'Re-Study',
-        tagline: 'Read testimonials from our satisfied customers.',
+        tagline: 'Access educational resources and materials.',
         href: '/coming-soon',
-        icon: BookOpenCheck,
+        icon: Lock,
+        isComingSoon: true,
       },
       {
         title: 'Re-Event',
-        tagline: 'Read testimonials from our satisfied customers.',
-        href: '/coming-sson',
-        icon: PartyPopper,
+        tagline: 'Discover upcoming events and activities.',
+        href: '/coming-soon',
+        icon: Lock,
+        isComingSoon: true,
       },
     ],
   },
@@ -82,11 +87,11 @@ const NAV_LINKS: NavbarItem[] = [
 ]
 
 const ACTION_LINKS: NavbarItem[] = [
-//   {
-//     title: 'Search',
-//     href: '/search',
-//     icon: Search,
-//   },
+  //   {
+  //     title: 'Search',
+  //     href: '/search',
+  //     icon: Search,
+  //   },
   {
     title: 'Account',
     href: '#',

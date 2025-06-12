@@ -33,7 +33,6 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/shadcn/navigation-menu'
 import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
 import { Icon } from '@/components/ui/icon'
 import { ShoppingCartDrawer } from '@/features/shopping-cart/components/shopping-cart-drawer'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
@@ -53,43 +52,79 @@ const useClickOutside = (callback: () => void) => {
 }
 
 const ListItem = forwardRef<
-  React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'> & {
+  React.ElementRef<typeof Link>,
+  React.ComponentPropsWithoutRef<typeof Link> & {
     title: string
     icon?: React.ComponentType<{ className?: string }>
+    children?: React.ReactNode
+    isComingSoon?: boolean
   }
->(({ className, title, children, icon: IconComponent, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground group',
-            className
-          )}
-          {...props}
-        >
-          <div className='flex items-center gap-2'>
-            {IconComponent && (
-              <IconComponent className='h-4 w-4 text-primary-600' />
+>(
+  (
+    {
+      className,
+      title,
+      children,
+      icon: IconComponent,
+      href,
+      isComingSoon,
+      ...props
+    },
+    ref
+  ) => {
+    if (!href) {
+      return null
+    }
+
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <Link
+            ref={ref}
+            href={href}
+            className={cn(
+              'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors group',
+              isComingSoon
+                ? 'opacity-60 cursor-not-allowed hover:bg-gray-100'
+                : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+              className
             )}
-            <div className='text-sm font-medium leading-none text-gray-900 group-hover:text-primary-600'>
-              {title}
+            {...props}
+          >
+            <div className='flex items-center gap-2'>
+              {IconComponent && (
+                <IconComponent
+                  className={cn(
+                    'h-4 w-4',
+                    isComingSoon ? 'text-gray-400' : 'text-primary-600'
+                  )}
+                />
+              )}
+              <div
+                className={cn(
+                  'text-sm font-medium leading-none',
+                  isComingSoon
+                    ? 'text-gray-500'
+                    : 'text-gray-900 group-hover:text-primary-600'
+                )}
+              >
+                {title}{' '}
+                {isComingSoon && <span className='text-xs'>(Coming Soon)</span>}
+              </div>
             </div>
-          </div>
-          <p className='line-clamp-1 text-sm leading-snug text-muted-foreground'>
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
+            <p className='line-clamp-1 text-sm leading-snug text-muted-foreground'>
+              {children}
+            </p>
+          </Link>
+        </NavigationMenuLink>
+      </li>
+    )
+  }
+)
 
 ListItem.displayName = 'ListItem'
 
-const NavBar = () => {
+const Navbar = () => {
   const ref = useRef<HTMLDivElement | null>(null)
   const [open, setOpen] = useState(false)
   const [visible, setVisible] = useState<boolean>(false)
@@ -141,7 +176,7 @@ const NavBar = () => {
     <header className='fixed w-full top-0 inset-x-0 z-50' ref={ref}>
       <motion.div
         animate={{
-          width: visible ? '85%' : '100%',
+          width: visible ? '1280px' : '100%',
           y: visible ? 20 : 0,
         }}
         transition={{
@@ -149,14 +184,13 @@ const NavBar = () => {
           stiffness: 200,
           damping: 40,
         }}
-        style={{ minWidth: '800px' }}
         className={cn(
-          'hidden lg:flex bg-transparent self-start items-center justify-between py-4 rounded-none relative z-[999] mx-auto w-full backdrop-blur',
+          'hidden lg:flex bg-transparent self-start items-center justify-between py-4 rounded-none relative z-[999] mx-auto w-full backdrop-blur-md',
           visible &&
-            'bg-white/80 shadow-xl backdrop-blur-3xl py-3 border rounded-full border-white/200'
+            'bg-white/80 shadow-xl backdrop-blur-3xl py-3 border rounded-lg border-white/200'
         )}
       >
-        <Wrapper className='flex items-center justify-between w-full'>
+        <div className='flex items-center justify-between w-full h-full mx-auto px-4 lg:px-20'>
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -219,8 +253,8 @@ const NavBar = () => {
                                     <li className='relative row-span-3 overflow-hidden rounded-lg pr-2'>
                                       <div className='absolute inset-0 z-10 h-full w-full bg-[linear-gradient(to_right,rgb(38,38,38,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgb(38,38,38,0.5)_1px,transparent_1px)] bg-[size:1rem_1rem]'></div>
                                       <NavigationMenuLink asChild>
-                                        <Link
-                                          href='/explore#features'
+                                        <div
+                                          //   href='/explore#features'
                                           className='relative z-20 flex h-full w-full select-none flex-col justify-end rounded-lg bg-gradient-to-b from-muted/50 to-muted p-4 no-underline outline-none focus:shadow-md'
                                         >
                                           <Image
@@ -237,7 +271,7 @@ const NavBar = () => {
                                             Explore all our services to make
                                             your life easier.
                                           </p>
-                                        </Link>
+                                        </div>
                                       </NavigationMenuLink>
                                     </li>
                                   )}
@@ -247,6 +281,7 @@ const NavBar = () => {
                                       title={menuItem.title}
                                       href={menuItem.href}
                                       icon={menuItem.icon}
+                                      isComingSoon={menuItem.isComingSoon}
                                     >
                                       {menuItem.tagline}
                                     </ListItem>
@@ -317,7 +352,7 @@ const NavBar = () => {
                           {item.icon && <item.icon className='size-5' />}
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className='w-min rounded-xl bg-white/95 backdrop-blur-md p-2 shadow-xl border border-white/20'>
+                      <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
                         {item.menu.map((subItem) => (
                           <DropdownMenuItem
                             key={subItem.title}
@@ -353,7 +388,7 @@ const NavBar = () => {
               ))}
             </div>
           </AnimationContainer>
-        </Wrapper>
+        </div>
       </motion.div>
       <motion.div
         animate={{
@@ -409,7 +444,7 @@ const NavBar = () => {
                   className='relative text-gray-700'
                 >
                   <ShoppingCart className='size-5' />
-                  <span className='absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center'>
+                  <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center'>
                     {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
                   </span>
                 </Button>
@@ -528,4 +563,4 @@ const NavBar = () => {
   )
 }
 
-export { NavBar }
+export { Navbar }

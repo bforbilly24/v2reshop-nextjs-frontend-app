@@ -1,20 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useCartFeedback } from '@/features/shopping-cart/context/cart-feedback-context'
 import { ProductItem } from '@/constant'
 import { formatPrice } from '@/utils/format-price'
 import { Badge } from '@/components/ui/shadcn/badge'
 import { Button } from '@/components/ui/shadcn/button'
 import { Card } from '@/components/ui/shadcn/card'
 import Wrapper from '@/components/global/wrapper'
+import { DynamicBreadcrumb } from '@/components/ui/dynamic-breadcrumb'
 import { Icon } from '@/components/ui/icon'
 import { ProductThumbSlider } from '@/features/reproduct/components/product/product-thumb-slider'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { ReviewsSection } from './reviews-section'
-import { ReProductSizeFilter } from './reproduct-size-filter'
-import { ReProductColorFilter } from './reproduct-color-filter'
+import { useCartFeedback } from '@/features/shopping-cart/context/cart-feedback-context'
 import { ReProductCartActions } from './reproduct-cart-actions'
+import { ReProductColorFilter } from './reproduct-color-filter'
+import { ReProductSizeFilter } from './reproduct-size-filter'
+import { ReviewsSection } from './reviews-section'
 
 interface ReProductDetailSectionProps {
   product: ProductItem
@@ -28,7 +29,6 @@ const ReProductDetailSection: React.FC<ReProductDetailSectionProps> = ({
   const [quantity, setQuantity] = useState(1)
   const [isClient, setIsClient] = useState(false)
 
-  // Ensure consistent initialization for colors and sizes
   const defaultColor =
     product.colors && product.colors.length > 0 ? product.colors[0] : 'Black'
   const defaultSize =
@@ -36,7 +36,6 @@ const ReProductDetailSection: React.FC<ReProductDetailSectionProps> = ({
   const [selectedColor, setSelectedColor] = useState(defaultColor)
   const [selectedSize, setSelectedSize] = useState(defaultSize)
 
-  // Set isClient to true after mount to avoid hydration issues
   useEffect(() => {
     setIsClient(true)
   }, [])
@@ -96,6 +95,21 @@ const ReProductDetailSection: React.FC<ReProductDetailSectionProps> = ({
       ).toFixed(1)
     : '0.0'
 
+  const breadcrumbItems = [
+    {
+      label: 'Home',
+      href: '/',
+    },
+    {
+      label: 'ReProducts',
+      href: '/reproduct',
+    },
+    {
+      label: product.name,
+      isCurrentPage: true,
+    },
+  ]
+
   if (!isClient) {
     return null
   }
@@ -105,6 +119,7 @@ const ReProductDetailSection: React.FC<ReProductDetailSectionProps> = ({
 
   return (
     <Wrapper className='py-20 lg:py-32 flex flex-col gap-10'>
+      <DynamicBreadcrumb items={breadcrumbItems} />
       <div className='grid grid-cols-12 md:gap-4 md:space-y-0 space-y-4 sm:space-y-4'>
         <div className='col-span-12 md:col-span-5 lg:col-span-4 space-y-4'>
           <ProductThumbSlider product={product} />

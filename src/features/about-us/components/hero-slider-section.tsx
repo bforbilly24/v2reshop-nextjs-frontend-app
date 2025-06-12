@@ -182,7 +182,6 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                                 Contact Us
                               </InteractiveHoverButton>
                             </Link>
-                            {/* </Button> */}
                           </AnimationContainer>
                         </div>
 
