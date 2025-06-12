@@ -259,7 +259,7 @@ const SidebarProduct = ({
 
   return (
     <Card className='sticky top-24'>
-      <CardHeader className='pb-0'>
+      <CardHeader>
         <div className='relative'>
           <Icon
             icon='heroicons:magnifying-glass'
