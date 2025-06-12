@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Banner } from '@/components/global/banner'
+import { AnnouncementBannerSection } from './components/announcement-banner-section'
 import { CategoriesSliderSection } from './components/categories-slider-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSliderSection } from './components/hero-slider-section'
@@ -35,6 +36,9 @@ const Home = async () => {
         {/* <div className='container mx-auto'> */}
         <Banner />
         {/* </div> */}
+      </section>
+      <section id='announcement-banner' className='w-full'>
+        <AnnouncementBannerSection />
       </section>
     </>
   )
