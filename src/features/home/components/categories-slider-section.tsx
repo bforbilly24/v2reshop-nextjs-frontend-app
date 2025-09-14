@@ -1,25 +1,52 @@
 'use client'
 
-import { Splide, SplideSlide } from '@splidejs/react-splide'
-import '@splidejs/react-splide/css'
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
+import Autoplay from 'embla-carousel-autoplay'
 import { cn } from '@/lib/cn'
 import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
 import AnimationContainer from '@/components/global/animation-container'
 import Wrapper from '@/components/global/wrapper'
 import SectionBadge from '@/components/ui/section-badge'
 import { HOME_CATEGORIES, HomeCategoryItem } from '@/constant'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/shadcn/carousel'
 
 type CategoryItemProps = {
   category: HomeCategoryItem
 }
 
-const CategoryItem = ({ category }: CategoryItemProps) => {
+const CategoryItem = React.memo(({ category }: CategoryItemProps) => {
+  const [isDragging, setIsDragging] = React.useState(false)
+  
+  const handleMouseDown = () => {
+    setIsDragging(false)
+  }
+  
+  const handleMouseMove = () => {
+    setIsDragging(true)
+  }
+  
+  const handleClick = (e: React.MouseEvent) => {
+    if (isDragging) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
   return (
     <div className='max-w-lg w-full'>
       <div className='group relative transition-all duration-500'>
-        <Link href={`/categories/${category.slug}`}>
+        <Link 
+          href={`/categories/${category.slug}`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onClick={handleClick}
+        >
           <div
             className={cn(
               'relative overflow-hidden h-[36rem] rounded-md shadow-xl mx-auto border border-transparent dark:border-neutral-800',
@@ -34,6 +61,7 @@ const CategoryItem = ({ category }: CategoryItemProps) => {
               className='object-cover rounded-md z-0 group-hover:scale-105 transition-transform duration-500'
               quality={60}
               priority
+              draggable={false}
             />
             <div className='absolute bottom-10 left-4 z-10'>
               <span className='block text-sm uppercase leading-6 text-white mb-4 transition-colors duration-500 group-hover:text-black'>
@@ -51,74 +79,98 @@ const CategoryItem = ({ category }: CategoryItemProps) => {
       </div>
     </div>
   )
-}
+})
+
+CategoryItem.displayName = 'CategoryItem'
 
 type CategoriesSliderProps = {
   categories: HomeCategoryItem[]
 }
 
-const CategorySlider: React.FC<CategoriesSliderProps> = ({ categories }) => {
-  return (
-    <Splide
-      options={{
-        perPage: 3,
-        gap: '1rem',
-        drag: 'free',
-        type: 'loop',
-        focus: 'center',
-        autoplay: true,
-        interval: 3000,
-        pauseOnHover: true,
-        resetProgress: false,
-        pagination: false,
-        arrows: false,
-        breakpoints: {
-          1200: { perPage: 3 },
-          992: { perPage: 2 },
-          576: { perPage: 1 },
-        },
-      }}
-    >
-      {categories.map((category) => (
-        <SplideSlide key={category.id}>
-          <CategoryItem category={category} />
-        </SplideSlide>
-      ))}
-    </Splide>
+const CategorySlider: React.FC<CategoriesSliderProps> = React.memo(({ categories }) => {
+  const plugin = React.useRef(
+    Autoplay({ 
+      delay: 3000, 
+      stopOnInteraction: true, 
+      stopOnMouseEnter: true,
+      stopOnFocusIn: true,
+    })
   )
-}
+
+  return (
+    <div className="w-full touch-pan-y">
+      <Carousel
+        opts={{
+          align: 'center',
+          loop: true,
+          dragFree: true,
+          containScroll: 'trimSnaps',
+          slidesToScroll: 1,
+          skipSnaps: false,
+          inViewThreshold: 0.7,
+          watchDrag: true,
+          watchResize: true,
+          duration: 25,
+          dragThreshold: 10,
+        }}
+        plugins={[plugin.current]}
+        className="w-full cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => plugin.current.stop()}
+        onMouseLeave={() => plugin.current.reset()}
+      >
+        <CarouselContent className="-ml-4" style={{ touchAction: 'pan-y pinch-zoom' }}>
+          {categories.map((category) => (
+            <CarouselItem 
+              key={category.id}
+              className="pl-4 basis-full md:basis-1/2 lg:basis-1/3 select-none"
+            >
+              <CategoryItem category={category} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </div>
+  )
+})
+
+CategorySlider.displayName = 'CategorySlider'
 
 type CategoriesSliderSectionProps = {
   categories?: HomeCategoryItem[]
   className?: string
 }
 
-const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = ({
+const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = React.memo(({
   categories: providedCategories,
 }) => {
-  const categoriesToShow = providedCategories || HOME_CATEGORIES
+  const categoriesToShow = React.useMemo(
+    () => providedCategories || HOME_CATEGORIES,
+    [providedCategories]
+  )
 
   return (
     <>
       <Wrapper>
-        <div className='flex justify-between items-center mb-8 max-md:flex-col max-md:gap-4'>
-          <div className='flex flex-col items-start justify-center mb-8 gap-y-4'>
+        <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 sm:mb-8 gap-4 lg:gap-8'>
+          <div className='flex flex-col items-start justify-center gap-y-3 sm:gap-y-4'>
             <AnimationContainer animation='fadeLeft' delay={0.2}>
               <SectionBadge title='Our Categories Product' />
             </AnimationContainer>
             <AnimationContainer animation='fadeLeft' delay={0.4}>
-              <TypingAnimation
-                duration={50}
-                className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
-              >
-                Best solutions for
-              </TypingAnimation>
-              <TypingAnimation
-                duration={50}
-                className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
-              >
-                your dream.
-              </TypingAnimation>
+              <div className='space-y-1'>
+                <TypingAnimation
+                  duration={50}
+                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
+                >
+                  Best solutions for
+                </TypingAnimation>
+                <TypingAnimation
+                  duration={50}
+                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
+                >
+                  your dream.
+                </TypingAnimation>
+              </div>
             </AnimationContainer>
           </div>
           <AnimationContainer animation='fadeRight' delay={0.8}>
@@ -135,6 +187,8 @@ const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = ({
       </AnimationContainer>
     </>
   )
-}
+})
+
+CategoriesSliderSection.displayName = 'CategoriesSliderSection'
 
 export { CategoriesSliderSection }

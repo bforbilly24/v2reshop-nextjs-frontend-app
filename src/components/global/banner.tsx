@@ -35,8 +35,8 @@ const Banner: React.FC = () => {
   }
 
   return (
-    <div className='py-20 lg:py-32 relative'>
-      <div className='flex flex-col items-center text-center relative gap-4 py-12 overflow-hidden z-0 rounded-xl'>
+    <div className='relative'>
+      <div className='flex flex-col items-center text-center relative gap-4 py-8 sm:py-12 overflow-hidden z-0 rounded-xl max-w-full mx-auto'>
         <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-emerald-200/80 dark:from-foreground w-full h-1/2 z-10' />
 
         <AnimationContainer
@@ -63,22 +63,22 @@ const Banner: React.FC = () => {
           />
         </AnimationContainer>
 
-        <div className='flex flex-col lg:flex-row items-center justify-center w-full z-10 gap-4 xl:gap-8'>
+        <div className='flex flex-col lg:flex-row items-center justify-center w-full z-10 gap-4 lg:gap-6 xl:gap-8'>
           <AnimationContainer
             animation='fadeLeft'
             delay={0.2}
-            className='hidden lg:flex'
+            className='hidden lg:flex lg:w-1/2 xl:w-auto'
           >
             <Image
               alt='vector-community'
               src='/images/banner/community.svg'
               width={381}
               height={230}
-              className='h-[230px] w-[381px]'
+              className='h-[180px] w-[300px] lg:h-[200px] lg:w-[340px] xl:h-[230px] xl:w-[381px]'
             />
           </AnimationContainer>
 
-          <div className='flex flex-col items-center justify-center mb-8 gap-y-4'>
+          <div className='flex flex-col items-center justify-center mb-4 sm:mb-6 lg:mb-8 gap-y-3 sm:gap-y-4 lg:w-1/2 xl:w-auto'>
             <AnimationContainer animation='fadeDown' delay={0.2}>
               <SectionBadge title='Community' />
             </AnimationContainer>
@@ -86,35 +86,35 @@ const Banner: React.FC = () => {
               <AnimationContainer animation='fadeDown' delay={0.4}>
                 <TypingAnimation
                   duration={50}
-                  className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
+                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
                 >
                   Join Our Community
                 </TypingAnimation>
               </AnimationContainer>
 
               <AnimationContainer animation='fadeDown' delay={0.6}>
-                <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
+                <p className='text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-xl lg:max-w-2xl mx-auto px-2 sm:px-0'>
                   &quot;Create and join in to create a comfortable environment
                   and maintain it together.&quot;
                 </p>
               </AnimationContainer>
 
               <AnimationContainer animation='fadeDown' delay={0.8}>
-                <div className='flex items-center mt-4'>
-                  <div className='rounded-full px-4 py-2.5 bg-neutral-200/50 flex flex-wrap md:flex-row items-center justify-center gap-4'>
+                <div className='flex items-center mt-3 sm:mt-4'>
+                  <div className='rounded-full px-3 sm:px-4 py-2 sm:py-2.5 bg-neutral-200/50 flex flex-wrap justify-center items-center gap-2 sm:gap-3 lg:gap-4'>
                     {HIGHLIGHTS.map((item, index) => (
                       <AnimationContainer
                         key={index}
                         animation='fadeRight'
                         delay={0.8 + index * 0.1}
                       >
-                        <div className='flex items-center gap-2 last:hidden md:last:flex'>
+                        <div className='flex items-center gap-1.5 sm:gap-2'>
                           <Icon
                             icon={item.icon}
-                            className='size-5 text-primary'
+                            className='size-4 sm:size-5 text-primary'
                             aria-label={item.label}
                           />
-                          <span className='text-sm text-foreground'>
+                          <span className='text-xs sm:text-sm text-foreground whitespace-nowrap'>
                             {item.label}
                           </span>
                         </div>
@@ -124,25 +124,25 @@ const Banner: React.FC = () => {
                 </div>
               </AnimationContainer>
 
-              <div className='flex flex-row items-center justify-center gap-4 mt-6'>
-                <AnimationContainer animation='fadeLeft' delay={1}>
+              <div className='flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6 w-full px-4 sm:px-0'>
+                <AnimationContainer animation='fadeLeft' delay={1} className='sm:w-auto w-full'>
                   <Button
                     asChild
                     onClick={handleClick}
                     size='lg'
                     variant='default'
-                    className='px-8 w-full max-w-lg bg-emerald-500 hover:bg-emerald-400'
+                    className='px-6 sm:px-8 w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400'
                   >
                     <Link href=''>Register now</Link>
                   </Button>
                 </AnimationContainer>
 
-                <AnimationContainer animation='fadeRight' delay={1}>
+                <AnimationContainer animation='fadeRight' delay={1} className='sm:w-auto w-full'>
                   <Button
                     asChild
                     size='lg'
                     variant='secondary'
-                    className='px-8 w-full max-w-lg'
+                    className='px-6 sm:px-8 w-full sm:w-auto'
                   >
                     <Link href=''>Learn More</Link>
                   </Button>
