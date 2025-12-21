@@ -13,7 +13,7 @@ import ProductBoxSection from './components/organisms/product-box-section'
 import { ProductBoxSkeleton } from '@/components/atoms/product-box-skeleton'
 import { ProductListSkeleton } from '@/components/atoms/product-list-skeleton'
 import { getProducts, getProductCategories } from './actions'
-import { Product, Category, ProductParams } from './types'
+import type { Category, ProductParams } from './types'
 import { SidebarProductProps } from './components/types'
 import { PRICES } from './constants'
 
@@ -103,7 +103,6 @@ const ReProductView = () => {
   const {
     data: productsData,
     isLoading,
-    isFetching,
   } = useQuery({
     queryKey: ['products', queryParams],
     queryFn: async () => {
