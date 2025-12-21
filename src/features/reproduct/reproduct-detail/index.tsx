@@ -20,6 +20,7 @@ import { ReProductColorSection } from './components/organisms/reproduct-color-se
 import { ReProductReviewsSection } from './components/organisms/reproduct-reviews-section'
 import { ReProductSizeSection } from './components/organisms/reproduct-size-section'
 import { ProductDetail, Review } from './types'
+import { JsonLd } from '@/components/seo/json-ld'
 
 interface ReProductDetailViewProps {
   product: ProductDetail
@@ -203,6 +204,29 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
 
   return (
     <section className='w-full relative'>
+      <JsonLd
+        type="product"
+        data={{
+          name: product.name,
+          description: product.description,
+          images: product.images,
+          price: product.price,
+          final_price: product.final_price,
+          in_stock: product.in_stock,
+          slug: product.slug,
+          rating_count: product.rating_count,
+          sold_count: product.sold_count,
+        }}
+      />
+      <JsonLd
+        type="breadcrumb"
+        data={{
+          items: breadcrumbItems.map((item) => ({
+            name: item.label,
+            url: item.href,
+          })),
+        }}
+      />
       <Wrapper className='py-8 lg:py-28'>
         <DynamicBreadcrumb
           items={breadcrumbItems}
