@@ -19,7 +19,7 @@
             {/* Main Footer Content */}
             <div className='grid grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12'>
                 {/* Logo */}
-                <div className='lg:col-span-1'>
+                <div className='lg:col-span-1 flex flex-col items-start'>
                 <div className='w-fit flex items-center justify-center'>
                     <Image
                     src={ECOMMERCE_FOOTER_DATA.logo.src}
@@ -31,11 +31,11 @@
                 </div>
 
                 {/* Contact */}
-                <div className='lg:col-span-1'>
+                <div className='lg:col-span-1 flex flex-col items-start text-left'>
                 <h3 className='text-xl lg:text-2xl font-light text-primary mb-6'>
                     Contact
                 </h3>
-                <div className='space-y-4 text-sm text-muted-foreground uppercase tracking-wide'>
+                <div className='space-y-4 text-sm text-muted-foreground uppercase tracking-wide w-full'>
                     <p className='leading-relaxed'>
                     {ECOMMERCE_FOOTER_DATA.contact.address}
                     </p>
@@ -60,11 +60,11 @@
 
                 {/* Link Groups */}
                 {ECOMMERCE_FOOTER_DATA.groups.map((group) => (
-                <div key={group.title} className='lg:col-span-1'>
+                <div key={group.title} className='lg:col-span-1 flex flex-col items-start text-left'>
                     <h3 className='text-xl lg:text-2xl font-light text-primary mb-6'>
                     {group.title}
                     </h3>
-                    <ul className='space-y-2'>
+                    <ul className='space-y-2 w-full'>
                     {group.items.map((item) => (
                         <li key={item.id}>
                         <Link

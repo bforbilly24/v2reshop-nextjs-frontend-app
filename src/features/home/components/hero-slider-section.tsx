@@ -4,8 +4,8 @@ import React, { useState, useCallback } from 'react'
 import { HEROSLIDERHOME } from '@/constant'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/shadcn/button'
-import { Card, CardContent } from '@/components/ui/shadcn/card'
+import { Button } from '@/components/atoms/button'
+import { Card, CardContent } from '@/components/atoms/card'
 import {
   Carousel,
   CarouselContent,
@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   CarouselApi,
-} from '@/components/ui/shadcn/carousel'
+} from '@/components/atoms/carousel'
 import { HeroLeftCard } from './cards/hero-left-card'
 import { HeroRightCard } from './cards/hero-right-card'
 import Autoplay from 'embla-carousel-autoplay'

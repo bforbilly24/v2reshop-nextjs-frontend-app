@@ -12,7 +12,7 @@ import {
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
 import { cn } from '@/lib/cn'
-import { Label } from '@/components/ui/shadcn/label'
+import { Label } from '@/components/atoms/label'
 
 const Form = FormProvider
 

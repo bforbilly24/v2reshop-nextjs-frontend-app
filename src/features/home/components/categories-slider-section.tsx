@@ -5,16 +5,16 @@ import Link from 'next/link'
 import React from 'react'
 import Autoplay from 'embla-carousel-autoplay'
 import { cn } from '@/lib/cn'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import SectionBadge from '@/components/ui/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import SectionBadge from '@/components/atoms/section-badge'
 import { HOME_CATEGORIES, HomeCategoryItem } from '@/constant'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/shadcn/carousel'
+} from '@/components/atoms/carousel'
 
 type CategoryItemProps = {
   category: HomeCategoryItem
@@ -151,8 +151,8 @@ const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = React.me
   return (
     <>
       <Wrapper>
-        <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 sm:mb-8 gap-4 lg:gap-8'>
-          <div className='flex flex-col items-start justify-center gap-y-3 sm:gap-y-4'>
+        <div className='flex flex-col lg:flex-row justify-between items-center lg:items-center mb-6 sm:mb-8 gap-4 lg:gap-8'>
+          <div className='flex flex-col items-center w-full lg:items-start justify-center gap-y-3 sm:gap-y-4'>
             <AnimationContainer animation='fadeLeft' delay={0.2}>
               <SectionBadge title='Our Categories Product' />
             </AnimationContainer>
@@ -160,21 +160,15 @@ const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = React.me
               <div className='space-y-1'>
                 <TypingAnimation
                   duration={50}
-                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
+                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400 text-center lg:text-left'
                 >
-                  Best solutions for
-                </TypingAnimation>
-                <TypingAnimation
-                  duration={50}
-                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
-                >
-                  your dream.
+                  Best solutions for your dream.
                 </TypingAnimation>
               </div>
             </AnimationContainer>
           </div>
           <AnimationContainer animation='fadeRight' delay={0.8}>
-            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto'>
+            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center lg:text-right'>
               Explore our diverse range of categories, each designed to provide
               the best solutions for your needs. From electronics to fashion,
               we&apos;ve got you covered with top-quality products.

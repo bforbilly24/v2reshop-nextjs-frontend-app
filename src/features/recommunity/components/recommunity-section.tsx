@@ -1,4 +1,4 @@
-import Wrapper from '@/components/global/wrapper'
+import Wrapper from '@/components/atoms/wrapper'
 import { SidebarCommunity } from './community/sidebar-community'
 
 const ReCommunitySection: React.FC = () => {

@@ -3,14 +3,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/shadcn/button'
-import AnimationContainer from '@/components/global/animation-container'
-import { FlickeringGrid } from '@/components/ui/flickering-grid'
-import { Icon } from '@/components/ui/icon'
-import SectionBadge from '@/components/ui/section-badge'
-import { TypingAnimation } from '../ui/magicui/typing-animation'
-import { Particles } from '../ui/particles'
-import RetroGrid from '../ui/retro-grid'
+import { Button } from '@/components/atoms/button'
+import { FlickeringGrid } from '@/components/atoms/flickering-grid'
+import { Icon } from '@/components/atoms/icon'
+import SectionBadge from '@/components/atoms/section-badge'
+import AnimationContainer from '../atoms/animation-container'
+import { TypingAnimation } from '../atoms/typing-animation'
+import { Particles } from '../atoms/particles'
+import RetroGrid from '../atoms/retro-grid'
 
 const HIGHLIGHTS = [
   {
@@ -27,7 +27,7 @@ const HIGHLIGHTS = [
   },
 ]
 
-const Banner: React.FC = () => {
+const BannerSection: React.FC = () => {
   const router = useRouter()
 
   const handleClick = (): void => {
@@ -39,7 +39,7 @@ const Banner: React.FC = () => {
       <div className='flex flex-col items-center text-center relative gap-4 py-8 sm:py-12 overflow-hidden z-0 rounded-xl max-w-full mx-auto'>
         <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-emerald-200/80 dark:from-foreground w-full h-1/2 z-10' />
 
-        <AnimationContainer
+        <AnimationContainer 
           animation='scaleUp'
           delay={0.2}
           className='w-full mx-auto'
@@ -71,7 +71,7 @@ const Banner: React.FC = () => {
           >
             <Image
               alt='vector-community'
-              src='/images/banner/community.svg'
+              src='/images/bannerSection/community.svg'
               width={381}
               height={230}
               className='h-[180px] w-[300px] lg:h-[200px] lg:w-[340px] xl:h-[230px] xl:w-[381px]'
@@ -125,7 +125,11 @@ const Banner: React.FC = () => {
               </AnimationContainer>
 
               <div className='flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6 w-full px-4 sm:px-0'>
-                <AnimationContainer animation='fadeLeft' delay={1} className='sm:w-auto w-full'>
+                <AnimationContainer
+                  animation='fadeLeft'
+                  delay={1}
+                  className='sm:w-auto w-full'
+                >
                   <Button
                     asChild
                     onClick={handleClick}
@@ -137,7 +141,11 @@ const Banner: React.FC = () => {
                   </Button>
                 </AnimationContainer>
 
-                <AnimationContainer animation='fadeRight' delay={1} className='sm:w-auto w-full'>
+                <AnimationContainer
+                  animation='fadeRight'
+                  delay={1}
+                  className='sm:w-auto w-full'
+                >
                   <Button
                     asChild
                     size='lg'
@@ -165,4 +173,4 @@ const Banner: React.FC = () => {
   )
 }
 
-export { Banner }
+export { BannerSection }

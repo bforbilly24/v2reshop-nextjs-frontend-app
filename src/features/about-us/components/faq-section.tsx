@@ -5,11 +5,11 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/shadcn/accordion'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import SectionBadge from '@/components/ui/section-badge'
+} from '@/components/atoms/accordion'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import SectionBadge from '@/components/atoms/section-badge'
 import { FAQABOUT } from '@/constant'
 
 const FaqSection: React.FC = () => {

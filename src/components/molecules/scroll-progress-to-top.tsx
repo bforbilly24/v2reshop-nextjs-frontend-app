@@ -2,18 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react'
-// Import ScrollProgress
 import { cn } from '@/lib/cn'
-import { Button } from '@/components/ui/shadcn/button'
-import { ScrollProgress } from '@/components/ui/magicui/scroll-progress'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import { ScrollProgress } from '@/components/atoms/scroll-progress'
+import { Icon } from '@/components/atoms/icon'
 
 interface ScrollProgressToTopProps {
   className?: string
   showOffset?: number
   size?: 'sm' | 'md' | 'lg'
   variant?: 'default' | 'outline' | 'gradient'
-  showTopProgress?: boolean // New prop to control top progress bar
+  showTopProgress?: boolean
 }
 
 export function ScrollProgressToTop({

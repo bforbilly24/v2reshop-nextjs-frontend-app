@@ -5,8 +5,8 @@ import { ProductItem } from '@/constant'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/splide/css'
 import Image from 'next/image'
-import { Button } from '@/components/ui/shadcn/button'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import { Icon } from '@/components/atoms/icon'
 
 interface ProductThumbSliderProps {
   product: ProductItem

@@ -2,11 +2,11 @@
 
 import { FeatureItem, FEATURES } from '@/constant'
 import Image from 'next/image'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import { GlowingEffect } from '@/components/ui/aceternity/glowing-effect'
-import SectionBadge from '@/components/ui/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import { GlowingEffect } from '@/components/atoms/glowing-effect'
+import SectionBadge from '@/components/atoms/section-badge'
 
 const FeaturesSection: React.FC = () => {
   return (

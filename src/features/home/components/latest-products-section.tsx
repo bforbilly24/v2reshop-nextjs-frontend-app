@@ -2,10 +2,10 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { PRODUCTS } from '@/constant'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import SectionBadge from '@/components/ui/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import SectionBadge from '@/components/atoms/section-badge'
 import { ProductBox } from '@/features/reproduct/components/product/product-box'
 import { ProductList } from '@/features/reproduct/components/product/product-list'
 import { ProductWrapper } from '@/features/reproduct/components/product/product-wrapper'
@@ -16,8 +16,8 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
-} from '@/components/ui/shadcn/carousel'
-import { Progress } from '@/components/ui/shadcn/progress'
+} from '@/components/atoms/carousel'
+import { Progress } from '@/components/atoms/progress'
 
 const ITEMS_PER_PAGE = 8
 

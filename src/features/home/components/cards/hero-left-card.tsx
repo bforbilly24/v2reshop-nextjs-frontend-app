@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button } from '@/components/ui/shadcn/button'
+import { Button } from '@/components/atoms/button'
 import {
   CardContainer,
   CardBody,
   CardItem,
-} from '@/components/ui/aceternity/3d-card'
+} from '@/components/atoms/3d-card'
 
 const HeroLeftCard: React.FC = () => {
   return (

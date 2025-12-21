@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Wrapper from '@/components/global/wrapper'
-import { Icon } from '@/components/ui/icon'
+import Wrapper from '@/components/atoms/wrapper'
+import { Icon } from '@/components/atoms/icon'
 
 const AnnouncementBannerSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false)

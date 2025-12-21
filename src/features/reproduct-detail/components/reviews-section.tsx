@@ -2,8 +2,8 @@
 
 import { ProductItem } from '@/constant'
 import Image from 'next/image'
-import { Avatar, AvatarImage } from '@/components/ui/shadcn/avatar'
-import { Icon } from '@/components/ui/icon'
+import { Avatar, AvatarImage } from '@/components/atoms/avatar'
+import { Icon } from '@/components/atoms/icon'
 
 interface ReviewsSectionProps {
   product: ProductItem

@@ -1,10 +1,10 @@
 import Image from 'next/image'
-import { Banner } from '@/components/global/banner'
 import { AnnouncementBannerSection } from './components/announcement-banner-section'
 import { CategoriesSliderSection } from './components/categories-slider-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSliderSection } from './components/hero-slider-section'
 import { LatestProductsSection } from './components/latest-products-section'
+import { BannerSection } from '@/components/organisms/banner-section'
 
 const Home = async () => {
   return (
@@ -34,7 +34,7 @@ const Home = async () => {
       </section>
       <section id='banner' className='w-full py-8 lg:py-16'>
         {/* <div className='container mx-auto'> */}
-        <Banner />
+        <BannerSection />
         {/* </div> */}
       </section>
       <section id='announcement-banner' className='w-full'>

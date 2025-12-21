@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import { Footer } from '@/components/layouts/user/footer'
-import { Navbar } from '@/components/layouts/user/navbar'
-import { ScrollProgressToTop } from '@/components/global/scroll-progress-to-top'
+import { NavbarLandingPage as Navbar } from '@/components/layouts/user/navbar-landingpage'
+import { ScrollProgressToTop } from '@/components/molecules/scroll-progress-to-top'
 import { CartProvider } from '@/features/shopping-cart/context/cart-context'
 import { CartFeedbackProvider } from '@/features/shopping-cart/context/cart-feedback-context'
 

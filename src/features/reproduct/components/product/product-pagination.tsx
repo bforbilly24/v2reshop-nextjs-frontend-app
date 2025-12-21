@@ -2,7 +2,7 @@
 
 import { JSX } from 'react'
 import { ChevronsLeft, ChevronsRight } from 'lucide-react'
-import { Button } from '@/components/ui/shadcn/button'
+import { Button } from '@/components/atoms/button'
 import {
   Pagination,
   PaginationContent,
@@ -11,7 +11,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/shadcn/pagination'
+} from '@/components/atoms/pagination'
 
 type ProductPaginationProps = {
   currentPage: number

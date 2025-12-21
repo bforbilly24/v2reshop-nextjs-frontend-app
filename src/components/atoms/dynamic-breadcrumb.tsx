@@ -8,8 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/shadcn/breadcrumb'
-import { Icon } from '@/components/ui/icon'
+} from '@/components/atoms/breadcrumb'
+import { Icon } from '@/components/atoms/icon'
 import React from 'react'
 
 export interface BreadcrumbItem {
