@@ -19,7 +19,7 @@ const SidebarCommunity = ({
   selectedId = 1,
   onSelectedIdChange,
   onCreateCommunity,
-  communityItems = COMMUNITIES, // Use COMMUNITIES as default
+  communityItems = COMMUNITIES, 
 }: ReSidebarCommunityProps) => {
   const [activeId, setActiveId] = useState<number>(selectedId)
 
@@ -46,7 +46,6 @@ const SidebarCommunity = ({
     }
   }
 
-  // Filter community items based on search term
   const filteredCommunityItems = communityItems.filter(
     (item: ReCommunityItem) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())

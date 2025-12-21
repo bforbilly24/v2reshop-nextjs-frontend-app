@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { Toaster } from 'sonner'
 import { Footer } from '@/components/layouts/user/footer'
 import { NavbarLandingPage as Navbar } from '@/components/layouts/user/navbar-landingpage'
 import { ScrollProgressToTop } from '@/components/molecules/scroll-progress-to-top'
@@ -27,8 +26,6 @@ export default function CoreLayout({ children }: CoreLayoutProps) {
             variant="default"
             showTopProgress={true}
           />
-          
-        <Toaster richColors position="top-right" expand={true} duration={2000}  />
         </div>
       </CartFeedbackProvider>
     </CartProvider>

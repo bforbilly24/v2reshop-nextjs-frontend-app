@@ -1,14 +1,10 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { PRODUCTS } from '@/constant'
 import { TypingAnimation } from '@/components/atoms/typing-animation'
 import AnimationContainer from '@/components/atoms/animation-container'
 import Wrapper from '@/components/atoms/wrapper'
 import SectionBadge from '@/components/atoms/section-badge'
-import { ProductBox } from '@/features/reproduct/components/product/product-box'
-import { ProductList } from '@/features/reproduct/components/product/product-list'
-import { ProductWrapper } from '@/features/reproduct/components/product/product-wrapper'
 import {
   Carousel,
   CarouselContent,
@@ -18,6 +14,11 @@ import {
   type CarouselApi,
 } from '@/components/atoms/carousel'
 import { Progress } from '@/components/atoms/progress'
+import { ProductWrapperSection } from '@/features/reproduct/components/organisms/product-wrapper-section'
+import ProductBoxSection from '@/features/reproduct/components/organisms/product-box-section'
+import ProductListSection from '@/features/reproduct/components/organisms/product-list-section'
+import { getProducts } from '@/features/reproduct/actions'
+import { Product } from '@/features/reproduct/types'
 
 const ITEMS_PER_PAGE = 8
 
@@ -27,8 +28,27 @@ const LatestProductsSection = () => {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const [products, setProducts] = useState<Product[]>([])
 
   const progress = count > 0 ? (current * 100) / count : 0
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await getProducts({ 
+          sort: 'rating',
+          order: 'desc',
+          page: 1
+        })
+        if (res.status && res.data) {
+          setProducts(res.data.data.slice(0, 8))
+        }
+      } catch (error) {
+        console.error('Failed to fetch products', error)
+      }
+    }
+    fetchProducts()
+  }, [])
 
   useEffect(() => {
     if (!api) {
@@ -43,18 +63,11 @@ const LatestProductsSection = () => {
     })
   }, [api])
 
-  const getAverageRating = (product: { reviews: { starReview: number }[] }) => {
-    return product.reviews.length
-      ? product.reviews.reduce((sum, review) => sum + review.starReview, 0) /
-          product.reviews.length
-      : 0
-  }
-
   const sortedProducts = useMemo(() => {
-    return PRODUCTS.slice()
-      .sort((a, b) => getAverageRating(b) - getAverageRating(a))
+    return products.slice()
+      .sort((a: Product, b: Product) => (b.rating_count || 0) - (a.rating_count || 0))
       .slice(0, 8)
-  }, [])
+  }, [products])
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
   const paginatedProducts = sortedProducts.slice(
@@ -105,27 +118,27 @@ const LatestProductsSection = () => {
       <AnimationContainer animation='fadeDown' delay={1}>
         {/* Desktop and Tablet View */}
         <div className="hidden sm:block">
-          <ProductWrapper
+          <ProductWrapperSection
             getEcommerceNav={updatedGetEcommerceNav}
             showSidebar={false}
             showSort={false}
           >
             {viewMode === 'grid' ? (
               <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-3 h-max'>
-                {paginatedProducts.map((product) => (
-                  <ProductBox key={`grid_key_${product.id}`} product={product} />
+                {paginatedProducts.map((product: Product) => (
+                  <ProductBoxSection key={`grid_key_${product.id}`} product={product} />
                 ))}
               </div>
             ) : (
               <div className='space-y-3 grid-cols-1 gap-5 h-max'>
-                {paginatedProducts.map((product) => (
+                {paginatedProducts.map((product: Product) => (
                   <div key={`list_key_${product.id}`}>
-                    <ProductList product={product} />
+                    <ProductListSection product={product} />
                   </div>
                 ))}
               </div>
             )}
-          </ProductWrapper>
+          </ProductWrapperSection>
         </div>
 
         {/* Mobile Carousel View */}
@@ -167,15 +180,15 @@ const LatestProductsSection = () => {
               }}
             >
               <CarouselContent className="-ml-2 md:-ml-4">
-                {paginatedProducts.map((product) => (
+                {paginatedProducts.map((product: Product) => (
                   <CarouselItem key={`mobile_carousel_${product.id}`} className="pl-2 md:pl-4 basis-full">
                     {viewMode === 'grid' ? (
                       <div className="max-w-sm mx-auto">
-                        <ProductBox product={product} />
+                        <ProductBoxSection product={product} />
                       </div>
                     ) : (
                       <div className="max-w-sm mx-auto">
-                        <ProductList product={product} />
+                        <ProductListSection product={product} />
                       </div>
                     )}
                   </CarouselItem>

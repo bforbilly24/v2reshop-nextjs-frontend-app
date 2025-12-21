@@ -2,6 +2,9 @@ import { ReactNode } from 'react'
 import '@/style/globals.css'
 import { Lato as Font } from 'next/font/google'
 import { BProgressProvider } from '@/providers/bprogress-provider'
+import { AuthProvider } from '@/providers/auth-provider'
+import { QueryProvider } from '@/providers/query-provider'
+import { Toaster } from '@/components/atoms/sonner'
 
 const font = Font({
   weight: ['400'],
@@ -32,9 +35,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html className={font.className}>
       <body>
-        <BProgressProvider>
-          {children}
-        </BProgressProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <BProgressProvider>
+              {children}
+            </BProgressProvider>
+          </QueryProvider>
+        </AuthProvider>
+        <Toaster richColors position="top-right" theme="light" offset="100px" />
       </body>
     </html>
   )

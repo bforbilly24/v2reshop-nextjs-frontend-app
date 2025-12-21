@@ -28,11 +28,6 @@ import {
   type PerkItem,
   TESTIMONIALS,
 } from '@/features/about-us/data/about-us'
-import {
-  LoginRequest,
-  LoginResponse,
-  AuthUser,
-} from '@/features/auth/data/auth'
 import { CONTACT } from '@/features/contact/data/contact'
 import {
   type LeafletMap,
@@ -67,10 +62,6 @@ import {
   mapSideCommunityToItems,
 } from '@/features/recommunity/data/sidebar'
 import {
-  PRODUCTS,
-  type ProductItem,
-  CATEGORIES as ECOMMERCE_CATEGORIES,
-  type CategoryItem as EcommerceCategoryItem,
   PRICES,
   type PriceItem,
   RATINGS,
@@ -82,20 +73,9 @@ import {
   type SelectOptionItem,
   PAYMENTS,
   type PaymentItem,
-  type EcommerceNavItem,
-  getProducts,
-  getProductById,
-  getEcommerceNav,
-  sortProducts,
-} from '@/features/reproduct/data/product'
-import { type SidebarProductProps } from '@/features/reproduct/data/sidebar'
+} from '@/features/reproduct/constants'
 
 export {
-  // Auth
-  type LoginRequest,
-  type LoginResponse,
-  type AuthUser,
-
   // Navbar Ecommerce
   ECOMMERCE_NAVBAR_CONFIG,
   ECOMMERCE_NAV_LINKS,
@@ -114,9 +94,6 @@ export {
   ECOMMERCE_FOOTER_SOCIAL,
   ECOMMERCE_FOOTER_LANGUAGES,
   type FooterLinkItem,
-
-  // Sidebar Product
-  SidebarProductProps,
 
   // Home data
   HEROSLIDERHOME,
@@ -147,10 +124,6 @@ export {
   OfficeData,
 
   // E-commerce data
-  PRODUCTS,
-  ProductItem,
-  ECOMMERCE_CATEGORIES,
-  EcommerceCategoryItem,
   PRICES,
   PriceItem,
   RATINGS,
@@ -162,11 +135,6 @@ export {
   SelectOptionItem,
   PAYMENTS,
   PaymentItem,
-  EcommerceNavItem,
-  getProducts,
-  getProductById,
-  getEcommerceNav,
-  sortProducts,
 
   // ReCommunity data
   COMMUNITIES,

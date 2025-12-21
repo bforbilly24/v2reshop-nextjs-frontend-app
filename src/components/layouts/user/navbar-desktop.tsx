@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
+import { useSession, signOut } from 'next-auth/react'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/atoms/button'
+import { ProfileModal } from '@/components/organisms/profile-modal'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +33,6 @@ import {
 } from '@/constant'
 import { forwardRef } from 'react'
 
-// ListItem component from navbar.tsx
 const ListItem = forwardRef<
   React.ElementRef<typeof Link>,
   React.ComponentPropsWithoutRef<typeof Link> & {
@@ -111,12 +113,18 @@ interface NavbarDesktopProps {
 export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps) {
     const router = useRouter()
     const pathname = usePathname()
+    const { data: session } = useSession()
     const { cartItems } = useCart()
     const isAboutUsNotScrolled = pathname === '/about-us' && !visible
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
     const handleNavigation = (href: string) => {
         if (href === '/shopping-cart') {
             setCartDrawerOpen(true)
+        } else if (href === '/profile') {
+            setIsProfileModalOpen(true)
+        } else if (href === '/logout') {
+            signOut({ callbackUrl: '/auth/login' })
         } else {
             router.push(href)
         }
@@ -179,7 +187,9 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                                                             'bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[active]:bg-transparent',
                                                             isAboutUsNotScrolled
                                                                 ? 'text-white hover:text-slate-200 data-[state=open]:text-white'
-                                                                : 'text-gray-900 hover:text-primary-600'
+                                                                : 'text-gray-900 hover:text-primary-600',
+                                                            pathname.startsWith(link.href) && link.href !== '/' && 'font-bold',
+                                                            pathname === '/' && link.href === '/' && 'font-bold'
                                                         )}
                                                     >
                                                         {link.title}
@@ -204,10 +214,11 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                                                 <Link href={link.href} legacyBehavior passHref>
                                                     <NavigationMenuLink
                                                         className={cn(
-                                                            'group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50',
+                                                            'group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-transparent focus:bg-transparent focus:outline-none disabled:pointer-events-none disabled:opacity-50',
                                                             isAboutUsNotScrolled
-                                                                ? 'text-white hover:bg-white/10 hover:text-slate-200 focus:bg-white/10 focus:text-slate-200'
-                                                                : 'text-gray-900 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
+                                                                ? 'text-white hover:text-slate-200 focus:text-slate-200'
+                                                                : 'text-gray-900 hover:text-primary-600 focus:text-primary-600',
+                                                            pathname === link.href && 'font-bold'
                                                         )}
                                                     >
                                                         {link.title}
@@ -233,8 +244,8 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                                         className={cn(
                                             'relative rounded-lg transition-all duration-500',
                                             isAboutUsNotScrolled
-                                                ? 'text-white hover:text-slate-200 hover:bg-white/10'
-                                                : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                                                ? 'text-white hover:text-slate-200 hover:bg-transparent focus:bg-transparent'
+                                                : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
                                         )}
                                     >
                                         <ShoppingCart className='size-5' />
@@ -254,28 +265,53 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                                                 className={cn(
                                                     'rounded-lg transition-all duration-500',
                                                     isAboutUsNotScrolled
-                                                        ? 'text-white hover:text-slate-200 hover:bg-white/10'
-                                                        : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                                                        ? 'text-white hover:text-slate-200 hover:bg-transparent focus:bg-transparent'
+                                                        : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
                                                 )}
                                             >
                                                 {item.icon && <item.icon className='size-5' />}
                                             </Button>
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                                            {item.menu.map((subItem) => (
-                                                <DropdownMenuItem
-                                                    key={subItem.title}
-                                                    onClick={() => handleNavigation(subItem.href)}
-                                                    className='cursor-pointer rounded-lg'
-                                                >
-                                                    <div className='flex items-center gap-2'>
-                                                        {subItem.icon && (
-                                                            <subItem.icon className='size-4' />
-                                                        )}
-                                                        <span>{subItem.title}</span>
-                                                    </div>
-                                                </DropdownMenuItem>
-                                            ))}
+                                            {session ? (
+                                                // Show Profile & Logout when logged in
+                                                <>
+                                                    <DropdownMenuItem
+                                                        onClick={() => handleNavigation('/profile')}
+                                                        className='cursor-pointer rounded-lg'
+                                                    >
+                                                        <div className='flex items-center gap-2'>
+                                                            {item.icon && <item.icon className='size-4' />}
+                                                            <span>Profile</span>
+                                                        </div>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => handleNavigation('/logout')}
+                                                        className='cursor-pointer rounded-lg'
+                                                    >
+                                                        <div className='flex items-center gap-2'>
+                                                            {item.icon && <item.icon className='size-4' />}
+                                                            <span>Logout</span>
+                                                        </div>
+                                                    </DropdownMenuItem>
+                                                </>
+                                            ) : (
+                                                // Show Login & Register when not logged in
+                                                item.menu.map((subItem) => (
+                                                    <DropdownMenuItem
+                                                        key={subItem.title}
+                                                        onClick={() => handleNavigation(subItem.href)}
+                                                        className='cursor-pointer rounded-lg'
+                                                    >
+                                                        <div className='flex items-center gap-2'>
+                                                            {subItem.icon && (
+                                                                <subItem.icon className='size-4' />
+                                                            )}
+                                                            <span>{subItem.title}</span>
+                                                        </div>
+                                                    </DropdownMenuItem>
+                                                ))
+                                            )}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 ) : (
@@ -286,8 +322,8 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                                         className={cn(
                                             'rounded-lg transition-all duration-500',
                                             isAboutUsNotScrolled
-                                                ? 'text-white hover:text-slate-200 hover:bg-white/10'
-                                                : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
+                                                ? 'text-white hover:text-slate-200 hover:bg-transparent focus:bg-transparent'
+                                                : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
                                         )}
                                     >
                                         {item.icon && <item.icon className='size-5' />}
@@ -298,6 +334,11 @@ export function NavbarDesktop({ visible, setCartDrawerOpen }: NavbarDesktopProps
                     </div>
                 </AnimationContainer>
             </div>
+
+            <ProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+            />
         </motion.div>
     )
 }

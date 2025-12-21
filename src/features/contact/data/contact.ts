@@ -17,13 +17,6 @@ const CONTACT: ContactItem[] = [
     linkText: 'admin@reshopid.com',
     href: 'mailto:admin@reshopid.com',
   },
-//   {
-//     icon: MessageCircle, 
-//     title: 'Live chat',
-//     description: 'Our friendly team is here to help.',
-//     linkText: 'Start new chat',
-//     href: '#',
-//   },
   {
     icon: MapPinIcon,
     title: 'Office',

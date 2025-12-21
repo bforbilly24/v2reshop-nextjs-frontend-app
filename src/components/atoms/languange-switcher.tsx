@@ -24,7 +24,6 @@ export function LanguageSwitcher({ currentLocale }: LanguageSwitcherProps) {
   const pathname = usePathname()
 
   const switchLanguage = (newLocale: string) => {
-    // Ganti locale di path saat ini
     const pathWithoutLocale = pathname.replace(`/${currentLocale}`, '')
     const newPath = `/${newLocale}${pathWithoutLocale}`
     router.push(newPath)

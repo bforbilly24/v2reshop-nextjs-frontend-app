@@ -4,5 +4,5 @@ export const formatPrice = (price: number) => {
     currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(price)
+  }).format(price).replace(/\s/g, '')
 }
