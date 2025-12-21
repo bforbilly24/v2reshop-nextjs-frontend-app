@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import '@/style/globals.css'
+import '../style/globals.css'
 import { Lato as Font } from 'next/font/google'
 import { BProgressProvider } from '@/providers/bprogress-provider'
 import { AuthProvider } from '@/providers/auth-provider'
