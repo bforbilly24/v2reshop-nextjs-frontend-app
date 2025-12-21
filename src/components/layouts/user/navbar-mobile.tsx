@@ -5,15 +5,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/atoms/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/atoms/dropdown-menu";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/atoms/accordion";
 import { ScrollArea } from "@/components/atoms/scroll-area";
 import { ECOMMERCE_NAV_LINKS, ECOMMERCE_NAVBAR_CONFIG } from "@/constant";
 import Wrapper from "@/components/atoms/wrapper";
 import { cn } from "@/lib/cn";
 import { type NavbarItem } from "@/components/layouts/user/data/navbar";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { useCart } from "@/features/shopping-cart/context/cart-context";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { ProfileModal } from "@/components/organisms/profile-modal";
 
 interface NavbarMobileProps {
     scrolled: boolean;
@@ -21,8 +29,11 @@ interface NavbarMobileProps {
 }
 
 export default function NavbarMobile({ scrolled, onOpenCart }: NavbarMobileProps) {
+    const router = useRouter();
+    const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
     const [openAccordion, setOpenAccordion] = useState<string>("");
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const { cartItems } = useCart();
     const pathname = usePathname();
     const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen;
@@ -51,16 +62,20 @@ export default function NavbarMobile({ scrolled, onOpenCart }: NavbarMobileProps
                             className="border-none"
                         >
                             <AccordionTrigger className="text-foreground hover:text-primary hover:bg-accent w-full justify-between rounded-md px-2 py-3 text-left text-lg font-medium transition-colors hover:no-underline">
-                                {item.title}
+                                <div className="flex items-center gap-2">
+                                    {item.icon && <item.icon className="h-5 w-5" />}
+                                    {item.title}
+                                </div>
                             </AccordionTrigger>
-                            <AccordionContent className="space-y-1 pb-2 pl-4">
+                            <AccordionContent className="mt-1 ml-4 space-y-1 border-l pl-4">
                                 {item.menu.map((child, index: number) => (
                                     <Link
                                         key={index}
                                         href={child.href}
-                                        className="text-muted-foreground hover:text-foreground hover:bg-accent block rounded-md px-2 py-2 text-base transition-colors"
+                                        className="text-muted-foreground hover:text-foreground hover:bg-accent flex items-center gap-2 rounded-md px-2 py-2 text-base transition-colors"
                                         onClick={handleNavigation}
                                     >
+                                        {child.icon && <child.icon className="h-4 w-4" />}
                                         {child.title}
                                     </Link>
                                 ))}
@@ -79,9 +94,10 @@ export default function NavbarMobile({ scrolled, onOpenCart }: NavbarMobileProps
                 >
                     <Link
                         href={item.href}
-                        className="text-foreground hover:text-primary hover:bg-accent block rounded-md px-2 py-3 text-lg font-medium transition-colors"
+                        className="text-foreground hover:text-primary hover:bg-accent flex items-center gap-2 rounded-md px-2 py-3 text-lg font-medium transition-colors"
                         onClick={handleNavigation}
                     >
+                        {item.icon && <item.icon className="h-5 w-5" />}
                         {item.title}
                     </Link>
                 </motion.div>
@@ -114,6 +130,69 @@ export default function NavbarMobile({ scrolled, onOpenCart }: NavbarMobileProps
                         </Link>
 
                         <div className="flex items-center gap-2">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        size="icon"
+                                        variant="ghost"
+                                        className={cn(
+                                            "lg:hidden",
+                                            isWhiteText ? "text-white" : "text-foreground"
+                                        )}
+                                    >
+                                        <User className="size-5" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20">
+                                    {session ? (
+                                        // Show Profile & Logout when logged in
+                                        <>
+                                            <DropdownMenuItem
+                                                onClick={() => {
+                                                    setIsProfileModalOpen(true);
+                                                }}
+                                                className="cursor-pointer rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <User className="size-4" />
+                                                    <span>Profile</span>
+                                                </div>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                                                className="cursor-pointer rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <User className="size-4" />
+                                                    <span>Logout</span>
+                                                </div>
+                                            </DropdownMenuItem>
+                                        </>
+                                    ) : (
+                                        // Show Login & Register when not logged in
+                                        <>
+                                            <DropdownMenuItem
+                                                onClick={() => router.push('/auth/login')}
+                                                className="cursor-pointer rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <User className="size-4" />
+                                                    <span>Login</span>
+                                                </div>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => router.push('/auth/register')}
+                                                className="cursor-pointer rounded-lg"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <User className="size-4" />
+                                                    <span>Register</span>
+                                                </div>
+                                            </DropdownMenuItem>
+                                        </>
+                                    )}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                             <Button
                                 size="icon"
                                 variant="ghost"
@@ -264,6 +343,11 @@ export default function NavbarMobile({ scrolled, onOpenCart }: NavbarMobileProps
                     </>
                 )}
             </AnimatePresence>
+
+            <ProfileModal
+                isOpen={isProfileModalOpen}
+                onClose={() => setIsProfileModalOpen(false)}
+            />
         </>
     );
 }

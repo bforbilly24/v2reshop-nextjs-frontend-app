@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/atoms/button'
-import { ScrollProgress } from '@/components/atoms/scroll-progress'
 import { Icon } from '@/components/atoms/icon'
+import { ScrollProgress } from '@/components/atoms/scroll-progress'
 
 interface ScrollProgressToTopProps {
   className?: string
@@ -25,7 +25,6 @@ export function ScrollProgressToTop({
   const [isVisible, setIsVisible] = useState(false)
   const { scrollYProgress } = useScroll()
 
-  // Transform for circular progress
   const strokeDashoffset = useTransform(scrollYProgress, [0, 1], [157, 0])
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export function ScrollProgressToTop({
       }
     }
 
-    // Check initial scroll position
     toggleVisibility()
 
     window.addEventListener('scroll', toggleVisibility)

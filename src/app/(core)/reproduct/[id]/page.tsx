@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
-import { ReProductDetail } from '@/features/reproduct-detail'
-import { getProductById } from '@/constant'
+import { ReProductDetailView } from '@/features/reproduct/reproduct-detail'
+import { getProductBySlug } from '@/features/reproduct/reproduct-detail/actions'
 
 interface Props {
   params: Promise<{
@@ -10,27 +10,38 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params
-  const product = await getProductById(id)
 
-  if (!product) {
+  try {
+    const res = await getProductBySlug(id)
+    if (!res.status || !res.data) {
+      return {
+        title: 'Product Not Found | Re-shop',
+      }
+    }
+
+    return {
+      title: `${res.data.name} | Re-shop`,
+      description: res.data.description,
+    }
+  } catch {
     return {
       title: 'Product Not Found | Re-shop',
     }
-  }
-
-  return {
-    title: `${product.name} | Re-shop`,
-    description: product.desc,
   }
 }
 
 export default async function ReProductDetailPage({ params }: Props) {
   const { id } = await params
-  const product = await getProductById(id)
 
-  if (!product) {
+  try {
+    const res = await getProductBySlug(id)
+
+    if (!res.status || !res.data) {
+      notFound()
+    }
+
+    return <ReProductDetailView product={res.data} />
+  } catch {
     notFound()
   }
-
-  return <ReProductDetail product={product} />
 }

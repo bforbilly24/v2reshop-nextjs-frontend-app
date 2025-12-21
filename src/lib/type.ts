@@ -19,7 +19,6 @@ export type size = 'default' | 'sm' | 'md' | 'lg'
 export type rounded = 'sm' | 'md' | 'lg' | 'full'
 export type radius = 'sm' | 'md' | 'lg' | 'xl' | 'none'
 
-// config
 export type layoutType = 'vertical' | 'horizontal' | 'semi-box' | 'compact'
 export type contentType = 'wide' | 'boxed'
 export type skinType = 'default' | 'bordered'

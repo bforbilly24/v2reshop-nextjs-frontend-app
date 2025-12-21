@@ -1,17 +1,12 @@
 import {
-  //   Search,
   User,
   ShoppingCart,
-//   Waypoints,
   HandHeart,
   Home,
   Info,
   Compass,
   Phone,
-  LogOut,
   Box,
-//   PartyPopper,
-//   BookOpenCheck,
   Lock,
 } from 'lucide-react'
 
@@ -87,27 +82,22 @@ const NAV_LINKS: NavbarItem[] = [
 ]
 
 const ACTION_LINKS: NavbarItem[] = [
-  //   {
-  //     title: 'Search',
-  //     href: '/search',
-  //     icon: Search,
-  //   },
   {
     title: 'Account',
     href: '#',
     icon: User,
     menu: [
       {
-        title: 'Profile',
-        tagline: 'Manage your account settings.',
-        href: '/profile',
+        title: 'Login',
+        tagline: 'Sign in to your account.',
+        href: '/auth/login',
         icon: User,
       },
       {
-        title: 'Logout',
-        tagline: 'Sign out from your account.',
-        href: '/auth/login',
-        icon: LogOut,
+        title: 'Register',
+        tagline: 'Create a new account.',
+        href: '/auth/register',
+        icon: User,
       },
     ],
   },

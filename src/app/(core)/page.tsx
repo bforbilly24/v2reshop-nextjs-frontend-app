@@ -1,4 +1,3 @@
-// src/app/[locale]/(core)/page.tsx
 import { Home } from '@/features/home'
 
 export const metadata = {
