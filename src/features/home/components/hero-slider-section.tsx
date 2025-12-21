@@ -1,43 +1,59 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { HEROSLIDERHOME } from '@/constant'
-import { Splide, SplideSlide } from '@splidejs/react-splide'
-import '@splidejs/splide/dist/css/splide.min.css'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/shadcn/button'
+import { Button } from '@/components/atoms/button'
+import { Card, CardContent } from '@/components/atoms/card'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselApi,
+} from '@/components/atoms/carousel'
 import { HeroLeftCard } from './cards/hero-left-card'
 import { HeroRightCard } from './cards/hero-right-card'
-
-interface SplideInstance {
-  go: (control: string | number) => void
-}
+import Autoplay from 'embla-carousel-autoplay'
 
 const HeroSliderSection: React.FC = () => {
-  const splideRef = useRef<SplideInstance | null>(null)
+  const [api, setApi] = useState<CarouselApi>()
   const [currentSlide, setCurrentSlide] = useState(0)
 
-  const handlePrevClick = () => {
-    splideRef.current?.go('<')
-  }
+  const handlePrevClick = useCallback(() => {
+    api?.scrollPrev()
+  }, [api])
 
-  const handleNextClick = () => {
-    splideRef.current?.go('>')
-  }
+  const handleNextClick = useCallback(() => {
+    api?.scrollNext()
+  }, [api])
 
-  const handleMove = (_splide: SplideInstance, newIndex: number) => {
-    setCurrentSlide(newIndex)
-  }
+  const handlePaginationClick = useCallback((index: number) => {
+    api?.scrollTo(index)
+  }, [api])
 
-  const handlePaginationClick = (index: number) => {
-    splideRef.current?.go(index)
-  }
+  React.useEffect(() => {
+    if (!api) return
+
+    const onSelect = () => {
+      setCurrentSlide(api.selectedScrollSnap())
+    }
+
+    api.on('select', onSelect)
+    onSelect()
+
+    return () => {
+      api.off('select', onSelect)
+    }
+  }, [api])
 
   return (
-    <section id='hero-slider' className='w-full relative'>
+    <section id='hero-slider' className='w-full relative md:pt-0 pt-'>
       <div className='flex h-full w-full flex-col items-center justify-center gap-y-8'>
-        <div className='flex flex-row w-full items-center justify-center'>
+        {/* Desktop Controls - Hidden on mobile */}
+        <div className='hidden md:flex flex-row w-full items-center justify-center'>
           <div className='flex w-full items-center justify-end gap-x-2'>
             {HEROSLIDERHOME.map((_, index) => (
               <Button
@@ -81,50 +97,107 @@ const HeroSliderSection: React.FC = () => {
             </Button>
           </div>
         </div>
-        <Splide
-          ref={splideRef}
-          onMove={handleMove}
-          options={{
-            autoWidth: true,
-            gap: '1rem',
-            focus: 'center',
-            type: 'loop',
-            // drag: 'free',
-            lazyLoad: 'nearby',
-            perPage: 1,
-            autoplay: true,
-            interval: 3000,
-            arrows: false,
-            pagination: false,
-            breakpoints: {
-              640: {
-                padding: { left: '0rem', right: '0rem' },
-                gap: '0.5rem',
-              },
-            },
-          }}
+
+        {/* Carousel */}
+        <Carousel
+          setApi={setApi}
           className='w-full cursor-pointer'
+          plugins={[
+            Autoplay({
+              delay: 3000,
+            }),
+          ]}
+          opts={{
+            align: 'center',
+            loop: true,
+            skipSnaps: false,
+            dragFree: false,
+          }}
         >
-          {HEROSLIDERHOME.map((slide, index) => (
-            <SplideSlide key={slide.id}>
-              {/* <div className='relative h-[553px] w-[934px]'> */}
-              <div className='relative h-[80vh] w-[70rem]'>
-                <Image
-                  alt={slide.alt}
-                  src={slide.image}
-                  fill
-                  className='object-cover'
-                  sizes='(max-width: 1280px) 100vw, 934px'
-                  priority={index === 0}
+          <CarouselContent className='ml-0 md:-ml-4'>
+            {HEROSLIDERHOME.map((slide, index) => (
+              <CarouselItem 
+                key={slide.id} 
+                className='pl-0 md:pl-4 basis-full md:basis-auto'
+              >
+                <Card className='border-0 shadow-none'>
+                  <CardContent className='p-0 px-4 md:px-0'>
+                    <div className='relative h-[50vh] md:h-[80vh] w-full md:w-[70rem] mx-auto'>
+                      <Image
+                        alt={slide.alt}
+                        src={slide.image}
+                        fill
+                        className='object-cover rounded-lg md:rounded-lg'
+                        sizes='(max-width: 768px) calc(100vw - 2rem), (max-width: 1280px) 100vw, 934px'
+                        priority={index === 0}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          
+          {/* Hidden default controls */}
+          <CarouselPrevious className='hidden' />
+          <CarouselNext className='hidden' />
+        </Carousel>
+
+        {/* Mobile Controls - Only visible on mobile */}
+        <div className='hidden md:hidden flex-row w-full items-center justify-center gap-x-4 px-4'>
+          {/* Navigation Buttons */}
+          <Button
+            variant='default'
+            size='icon'
+            className='h-10 w-10 rounded-full bg-emerald-300 hover:bg-emerald-400'
+            onClick={handlePrevClick}
+          >
+            <ChevronLeftIcon className='size-5 text-white' />
+          </Button>
+          
+          {/* Pagination Dots */}
+          <div className='flex items-center gap-x-2'>
+            {HEROSLIDERHOME.map((_, index) => (
+              <Button
+                key={index}
+                variant='ghost'
+                size='icon'
+                className='relative size-6 rounded-full p-0'
+                onClick={() => handlePaginationClick(index)}
+              >
+                <div
+                  className={`size-2 rounded-full border transition-all duration-200 ${
+                    currentSlide === index
+                      ? 'bg-emerald-400 border-emerald-400 scale-125'
+                      : 'bg-zinc-300 border-zinc-300'
+                  }`}
                 />
-              </div>
-            </SplideSlide>
-          ))}
-        </Splide>
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            variant='default'
+            size='icon'
+            className='h-10 w-10 rounded-full bg-emerald-500 hover:bg-emerald-400'
+            onClick={handleNextClick}
+          >
+            <ChevronRightIcon className='size-5 text-white' />
+          </Button>
+        </div>
       </div>
 
-      <HeroLeftCard />
-      <HeroRightCard />
+      {/* Desktop Cards - Overlay positioned */}
+      <div className='hidden md:block'>
+        <HeroLeftCard />
+        <HeroRightCard />
+      </div>
+
+      {/* Mobile Cards - Below carousel */}
+      <div className='md:hidden w-full px-4 space-y-4 mt-6'>
+        <HeroLeftCard />
+        <HeroRightCard />
+      </div>
     </section>
   )
 }

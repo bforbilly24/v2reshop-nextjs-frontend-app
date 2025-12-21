@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/cn'
-import { Button } from '@/components/ui/shadcn/button'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import { Icon } from '@/components/atoms/icon'
 
 type PasswordInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

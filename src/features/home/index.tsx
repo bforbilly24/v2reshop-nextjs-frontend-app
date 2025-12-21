@@ -1,22 +1,22 @@
 import Image from 'next/image'
-import { Banner } from '@/components/global/banner'
 import { AnnouncementBannerSection } from './components/announcement-banner-section'
 import { CategoriesSliderSection } from './components/categories-slider-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSliderSection } from './components/hero-slider-section'
 import { LatestProductsSection } from './components/latest-products-section'
+import { BannerSection } from '@/components/organisms/banner-section'
 
 const Home = async () => {
   return (
     <>
-      <section id='background' className='w-full pt-24 relative'>
+      <section id='background' className='w-full lg:pt-24 pt-20 lg:pb-0 pb-8 relative'>
         <div className='absolute left-0 top-0 -z-10 h-full w-full bg-emerald-100' />
         <div className='absolute right-0 top-0 -z-10 bg-emerald-50 h-full w-[34rem]' />
         {/* <div className='container mx-auto'> */}
         <HeroSliderSection />
         {/* </div> */}
       </section>
-      <section id='features' className='w-full relative'>
+      <section id='features' className='w-full relative py-8 lg:py-16'>
         <Image
           src={'/images/patterns/pattern-1.png'}
           alt='pattern'
@@ -26,15 +26,15 @@ const Home = async () => {
         />
         <FeaturesSection />
       </section>
-      <section id='categories-slider' className='w-full'>
+      <section id='categories-slider' className='w-full py-8 lg:py-16'>
         <CategoriesSliderSection />
       </section>
-      <section id='latest-products' className='w-full'>
+      <section id='latest-products' className='w-full py-8 lg:py-16'>
         <LatestProductsSection />
       </section>
-      <section id='banner' className='w-full'>
+      <section id='banner' className='w-full py-8 lg:py-16'>
         {/* <div className='container mx-auto'> */}
-        <Banner />
+        <BannerSection />
         {/* </div> */}
       </section>
       <section id='announcement-banner' className='w-full'>

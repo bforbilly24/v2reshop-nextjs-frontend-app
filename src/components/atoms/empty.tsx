@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/shadcn/button'
+import { Button } from '@/components/atoms/button'
 import { EmptyCartIcon } from '@/components/icons/empty-cart-icon'
 
 interface EmptyProps {

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { AuthLayout } from '@/components/layouts/auth/auth-layout'
-import { Card } from '@/components/ui/shadcn/card'
+import { Card } from '@/components/atoms/card'
 import { SignUpForm } from '../components/sign-up-form'
 
 const SignUp: React.FC = () => {

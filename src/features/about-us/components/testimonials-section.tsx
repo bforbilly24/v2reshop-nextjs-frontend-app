@@ -1,9 +1,9 @@
 import { TESTIMONIALS } from '@/constant'
 import { StarIcon, UserIcon } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import { Marquee } from '@/components/ui/magicui/marquee'
-import AnimationContainer from '@/components/global/animation-container'
-import SectionBadge from '@/components/ui/section-badge'
+import { Marquee } from '@/components/atoms/marquee'
+import AnimationContainer from '@/components/atoms/animation-container'
+import SectionBadge from '@/components/atoms/section-badge'
 
 const firstRow = TESTIMONIALS.slice(0, TESTIMONIALS.length / 2)
 const secondRow = TESTIMONIALS.slice(TESTIMONIALS.length / 2)

@@ -1,9 +1,9 @@
 'use client'
 
 import { formatPrice } from '@/utils/format-price'
-import { Button } from '@/components/ui/shadcn/button'
-import { Input } from '@/components/ui/shadcn/input'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import { Input } from '@/components/atoms/input'
+import { Icon } from '@/components/atoms/icon'
 
 interface ReProductCartActionsProps {
   product: {

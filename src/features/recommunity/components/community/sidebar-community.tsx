@@ -6,12 +6,12 @@ import {
   ReCommunityItem,
   ReSidebarCommunityProps,
 } from '@/constant'
-import { Button } from '@/components/ui/shadcn/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/shadcn/card'
-import { Input } from '@/components/ui/shadcn/input'
-import { Label } from '@/components/ui/shadcn/label'
-import { ScrollArea } from '@/components/ui/shadcn/scroll-area'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import { Card, CardContent, CardHeader } from '@/components/atoms/card'
+import { Input } from '@/components/atoms/input'
+import { Label } from '@/components/atoms/label'
+import { ScrollArea } from '@/components/atoms/scroll-area'
+import { Icon } from '@/components/atoms/icon'
 
 const SidebarCommunity = ({
   searchTerm = '',

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Icon } from '@/components/ui/icon'
+import { Icon } from '@/components/atoms/icon'
 import { SignInForm } from '../components/sign-in-form'
 import { AuthLayout } from '@/components/layouts/auth/auth-layout'
 

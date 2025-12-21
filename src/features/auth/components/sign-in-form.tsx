@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 // import { LoginRequest } from '@/constant'
 import { toast } from 'sonner'
 import { cn } from '@/lib/cn'
-import { Button } from '@/components/ui/shadcn/button'
+import { Button } from '@/components/atoms/button'
 import {
   Form,
   FormControl,
@@ -17,8 +17,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/shadcn/form'
-import { Input } from '@/components/ui/shadcn/input'
+} from '@/components/atoms/form'
+import { Input } from '@/components/atoms/input'
 import { SignInFormSchema } from '../schema'
 import { PasswordInput } from './password-input'
 

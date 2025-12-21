@@ -3,11 +3,11 @@
 import { PERKS } from '@/constant'
 import Image from 'next/image'
 import { cn } from '@/lib/cn'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import { Icon } from '@/components/ui/icon'
-import SectionBadge from '@/components/ui/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import { Icon } from '@/components/atoms/icon'
+import SectionBadge from '@/components/atoms/section-badge'
 
 const PerksSection: React.FC = () => {
   return (

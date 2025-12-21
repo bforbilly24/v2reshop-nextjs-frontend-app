@@ -6,16 +6,16 @@ import { AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Truck } from 'lucide-react'
 import Image from 'next/image'
 import { formatPrice } from '@/utils/format-price'
-import { Button } from '@/components/ui/shadcn/button'
-import { Card, CardContent } from '@/components/ui/shadcn/card'
+import { Button } from '@/components/atoms/button'
+import { Card, CardContent } from '@/components/atoms/card'
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerClose,
-} from '@/components/ui/shadcn/drawer'
-import { Separator } from '@/components/ui/shadcn/separator'
+} from '@/components/atoms/drawer'
+import { Separator } from '@/components/atoms/separator'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
 
 interface ShoppingCartDrawerProps {

@@ -2,11 +2,11 @@
 
 import { PartnerItem, PARTNERS } from '@/constant'
 import Image from 'next/image'
-import { Marquee } from '@/components/ui/magicui/marquee'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import SectionBadge from '@/components/ui/section-badge'
+import { Marquee } from '@/components/atoms/marquee'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import SectionBadge from '@/components/atoms/section-badge'
 
 const PartnersSection: React.FC = () => {
   return (
@@ -30,7 +30,7 @@ const PartnersSection: React.FC = () => {
             </p>
           </AnimationContainer>
         </div>
-        <div className='relative flex w-full flex-col items-center justify-center min-h-[200px] overflow-hidden'>
+        <div className='relative flex w-full flex-col items-center justify-center lg:min-h-[200px] md:min-h-[200px] mih-h-60 overflow-hidden'>
           <div className='pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-white/80 to-transparent dark:from-background z-10' />
           <div className='pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-white/80 to-transparent dark:from-background z-10' />
           <div className='pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-b from-transparent to-white/80 dark:to-background z-10' />

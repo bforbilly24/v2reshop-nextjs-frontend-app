@@ -2,16 +2,16 @@
 
 import { SELECT_CATEGORIES } from '@/constant'
 import { cn } from '@/lib/cn'
-import { Button } from '@/components/ui/shadcn/button'
-import { Label } from '@/components/ui/shadcn/label'
+import { Button } from '@/components/atoms/button'
+import { Label } from '@/components/atoms/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/shadcn/select'
-import { Icon } from '@/components/ui/icon'
+} from '@/components/atoms/select'
+import { Icon } from '@/components/atoms/icon'
 import { SidebarProduct } from './sidebar-product'
 
 type EcommerceNav = {

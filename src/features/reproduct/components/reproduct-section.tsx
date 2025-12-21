@@ -2,14 +2,14 @@
 
 import { useState, useMemo } from 'react'
 import { PRICES, PRODUCTS, sortProducts } from '@/constant'
-import { Button } from '@/components/ui/shadcn/button'
-import Wrapper from '@/components/global/wrapper'
-import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/atoms/button'
+import Wrapper from '@/components/atoms/wrapper'
+import { Icon } from '@/components/atoms/icon'
 import { ProductBox } from './product/product-box'
 import { ProductList } from './product/product-list'
 import { ProductPagination } from './product/product-pagination'
 import { ProductWrapper } from './product/product-wrapper'
-import { Empty } from '@/components/ui/empty'
+import { Empty } from '@/components/atoms/empty'
 
 const ITEMS_PER_PAGE = 6
 

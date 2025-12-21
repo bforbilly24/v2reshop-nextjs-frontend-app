@@ -1,4 +1,4 @@
-import { Banner } from '@/components/global/banner'
+import { BannerSection } from '@/components/organisms/banner-section'
 import { CategoriesSliderSection } from '../home/components/categories-slider-section'
 import { AboutSection } from './components/about-section'
 import { FaqSection } from './components/faq-section'
@@ -39,7 +39,7 @@ const AboutUs = async () => {
       </section>
 
       <section id='banner' className='w-full'>
-        <Banner />
+        <BannerSection />
       </section>
     </>
   )

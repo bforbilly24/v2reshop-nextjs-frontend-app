@@ -1,10 +1,10 @@
 import { ProductItem } from '@/constant'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/shadcn/badge'
-import { Button } from '@/components/ui/shadcn/button'
-import { Card } from '@/components/ui/shadcn/card'
-import { Icon } from '@/components/ui/icon'
+import { Badge } from '@/components/atoms/badge'
+import { Button } from '@/components/atoms/button'
+import { Card } from '@/components/atoms/card'
+import { Icon } from '@/components/atoms/icon'
 
 const ProductBox = ({ product }: { product: ProductItem }) => {
   const averageRating = product.reviews.length

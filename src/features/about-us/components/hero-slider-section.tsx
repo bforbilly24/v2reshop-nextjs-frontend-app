@@ -7,15 +7,15 @@ import '@splidejs/react-splide/css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { handleSmoothScroll } from '@/utils/smooth-scroll'
-import { Button } from '@/components/ui/shadcn/button'
-import { BoxReveal } from '@/components/ui/magicui/box-reveal'
-import { InteractiveHoverButton } from '@/components/ui/magicui/interactive-hover-button'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import { Icon } from '@/components/ui/icon'
-import SectionBadge from '@/components/ui/section-badge'
+import { Button } from '@/components/atoms/button'
+import { BoxReveal } from '@/components/atoms/box-reveal'
+import { InteractiveHoverButton } from '@/components/atoms/interactive-hover-button'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import { Icon } from '@/components/atoms/icon'
+import SectionBadge from '@/components/atoms/section-badge'
 
-const heroImage = `relative w-full h-[60vh] md:h-[80vh] lg:h-screen before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-30 before:z-[1] before:pointer-events-none overflow-hidden`
+const heroImage = `relative w-full h-full before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-30 before:z-[1] before:pointer-events-none overflow-hidden`
 const heroContent = `absolute w-full max-w-7xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] h-full flex items-center justify-center`
 
 interface HeroSliderSectionProps {
@@ -63,9 +63,11 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
               pagination: false,
               width: '100%',
               breakpoints: {
-                1280: {
-                  height: '980px',
-                  width: '100%',
+                1024: {
+                  height: '80dvh',
+                },
+                768: {
+                  height: '70dvh',
                 },
               },
             }}
@@ -74,7 +76,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
             className='hero-area'
           >
             {heroItems.map((slide: SlideItem) => (
-              <SplideSlide key={slide.id} className='w-full'>
+              <SplideSlide key={slide.id} className='w-full h-full'>
                 <div className={heroImage}>
                   <Image
                     src={slide.image}
@@ -86,7 +88,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                   />
                   <div className={heroContent}>
                     <Wrapper className='flex flex-col items-center justify-center'>
-                      <div className='grid grid-cols-12 gap-4 mx-auto w-full'>
+                      <div className='grid grid-cols-12 gap-4 mx-auto w-full px-4 md:px-0'>
                         <div className='col-span-2 text-white hidden xl:flex flex-col justify-between h-full'>
                           <span>{slide.heroYear}</span>
                           <ul className='space-y-4'>
@@ -147,7 +149,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                           </ul>
                         </div>
 
-                        <div className='col-span-8 xl:col-span-9'>
+                        <div className='col-span-10 md:col-span-11 xl:col-span-9'>
                           <AnimationContainer
                             animation='fadeLeft'
                             delay={0.2}
@@ -162,7 +164,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                           >
                             <BoxReveal boxColor='#10b981' duration={1}>
                               <h2
-                                className='text-[50px] leading-[1.2] text-white mb-[30px] xl:text-[100px] xl:leading-[100px]'
+                                className='text-[32px] md:text-[50px] leading-[1.2] text-white mb-[20px] md:mb-[30px] xl:text-[100px] xl:leading-[100px]'
                                 dangerouslySetInnerHTML={{
                                   __html: slide.heroTitle,
                                 }}
@@ -177,7 +179,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                             <Link href='/contact-us'>
                               <InteractiveHoverButton
                                 icon='lucide:phone'
-                                className='bg-emerald-500 group-hover:text-emerald-500 rounded-md border-none hover h-16 text-lg uppercase text-white mt-12 px-8 py-2'
+                                className='bg-emerald-500 group-hover:text-emerald-500 rounded-md border-none hover h-16 text-lg uppercase text-white lg:mt-12 md:mt-12 mt-0 px-8 py-2'
                               >
                                 Contact Us
                               </InteractiveHoverButton>
@@ -185,7 +187,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                           </AnimationContainer>
                         </div>
 
-                        <div className='col-span-1 flex flex-col justify-between items-center h-full'>
+                        <div className='col-span-2 md:col-span-1 flex flex-col justify-between items-center h-full'>
                           <div className='flex flex-col items-center gap-y-2'>
                             <Icon
                               icon='mdi:chevron-up'
@@ -222,7 +224,7 @@ const HeroSliderSection: React.FC<HeroSliderSectionProps> = ({
                     </Wrapper>
                   </div>
 
-                  <div className='absolute bottom-4 left-1/2 -translate-x-1/2 z-[2]'>
+                  <div className='absolute lg:bottom-4 md:bottom-4 bottom-12 left-1/2 -translate-x-1/2 z-[2]'>
                     <Link href='#about' onClick={handleSmoothScroll}>
                       <div className='flex flex-col items-center gap-0.5 group cursor-pointer'>
                         <Icon

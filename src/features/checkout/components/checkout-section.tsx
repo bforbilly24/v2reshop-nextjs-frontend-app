@@ -3,11 +3,11 @@
 import { useMemo, useEffect } from 'react'
 import { faker } from '@faker-js/faker'
 import Link from 'next/link'
-import { Button } from '@/components/ui/shadcn/button'
-import { Card } from '@/components/ui/shadcn/card'
-import Wrapper from '@/components/global/wrapper'
-import { Icon } from '@/components/ui/icon'
-import { Stepper } from '@/components/ui/stepper'
+import { Button } from '@/components/atoms/button'
+import { Card } from '@/components/atoms/card'
+import Wrapper from '@/components/atoms/wrapper'
+import { Icon } from '@/components/atoms/icon'
+import { Stepper } from '@/components/atoms/stepper'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
 
 const CheckoutSection: React.FC = () => {

@@ -3,10 +3,10 @@
 import { CONTACT } from '@/constant'
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
-import { TypingAnimation } from '@/components/ui/magicui/typing-animation'
-import AnimationContainer from '@/components/global/animation-container'
-import Wrapper from '@/components/global/wrapper'
-import SectionBadge from '@/components/ui/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import AnimationContainer from '@/components/atoms/animation-container'
+import Wrapper from '@/components/atoms/wrapper'
+import SectionBadge from '@/components/atoms/section-badge'
 
 const ContactSection: React.FC = () => {
   return (
