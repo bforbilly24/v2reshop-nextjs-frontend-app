@@ -178,9 +178,9 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     }
   }
 
-  const averageRating = product.rating_count
-    ? product.rating_count.toFixed(1)
-    : '0.0'
+  const averageRating = reviews.length > 0
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+    : 0
 
   const breadcrumbItems = [
     {
@@ -263,9 +263,9 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                     icon='ph:star-fill'
                     className='w-5 h-5 text-yellow-400'
                   />
-                  <span className='font-medium'>{averageRating}</span>
+                  <span className='font-medium'>{averageRating.toFixed(1)}</span>
                   <span className='text-gray-500 text-sm'>
-                    ({product.rating_count} reviews)
+                    ({reviews.length} reviews)
                   </span>
                 </div>
                 <div className='w-px h-4 bg-gray-300' />
@@ -378,7 +378,7 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         <div className='mt-16'>
           <ReProductReviewsSection 
             productId={product.id}
-            averageRating={parseFloat(averageRating)} 
+            averageRating={averageRating} 
             reviews={reviews}
             onReviewAdded={handleReviewAdded}
           />
