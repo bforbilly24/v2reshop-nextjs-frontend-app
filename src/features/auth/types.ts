@@ -8,6 +8,7 @@ export interface RegisterRequest {
   email: string
   password: string
   password_confirmation: string
+  role: string
 }
 
 export interface AuthUser {

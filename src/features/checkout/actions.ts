@@ -1,8 +1,8 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { env } from '@/config/environment'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import type { CheckoutRequest, CheckoutResponse } from './types'
 
@@ -22,7 +22,7 @@ export const checkoutCart = async (
     redirect('/auth/login')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/checkout`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.checkout.create}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -36,9 +36,9 @@ export const checkoutCart = async (
     if (res.status === 401) {
       redirect('/auth/login')
     }
-    
+
     const errorData = await res.json()
-    
+
     return {
       status: false,
       message: errorData.message || `Checkout failed: ${res.status}`,

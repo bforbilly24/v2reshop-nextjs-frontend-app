@@ -6,40 +6,12 @@ const OFFICES: OfficeData[] = [
     country: 'Indonesia',
     city: 'Surabaya',
     short: 'id',
-    // current: {
-    //   value: '8,500',
-    //   percent: '15.2',
-    //   isGrown: true,
-    // },
-    // previous: {
-    //   value: '650',
-    //   percent: '12.1',
-    //   isGrown: true,
-    // },
   },
-  //   {
-  //     coords: [-6.2088, 106.8456],
-  //     country: 'Indonesia',
-  //     city: 'Jakarta',
-  //     short: 'id',
-  //     current: {
-  //       value: '12,400',
-  //       percent: '8.7',
-  //       isGrown: false,
-  //     },
-  //     previous: {
-  //       value: '890',
-  //       percent: '5.3',
-  //       isGrown: true,
-  //     },
-  //   },
 ]
 
 const MAP_CONFIG = {
   INDONESIA_CENTER: [-7.2575, 112.7521] as [number, number],
   DEFAULT_ZOOM: 12,
-  //   INDONESIA_CENTER: [-6.9175, 107.6191] as [number, number],
-  //   DEFAULT_ZOOM: 7,
   MAX_BOUNDS: [
     [-11.0, 95.0],
     [-6.0, 141.0],

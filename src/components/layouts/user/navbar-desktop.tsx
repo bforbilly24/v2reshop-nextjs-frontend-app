@@ -117,7 +117,7 @@ export function NavbarDesktop({
   const router = useRouter()
   const pathname = usePathname()
   const { data: session } = useSession()
-  const { cartItems } = useCart()
+  const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 
@@ -257,7 +257,7 @@ export function NavbarDesktop({
                   >
                     <ShoppingCart className='size-5' />
                     <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs rounded-full size-5 flex items-center justify-center'>
-                      {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                      {itemCount}
                     </span>
                   </Button>
                 ) : item.menu && item.menu.length > 0 ? (

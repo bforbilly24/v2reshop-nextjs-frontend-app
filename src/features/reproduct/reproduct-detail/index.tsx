@@ -33,7 +33,7 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
 }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { refreshCart } = useCart()
+  const { refreshCart, cartItems } = useCart()
   const { showSuccess, showError } = useCartFeedback()
   const [quantity, setQuantity] = useState(1)
   const [isClient, setIsClient] = useState(false)
@@ -59,7 +59,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
 
   useEffect(() => {
     setIsClient(true)
-    // Set initial loading to false after client mount
     setTimeout(() => setInitialLoading(false), 100)
   }, [])
 
@@ -134,13 +133,42 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         throw new Error('Invalid product data')
       }
 
+      await new Promise((resolve) => setTimeout(resolve, 100))
+
+      let selectedVariantId: number | null = null
+      if (product.variants) {
+        const sizeVariant = sizes.find((s) => s.value === selectedSize)
+        const colorVariant = colors.find((c) => c.value === selectedColor)
+
+        if (colorVariant) {
+          selectedVariantId = colorVariant.id
+        } else if (sizeVariant) {
+          selectedVariantId = sizeVariant.id
+        }
+      }
+
+      const existingItem = cartItems.find((item) => {
+        const sameProduct = item.product_id === product.id
+        const sameVariant = item.product_variant_id === selectedVariantId
+
+        return sameProduct && sameVariant
+      })
+
+      if (existingItem) {
+        toast.info('Item already in cart', {
+          description: 'Please update quantity from your cart',
+        })
+        setIsAddingToCart(false)
+        return
+      }
+
       const result = await addToCartAPI({
         product_id: product.id,
+        product_variant_id: selectedVariantId,
         quantity: quantity,
       })
 
       if (result.status) {
-        // Refresh cart untuk update drawer secara real-time
         await refreshCart()
 
         const cartItemData = {

@@ -13,7 +13,7 @@ import {
 export const loginUser = async (
   credentials: LoginRequest
 ): Promise<AuthResponse> => {
-  const res = await fetch(`${env.api.baseUrl}/login`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.login}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const loginUser = async (
 export const registerUser = async (
   data: RegisterRequest
 ): Promise<AuthResponse> => {
-  const res = await fetch(`${env.api.baseUrl}/register`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.register}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export const getCurrentUser = async (): Promise<UserProfileResponse> => {
     throw new Error('Not authenticated')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/auth/me`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.me}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

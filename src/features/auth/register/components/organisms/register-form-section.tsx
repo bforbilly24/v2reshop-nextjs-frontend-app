@@ -47,6 +47,7 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
         email: data.email,
         password: data.password,
         password_confirmation: data.password,
+        role: 'customer',
       })
 
       if (response.status) {
