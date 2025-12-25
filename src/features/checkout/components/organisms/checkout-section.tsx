@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { fixWhatsAppUrl } from '@/utils/fix-whatsapp-url'
+import { formatPrice } from '@/utils/format-price'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
 import { Icon } from '@/components/atoms/icon'
@@ -12,8 +14,6 @@ import { Stepper } from '@/components/atoms/stepper'
 import { Textarea } from '@/components/atoms/textarea'
 import Wrapper from '@/components/atoms/wrapper'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { formatPrice } from '@/utils/format-price'
-import { fixWhatsAppUrl } from '@/utils/fix-whatsapp-url'
 import { checkoutCart } from '../../actions'
 
 const CheckoutSection: React.FC = () => {

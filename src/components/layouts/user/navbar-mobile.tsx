@@ -42,7 +42,7 @@ export default function NavbarMobile({
   const [isOpen, setIsOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string>('')
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-  const { cartItems } = useCart()
+  const { cartItems, itemCount } = useCart()
   const pathname = usePathname()
   const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen
 
@@ -209,7 +209,7 @@ export default function NavbarMobile({
               >
                 <ShoppingCart className='size-5' />
                 <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs rounded-full size-4 flex items-center justify-center'>
-                  {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                  {itemCount}
                 </span>
               </Button>
               <Button

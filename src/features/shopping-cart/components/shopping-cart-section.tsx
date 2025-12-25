@@ -14,25 +14,23 @@ import { useCart } from '@/features/shopping-cart/context/cart-context'
 import { ShoppingCartSkeleton } from './atoms/shopping-cart-skeleton'
 
 const ShoppingCartSection: React.FC = () => {
-  const { cartItems, subtotal, updateQuantity, removeItem, initialLoading } =
-    useCart()
+  const {
+    cartItems,
+    subtotal,
+    updateQuantity,
+    removeItem,
+    initialLoading,
+    updatingItemIds,
+  } = useCart()
 
   const handleUpdateQuantity = async (id: number, newQuantity: number) => {
     if (newQuantity >= 1) {
-      try {
-        await updateQuantity(id, newQuantity)
-      } catch (error) {
-        console.error('[ShoppingCart] Failed to update quantity:', error)
-      }
+      await updateQuantity(id, newQuantity)
     }
   }
 
   const handleRemoveItem = async (id: number) => {
-    try {
-      await removeItem(id)
-    } catch (error) {
-      console.error('[ShoppingCart] Failed to remove item:', error)
-    }
+    await removeItem(id)
   }
 
   const steps = [
@@ -54,78 +52,91 @@ const ShoppingCartSection: React.FC = () => {
             <Empty />
           ) : (
             <div className='space-y-4'>
-              {cartItems.map((item) => (
-                <Card
-                  key={item.id}
-                  className='border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
-                >
-                  <CardContent className='p-4 flex justify-between gap-4'>
-                    <div className='w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0'>
-                      <Image
-                        src={item.product.image[0] || '/placeholder.png'}
-                        alt={item.product.name}
-                        width={48}
-                        height={36}
-                        className='object-cover rounded'
-                      />
-                    </div>
-                    <div className='flex-1'>
-                      <h3 className='text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-1'>
-                        {item.product.name}
-                      </h3>
-                      <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2'>
-                        {item.product.description}
-                      </p>
-                      {item.variant && (
-                        <div className='flex gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400'>
-                          <span>
-                            <span className='font-medium'>
-                              {item.variant.type}:
-                            </span>{' '}
-                            {item.variant.value}
+              {cartItems.map((item) => {
+                const availableStock = item.variant
+                  ? item.variant.stock
+                  : (item.product.stock ?? 0)
+                const isMaxStock = item.quantity >= availableStock
+
+                return (
+                  <Card
+                    key={item.id}
+                    className='border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                  >
+                    <CardContent className='p-4 flex justify-between gap-4'>
+                      <div className='w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0'>
+                        <Image
+                          src={item.product.image[0] || '/placeholder.png'}
+                          alt={item.product.name}
+                          width={48}
+                          height={36}
+                          className='object-cover rounded'
+                        />
+                      </div>
+                      <div className='flex-1'>
+                        <h3 className='text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-1'>
+                          {item.product.name}
+                        </h3>
+                        <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2'>
+                          {item.product.description}
+                        </p>
+                        {item.variant && (
+                          <div className='flex gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400'>
+                            <span>
+                              <span className='font-medium'>
+                                {item.variant.type}:
+                              </span>{' '}
+                              {item.variant.value}
+                            </span>
+                          </div>
+                        )}
+                        <div className='flex items-center gap-2 mb-2'>
+                          <Button
+                            size='icon'
+                            variant='outline'
+                            onClick={() =>
+                              handleUpdateQuantity(item.id, item.quantity - 1)
+                            }
+                            disabled={
+                              item.quantity <= 1 || updatingItemIds.has(item.id)
+                            }
+                            className='h-8 w-8 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          >
+                            <Minus className='h-4 w-4' />
+                          </Button>
+                          <span className='text-sm text-gray-900 dark:text-white w-8 text-center'>
+                            {item.quantity}
+                          </span>
+                          <Button
+                            size='icon'
+                            variant='outline'
+                            onClick={() =>
+                              handleUpdateQuantity(item.id, item.quantity + 1)
+                            }
+                            disabled={
+                              updatingItemIds.has(item.id) || isMaxStock
+                            }
+                            className='h-8 w-8 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          >
+                            <Plus className='h-4 w-4' />
+                          </Button>
+                          <span className='text-sm font-semibold text-gray-900 dark:text-white ml-auto'>
+                            {formatPrice(item.total_price)}
                           </span>
                         </div>
-                      )}
-                      <div className='flex items-center gap-2 mb-2'>
                         <Button
-                          size='icon'
-                          variant='outline'
-                          onClick={() =>
-                            handleUpdateQuantity(item.id, item.quantity - 1)
-                          }
-                          disabled={item.quantity <= 1}
-                          className='h-8 w-8 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          variant='link'
+                          className='p-0 h-auto text-red-600 dark:text-red-400 text-xs'
+                          onClick={() => handleRemoveItem(item.id)}
+                          disabled={updatingItemIds.has(item.id)}
                         >
-                          <Minus className='h-4 w-4' />
+                          Remove
                         </Button>
-                        <span className='text-sm text-gray-900 dark:text-white w-8 text-center'>
-                          {item.quantity}
-                        </span>
-                        <Button
-                          size='icon'
-                          variant='outline'
-                          onClick={() =>
-                            handleUpdateQuantity(item.id, item.quantity + 1)
-                          }
-                          className='h-8 w-8 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        >
-                          <Plus className='h-4 w-4' />
-                        </Button>
-                        <span className='text-sm font-semibold text-gray-900 dark:text-white ml-auto'>
-                          {formatPrice(item.total_price)}
-                        </span>
                       </div>
-                      <Button
-                        variant='link'
-                        className='p-0 h-auto text-red-600 dark:text-red-400 text-xs'
-                        onClick={() => handleRemoveItem(item.id)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
           )}
         </div>
@@ -163,8 +174,6 @@ const ShoppingCartSection: React.FC = () => {
                   <Link href='/checkout'>Proceed to Checkout</Link>
                 </Button>
               )}
-
-
             </CardContent>
           </Card>
         </div>

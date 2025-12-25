@@ -8,14 +8,10 @@ import React, {
   useCallback,
   useMemo,
 } from 'react'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { toast } from 'sonner'
 import { getCart, updateCartQuantity, removeFromCart } from '../actions'
 import type { CartItem } from '../types'
-
-// ============================================
-// TYPES & INTERFACES
-// ============================================
 
 interface CartContextType {
   cartItems: CartItem[]
@@ -24,6 +20,7 @@ interface CartContextType {
 
   isLoading: boolean
   initialLoading: boolean
+  updatingItemIds: Set<number>
 
   updateQuantity: (id: number, quantity: number) => Promise<void>
   removeItem: (id: number) => Promise<void>
@@ -34,35 +31,26 @@ interface CartProviderProps {
   children: React.ReactNode
 }
 
-// ============================================
-// CONTEXT CREATION
-// ============================================
-
 const CartContext = createContext<CartContextType | undefined>(undefined)
-
-// ============================================
-// PROVIDER COMPONENT
-// ============================================
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [subtotal, setSubtotal] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
+  const [updatingItemIds, setUpdatingItemIds] = useState<Set<number>>(new Set())
+
+  const debounceTimers = React.useRef<Map<number, NodeJS.Timeout>>(new Map())
+  const pendingQuantities = React.useRef<Map<number, number>>(new Map())
 
   const { data: session, status } = useSession()
 
-  const itemCount = useMemo(
-    () => cartItems.reduce((total, item) => total + item.quantity, 0),
-    [cartItems]
-  )
+  const itemCount = useMemo(() => cartItems.length, [cartItems])
 
-  /**
-   * Fetches cart data from the API
-   * Handles initial loading and session states
-   */
   const refreshCart = useCallback(async () => {
-    if (status === 'loading') return
+    if (status === 'loading') {
+      return
+    }
 
     if (status === 'authenticated' && session?.accessToken) {
       setIsLoading(true)
@@ -77,7 +65,29 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
           throw new Error(response.message || 'Failed to load cart')
         }
       } catch (error) {
-        console.error('[CartContext] Failed to fetch cart:', error)
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown error'
+
+        if (
+          errorMessage.toLowerCase().includes('unauthenticated') ||
+          errorMessage.toLowerCase().includes('not authenticated') ||
+          errorMessage.toLowerCase().includes('session expired')
+        ) {
+          setCartItems([])
+          setSubtotal(0)
+          setInitialLoading(false)
+          setIsLoading(false)
+
+          toast.error('Session expired', {
+            description: 'Please login again',
+          })
+
+          signOut({ redirect: false }).then(() => {
+            window.location.href = '/auth/login?error=SessionExpired'
+          })
+          return
+        }
+
         setCartItems([])
         setSubtotal(0)
 
@@ -95,9 +105,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   }, [session, status, initialLoading])
 
-  /**
-   * Updates item quantity with optimistic update
-   */
   const updateQuantity = useCallback(
     async (id: number, quantity: number) => {
       if (quantity < 1) {
@@ -105,10 +112,21 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         return
       }
 
-      const previousItems = [...cartItems]
-      const itemToUpdate = cartItems.find((item) => item.id === id)
+      const item = cartItems.find((item) => item.id === id)
+      if (!item) {
+        return
+      }
 
-      if (!itemToUpdate) return
+      const availableStock = item.variant
+        ? item.variant.stock
+        : (item.product.stock ?? 0)
+
+      if (quantity > availableStock) {
+        toast.error(
+          `Only ${availableStock} ${availableStock === 1 ? 'item' : 'items'} available in stock`
+        )
+        return
+      }
 
       setCartItems((items) =>
         items.map((item) =>
@@ -122,53 +140,135 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         )
       )
 
-      try {
-        await updateCartQuantity(id, { quantity })
+      pendingQuantities.current.set(id, quantity)
 
-        await refreshCart()
-      } catch (error) {
-        console.error('[CartContext] Failed to update quantity:', error)
-
-        setCartItems(previousItems)
-        toast.error('Failed to update quantity')
-        throw error
+      const existingTimer = debounceTimers.current.get(id)
+      if (existingTimer) {
+        clearTimeout(existingTimer)
       }
+
+      const timer = setTimeout(async () => {
+        const finalQuantity = pendingQuantities.current.get(id)
+        if (!finalQuantity) return
+
+        setUpdatingItemIds((prev) => new Set(prev).add(id))
+
+        try {
+          await updateCartQuantity(id, { quantity: finalQuantity })
+
+          pendingQuantities.current.delete(id)
+
+          await refreshCart()
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : 'Unknown error'
+
+          if (
+            errorMessage.toLowerCase().includes('unauthenticated') ||
+            errorMessage.toLowerCase().includes('not authenticated')
+          ) {
+            setCartItems([])
+            setUpdatingItemIds(new Set())
+            toast.error('Session expired', {
+              description: 'Please login again',
+            })
+            signOut({ redirect: false }).then(() => {
+              window.location.href = '/auth/login?error=SessionExpired'
+            })
+            return
+          }
+
+          await refreshCart()
+          toast.error('Failed to update quantity')
+        } finally {
+          setUpdatingItemIds((prev) => {
+            const next = new Set(prev)
+            next.delete(id)
+            return next
+          })
+          debounceTimers.current.delete(id)
+        }
+      }, 500)
+
+      debounceTimers.current.set(id, timer)
     },
-    [cartItems, refreshCart]
+    [refreshCart, cartItems]
   )
 
-  /**
-   * Removes item from cart with optimistic update
-   */
   const removeItem = useCallback(
     async (id: number) => {
-      const previousItems = [...cartItems]
-      const itemToRemove = cartItems.find((item) => item.id === id)
+      if (updatingItemIds.has(id)) {
+        return
+      }
 
-      if (!itemToRemove) return
+      let itemToRemove: CartItem | undefined
+      let previousItems: CartItem[] = []
 
-      setCartItems((items) => items.filter((item) => item.id !== id))
+      setCartItems((items) => {
+        itemToRemove = items.find((item) => item.id === id)
+        previousItems = [...items]
+        if (!itemToRemove) return items
+        return items.filter((item) => item.id !== id)
+      })
+
+      if (!itemToRemove) {
+        return
+      }
+
+      setUpdatingItemIds((prev) => new Set(prev).add(id))
 
       try {
         await removeFromCart(id)
-
         await refreshCart()
 
         toast.success(`${itemToRemove.product.name} removed from cart`)
       } catch (error) {
-        console.error('[CartContext] Failed to remove item:', error)
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown error'
+
+        if (
+          errorMessage.toLowerCase().includes('unauthenticated') ||
+          errorMessage.toLowerCase().includes('not authenticated')
+        ) {
+          setCartItems([])
+          setUpdatingItemIds(new Set())
+          toast.error('Session expired', {
+            description: 'Please login again',
+          })
+          signOut({ redirect: false }).then(() => {
+            window.location.href = '/auth/login?error=SessionExpired'
+          })
+          return
+        }
 
         setCartItems(previousItems)
         toast.error('Failed to remove item')
         throw error
+      } finally {
+        setUpdatingItemIds((prev) => {
+          const next = new Set(prev)
+          next.delete(id)
+          return next
+        })
       }
     },
-    [cartItems, refreshCart]
+    [updatingItemIds, refreshCart]
   )
 
   useEffect(() => {
     refreshCart()
   }, [refreshCart])
+
+  useEffect(() => {
+    const timers = debounceTimers.current
+    const pending = pendingQuantities.current
+
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer))
+      timers.clear()
+      pending.clear()
+    }
+  }, [])
 
   const value = useMemo<CartContextType>(
     () => ({
@@ -177,6 +277,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       itemCount,
       isLoading,
       initialLoading,
+      updatingItemIds,
       updateQuantity,
       removeItem,
       refreshCart,
@@ -187,6 +288,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       itemCount,
       isLoading,
       initialLoading,
+      updatingItemIds,
       updateQuantity,
       removeItem,
       refreshCart,
@@ -196,14 +298,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 
-// ============================================
-// CUSTOM HOOK
-// ============================================
 
-/**
- * Hook to access cart context
- * @throws {Error} If used outside of CartProvider
- */
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext)
 

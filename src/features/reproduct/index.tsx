@@ -121,17 +121,22 @@ const ReProductView = () => {
       if (!res.status) {
         throw new Error('Failed to fetch products')
       }
-      setInitialLoading(false)
       return res.data
     },
     staleTime: 30 * 1000,
     placeholderData: (previousData) => previousData,
   })
 
+  useEffect(() => {
+    if (!isLoading) {
+      setInitialLoading(false)
+    }
+  }, [isLoading])
+
   const products = productsData?.data || []
   const totalPages = productsData?.last_page || 1
 
-  const showSkeleton = initialLoading || isLoading
+  const showSkeleton = initialLoading && isLoading
 
   const updatedGetEcommerceNav = () => {
     return [

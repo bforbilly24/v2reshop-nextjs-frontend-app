@@ -64,16 +64,6 @@ interface OfficeData {
   country: string
   city: string
   short: string
-  //   current: {
-  //     value: string
-  //     percent: string
-  //     isGrown: boolean
-  //   }
-  //   previous: {
-  //     value: string
-  //     percent: string
-  //     isGrown: boolean
-  //   }
 }
 
 export { type LeafletMap, type OfficeData }

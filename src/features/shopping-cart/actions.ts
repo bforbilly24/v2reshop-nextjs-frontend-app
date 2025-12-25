@@ -1,8 +1,8 @@
 'use server'
 
-import { redirect } from 'next/navigation'
 import { env } from '@/config/environment'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import type {
   GetCartResponse,
@@ -13,14 +13,6 @@ import type {
   RemoveFromCartResponse,
 } from './types'
 
-// ============================================
-// CART ACTIONS (Requires Authentication)
-// ============================================
-
-/**
- * Get user's cart items
- * Requires authentication - must be logged in
- */
 export const getCart = async (): Promise<GetCartResponse> => {
   const session = await getServerSession(authOptions)
 
@@ -28,7 +20,7 @@ export const getCart = async (): Promise<GetCartResponse> => {
     redirect('/auth/login')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/cart`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}?_t=${Date.now()}`, {
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${session.accessToken}`,
@@ -37,20 +29,16 @@ export const getCart = async (): Promise<GetCartResponse> => {
   })
 
   if (!res.ok) {
-    if (res.status === 401) {
-      redirect('/auth/login')
-    }
     const errorBody = await res.text()
+    if (res.status === 401) {
+      throw new Error('Unauthenticated')
+    }
     throw new Error(`Failed to fetch cart: ${res.status} ${errorBody}`)
   }
 
   return res.json()
 }
 
-/**
- * Add product to cart
- * Requires authentication - must be logged in
- */
 export const addToCart = async (
   payload: AddToCartRequest
 ): Promise<AddToCartResponse> => {
@@ -64,7 +52,7 @@ export const addToCart = async (
     }
   }
 
-  const res = await fetch(`${env.api.baseUrl}/cart`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.post}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -101,10 +89,6 @@ export const addToCart = async (
   return data
 }
 
-/**
- * Update cart item quantity
- * Requires authentication - must be logged in
- */
 export const updateCartQuantity = async (
   cartItemId: number,
   payload: UpdateCartQuantityRequest
@@ -115,7 +99,7 @@ export const updateCartQuantity = async (
     redirect('/auth/login')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/cart/${cartItemId}`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -125,24 +109,21 @@ export const updateCartQuantity = async (
     body: JSON.stringify(payload),
   })
 
+  const result = await res.json()
+
   if (!res.ok) {
     if (res.status === 401) {
-      redirect('/auth/login')
+      throw new Error('Unauthenticated')
     }
     if (res.status === 404) {
       throw new Error('Cart item not found')
     }
-    const errorBody = await res.text()
-    throw new Error(`Failed to update cart: ${res.status} ${errorBody}`)
+    throw new Error(result.message || `Failed to update cart: ${res.status}`)
   }
 
-  return res.json()
+  return result
 }
 
-/**
- * Remove item from cart
- * Requires authentication - must be logged in
- */
 export const removeFromCart = async (
   cartItemId: number
 ): Promise<RemoveFromCartResponse> => {
@@ -152,7 +133,7 @@ export const removeFromCart = async (
     redirect('/auth/login')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/cart/${cartItemId}`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.delete(cartItemId)}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -161,13 +142,13 @@ export const removeFromCart = async (
   })
 
   if (!res.ok) {
+    const errorBody = await res.text()
     if (res.status === 401) {
-      redirect('/auth/login')
+      throw new Error('Unauthenticated')
     }
     if (res.status === 404) {
       throw new Error('Cart item not found')
     }
-    const errorBody = await res.text()
     throw new Error(
       `Failed to remove item from cart: ${res.status} ${errorBody}`
     )

@@ -18,7 +18,7 @@ import type {
 export const getProductBySlug = async (
   slug: string
 ): Promise<GetProductDetailResponse> => {
-  const res = await fetch(`${env.api.baseUrl}/products/${slug}`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.detail(slug)}`, {
     headers: {
       Accept: 'application/json',
     },
@@ -44,7 +44,7 @@ export const getProductReviews = async (
   productId: number
 ): Promise<GetProductReviewsResponse> => {
   const res = await fetch(
-    `${env.api.baseUrl}/reviews?product_id=${productId}`,
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.list}?product_id=${productId}`,
     {
       headers: {
         Accept: 'application/json',
@@ -60,7 +60,6 @@ export const getProductReviews = async (
 
   const response = await res.json()
 
-  // API returns paginated response, extract the data array
   return {
     status: response.status,
     message: response.message,
@@ -85,7 +84,7 @@ export const createProductReview = async (
     }
   }
 
-  const res = await fetch(`${env.api.baseUrl}/reviews`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.create}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -128,7 +127,7 @@ export const deleteProductReview = async (
     throw new Error('Unauthorized: Please login to delete review')
   }
 
-  const res = await fetch(`${env.api.baseUrl}/reviews/${reviewId}`, {
+  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.delete(reviewId)}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',

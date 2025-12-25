@@ -11,7 +11,7 @@ import type {
 export const getProducts = async (
   params?: GetProductsRequest
 ): Promise<GetProductsResponse> => {
-  const url = new URL(`${env.api.baseUrl}/products`)
+  const url = new URL(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.list}`)
 
   if (params) {
     if (params.search) url.searchParams.append('search', params.search)
@@ -47,7 +47,7 @@ export const getProducts = async (
 
 export const getProductCategories =
   async (): Promise<GetProductCategoriesResponse> => {
-    const res = await fetch(`${env.api.baseUrl}/product-categories`, {
+    const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.categories}`, {
       headers: {
         Accept: 'application/json',
       },
@@ -63,7 +63,7 @@ export const getProductCategories =
 
 export const getProductVariants =
   async (): Promise<GetProductVariantsResponse> => {
-    const res = await fetch(`${env.api.baseUrl}/product-variants`, {
+    const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.variants}`, {
       headers: {
         Accept: 'application/json',
       },

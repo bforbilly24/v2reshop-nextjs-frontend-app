@@ -39,8 +39,25 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         setUser(response.user)
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error'
+
+      if (
+        errorMessage.toLowerCase().includes('unauthenticated') ||
+        errorMessage.toLowerCase().includes('not authenticated')
+      ) {
+        toast.error('Session expired', {
+          description: 'Please login again',
+        })
+        await signOut({
+          redirect: true,
+          callbackUrl: '/auth/login',
+        })
+        return
+      }
+
       toast.error('Failed to load profile', {
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description: errorMessage,
       })
     } finally {
       setIsLoading(false)
