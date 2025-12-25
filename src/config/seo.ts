@@ -6,10 +6,12 @@ export const siteConfig = {
   description:
     'ReShop is your sustainable marketplace for recycled and eco-friendly products. Shop furniture, home decor, and building materials while reducing environmental impact.',
   url: 'https://reshop.com',
-  ogImage: 'https://reshop.com/images/og-image.png',
+  ogImage: 'https://reshop.com/opengraph-image',
   links: {
     twitter: 'https://twitter.com/reshop',
     github: 'https://github.com/circleit/reshop',
+    instagram: 'https://instagram.com/reshop',
+    facebook: 'https://facebook.com/reshop',
   },
   keywords: [
     'sustainable shopping',
@@ -22,7 +24,22 @@ export const siteConfig = {
     'green shopping',
     'environmental products',
     'recycle marketplace',
+    'second hand',
+    'preloved',
+    'upcycled products',
+    'zero waste',
   ],
+  author: {
+    name: 'CircleIT',
+    email: 'hello@circleit.dev',
+    url: 'https://circleit.dev',
+  },
+  company: {
+    name: 'CircleIT',
+    address: 'Jakarta, Indonesia',
+    phone: '+62-xxx-xxxx-xxxx',
+    email: 'hello@circleit.dev',
+  },
 }
 
 export const defaultMetadata: Metadata = {
@@ -77,22 +94,27 @@ export const defaultMetadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+      { url: '/icon', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/apple-icon', sizes: '180x180', type: 'image/png' },
     ],
-    other: [
-      {
-        rel: 'mask-icon',
-        url: '/safari-pinned-tab.svg',
-        color: '#16a34a',
-      } as { rel: string; url: string; color: string },
-    ],
+    shortcut: '/favicon.ico',
   },
   manifest: '/site.webmanifest',
   alternates: {
     canonical: siteConfig.url,
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+    yahoo: 'your-yahoo-verification-code',
+  },
+  category: 'e-commerce',
+  classification: 'E-commerce, Sustainability, Marketplace',
+  other: {
+    'msapplication-TileColor': '#16a34a',
+    'msapplication-config': '/browserconfig.xml',
   },
 }

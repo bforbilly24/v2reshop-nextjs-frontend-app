@@ -11,7 +11,7 @@ export default function AppleIcon() {
   return new ImageResponse(
     <div
       style={{
-        fontSize: 120,
+        fontSize: 100,
         background: '#16a34a',
         width: '100%',
         height: '100%',
@@ -19,10 +19,11 @@ export default function AppleIcon() {
         alignItems: 'center',
         justifyContent: 'center',
         color: 'white',
+        fontWeight: 'bold',
         borderRadius: '20px',
       }}
     >
-      R
+      RS
     </div>,
     {
       ...size,
