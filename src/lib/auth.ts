@@ -15,7 +15,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          const response = await fetch(`${env.api.baseUrl}/auth/login`, {
+          const response = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.login}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
