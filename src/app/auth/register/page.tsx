@@ -1,5 +1,5 @@
-import { RegisterView } from '@/features/auth/register'
 import { Metadata } from 'next'
+import { RegisterView } from '@/features/auth/register'
 
 export const metadata: Metadata = {
   title: 'Sign Up | ReShop',

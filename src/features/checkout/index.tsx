@@ -1,4 +1,4 @@
-import { CheckoutSection } from './components/checkout-section'
+import CheckoutSection from './components/organisms/checkout-section'
 
 const Checkout: React.FC = () => {
   return (

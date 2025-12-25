@@ -1,5 +1,5 @@
-import { LoginView } from '@/features/auth/login'
 import { Metadata } from 'next'
+import { LoginView } from '@/features/auth/login'
 
 export const metadata: Metadata = {
   title: 'Sign In | ReShop',

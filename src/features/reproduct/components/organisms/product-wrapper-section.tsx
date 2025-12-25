@@ -1,8 +1,8 @@
 'use client'
 
-import { SELECT_CATEGORIES } from '@/features/reproduct/constants'
 import { cn } from '@/lib/cn'
 import { Button } from '@/components/atoms/button'
+import { Icon } from '@/components/atoms/icon'
 import { Label } from '@/components/atoms/label'
 import {
   Select,
@@ -11,10 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/atoms/select'
-import { Icon } from '@/components/atoms/icon'
-import { SidebarProductProps } from '../types'
+import { SELECT_CATEGORIES } from '@/features/reproduct/constants'
 import { SidebarProductDesktop } from '../molecules/sidebar-product-desktop'
 import { SidebarProductMobile } from '../molecules/sidebar-product-mobile'
+import { SidebarProductProps } from '../types'
 
 type EcommerceNav = {
   label: string
@@ -27,7 +27,7 @@ interface ProductWrapperProps {
   children: React.ReactNode
   getEcommerceNav?: () => EcommerceNav[]
   showSidebar?: boolean
-  showSort?: boolean 
+  showSort?: boolean
   sidebarProps?: SidebarProductProps
   sortBy?: string
   onSortChange?: (sortBy: string) => void
@@ -37,7 +37,7 @@ const ProductWrapperSection = ({
   children,
   getEcommerceNav,
   showSidebar = true,
-  showSort = true, 
+  showSort = true,
   sidebarProps,
   sortBy = 'rating_high_low',
   onSortChange,

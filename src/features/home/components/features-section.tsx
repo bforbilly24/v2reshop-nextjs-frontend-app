@@ -2,11 +2,11 @@
 
 import { FeatureItem, FEATURES } from '@/constant'
 import Image from 'next/image'
-import { TypingAnimation } from '@/components/atoms/typing-animation'
 import AnimationContainer from '@/components/atoms/animation-container'
-import Wrapper from '@/components/atoms/wrapper'
 import { GlowingEffect } from '@/components/atoms/glowing-effect'
 import SectionBadge from '@/components/atoms/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import Wrapper from '@/components/atoms/wrapper'
 
 const FeaturesSection: React.FC = () => {
   return (
@@ -80,7 +80,7 @@ const FeaturesSection: React.FC = () => {
             <div className='absolute inset-0 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500'>
               Image
             </div>
-            
+
             <AnimationContainer animation='fadeRight' delay={0.5}>
               <Image
                 src='/images/feature/feature-1.jpg'

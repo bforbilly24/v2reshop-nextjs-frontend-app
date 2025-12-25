@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import Wrapper from '@/components/atoms/wrapper'
 import { Icon } from '@/components/atoms/icon'
+import Wrapper from '@/components/atoms/wrapper'
 
 const AnnouncementBannerSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -34,7 +34,6 @@ const AnnouncementBannerSection: React.FC = () => {
   return (
     <Wrapper>
       <div className='fixed z-50 flex backdrop-blur-md flex-col justify-between w-full p-3 sm:p-4 -translate-x-1/2 bg-white/80 border border-gray-100 rounded-lg shadow-xs max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] lg:max-w-7xl left-1/2 bottom-4 sm:bottom-6 dark:bg-gray-700 dark:border-gray-600'>
-        
         {/* Mobile: Stacked Layout */}
         <div className='flex md:hidden flex-col w-full'>
           {/* Header with logo and close button */}
@@ -99,8 +98,8 @@ const AnnouncementBannerSection: React.FC = () => {
             </Link>
             <p className='flex items-center gap-2 text-sm font-normal text-gray-500 dark:text-gray-400'>
               <Icon icon='noto:party-popper' className='size-4' />
-              Something new! The latest UI and ReCommunity features are here for a
-              better experience.
+              Something new! The latest UI and ReCommunity features are here for
+              a better experience.
             </p>
           </div>
           <div className='flex items-center shrink-0'>

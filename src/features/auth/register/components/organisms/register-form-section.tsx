@@ -53,7 +53,7 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
         toast.success('Registration Successful', {
           description: 'Your account has been created. Logging you in...',
         })
-        
+
         const result = await signIn('credentials', {
           email: data.email,
           password: data.password,
@@ -77,7 +77,8 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
         }
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Something went wrong'
+      const errorMessage =
+        err instanceof Error ? err.message : 'Something went wrong'
       setError(errorMessage)
       toast.error('Registration Failed', {
         description: errorMessage,

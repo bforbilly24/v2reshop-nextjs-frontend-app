@@ -11,16 +11,18 @@ import { Card } from '@/components/atoms/card'
 import { DynamicBreadcrumb } from '@/components/atoms/dynamic-breadcrumb'
 import { Icon } from '@/components/atoms/icon'
 import Wrapper from '@/components/atoms/wrapper'
+import { JsonLd } from '@/components/seo/json-ld'
 import { ProductThumbSlider } from '@/features/reproduct/components/organisms/product-thumb-slider'
+import { addToCart as addToCartAPI } from '@/features/shopping-cart/actions'
+import { useCart } from '@/features/shopping-cart/context/cart-context'
 import { useCartFeedback } from '@/features/shopping-cart/context/cart-feedback-context'
-import { addToCart as addToCartAPI } from '../actions'
 import { getProductReviews } from './actions'
+import { ProductDetailSkeleton } from './components/atoms/product-detail-skeleton'
 import { ReProductCartSection } from './components/organisms/reproduct-cart-section'
 import { ReProductColorSection } from './components/organisms/reproduct-color-section'
 import { ReProductReviewsSection } from './components/organisms/reproduct-reviews-section'
 import { ReProductSizeSection } from './components/organisms/reproduct-size-section'
 import { ProductDetail, Review } from './types'
-import { JsonLd } from '@/components/seo/json-ld'
 
 interface ReProductDetailViewProps {
   product: ProductDetail
@@ -31,11 +33,13 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
 }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const { refreshCart } = useCart()
   const { showSuccess, showError } = useCartFeedback()
   const [quantity, setQuantity] = useState(1)
   const [isClient, setIsClient] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [reviews, setReviews] = useState<Review[]>([])
+  const [initialLoading, setInitialLoading] = useState(true)
 
   const colors = useMemo(
     () => product.variants?.['COLOR'] || [],
@@ -55,6 +59,8 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
 
   useEffect(() => {
     setIsClient(true)
+    // Set initial loading to false after client mount
+    setTimeout(() => setInitialLoading(false), 100)
   }, [])
 
   useEffect(() => {
@@ -134,6 +140,9 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
       })
 
       if (result.status) {
+        // Refresh cart untuk update drawer secara real-time
+        await refreshCart()
+
         const cartItemData = {
           id: compositeId,
           productId: product.id.toString(),
@@ -178,9 +187,10 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     }
   }
 
-  const averageRating = reviews.length > 0
-    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-    : 0
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : 0
 
   const breadcrumbItems = [
     {
@@ -202,10 +212,20 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     },
   ]
 
+  if (initialLoading) {
+    return (
+      <section id='re-product-detail' className='w-full relative'>
+        <Wrapper className='py-8 lg:py-28'>
+          <ProductDetailSkeleton />
+        </Wrapper>
+      </section>
+    )
+  }
+
   return (
     <section className='w-full relative'>
       <JsonLd
-        type="product"
+        type='product'
         data={{
           name: product.name,
           description: product.description,
@@ -219,7 +239,7 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         }}
       />
       <JsonLd
-        type="breadcrumb"
+        type='breadcrumb'
         data={{
           items: breadcrumbItems.map((item) => ({
             name: item.label,
@@ -263,7 +283,9 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                     icon='ph:star-fill'
                     className='w-5 h-5 text-yellow-400'
                   />
-                  <span className='font-medium'>{averageRating.toFixed(1)}</span>
+                  <span className='font-medium'>
+                    {averageRating.toFixed(1)}
+                  </span>
                   <span className='text-gray-500 text-sm'>
                     ({reviews.length} reviews)
                   </span>
@@ -376,9 +398,9 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         </div>
 
         <div className='mt-16'>
-          <ReProductReviewsSection 
+          <ReProductReviewsSection
             productId={product.id}
-            averageRating={averageRating} 
+            averageRating={averageRating}
             reviews={reviews}
             onReviewAdded={handleReviewAdded}
           />

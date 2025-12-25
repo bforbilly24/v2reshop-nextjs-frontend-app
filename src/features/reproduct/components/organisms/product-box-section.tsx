@@ -1,6 +1,6 @@
-import { Product } from '@/features/reproduct/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import { formatPrice } from '@/utils/format-price'
 import { Badge } from '@/components/atoms/badge'
 import { Button } from '@/components/atoms/button'
 import {
@@ -10,10 +10,12 @@ import {
   CardHeader,
 } from '@/components/atoms/card'
 import { Icon } from '@/components/atoms/icon'
-import { formatPrice } from '@/utils/format-price'
+import { Product } from '@/features/reproduct/types'
 
 const ProductBoxSection = ({ product }: { product: Product }) => {
-  const averageRating = product.rating_count ? product.rating_count.toFixed(1) : '0.0'
+  const averageRating = product.rating_count
+    ? product.rating_count.toFixed(1)
+    : '0.0'
 
   return (
     <Link href={`/reproduct/${product.slug}`}>
@@ -22,7 +24,10 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
           <div className='bg-gray-100 dark:bg-gray-800 relative lg:h-64 md:h-64 h-52 flex flex-col justify-center items-center rounded-lg'>
             <div className='h-[146px]'>
               <Image
-                src={product.image[0] || 'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'}
+                src={
+                  product.image[0] ||
+                  'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'
+                }
                 alt={product.name}
                 width={235}
                 height={235}
@@ -30,7 +35,11 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
               />
               {product.discount_price > 0 && (
                 <Badge className='font-semibold bg-red-500 text-white absolute top-3 left-3 hidden lg:flex'>
-                  {Math.round(((product.price - product.discount_price) / product.price) * 100)}% OFF
+                  {Math.round(
+                    ((product.price - product.discount_price) / product.price) *
+                      100
+                  )}
+                  % OFF
                 </Badge>
               )}
               {product.is_allow_custom && (
@@ -76,7 +85,11 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
 
             <div className='flex items-center gap-2 mb-2'>
               <span className='lg:text-xl md:text-xl text-base text-red-400 font-bold'>
-                {formatPrice(product.discount_price > 0 ? product.discount_price : product.price)}
+                {formatPrice(
+                  product.discount_price > 0
+                    ? product.discount_price
+                    : product.price
+                )}
               </span>
               {product.discount_price > 0 && (
                 <div className='flex items-center w-full justify-between'>
@@ -84,7 +97,13 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
                     {formatPrice(product.price)}
                   </del>
                   <Badge className='text-[10px] px-1.5 py-0.5 font-semibold bg-red-500/10 text-red-600 border-red-200 lg:hidden'>
-                    -{Math.round(((product.price - product.discount_price) / product.price) * 100)}%
+                    -
+                    {Math.round(
+                      ((product.price - product.discount_price) /
+                        product.price) *
+                        100
+                    )}
+                    %
                   </Badge>
                 </div>
               )}
@@ -114,7 +133,9 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
                 <span className='pl-0.5 text-gray-500'>{averageRating}</span>
               </div>
               <div className='size-1 rounded-full bg-gray-300' />
-              <span className='pl-0.5 text-gray-500'>{product.sold_count}+ sold</span>
+              <span className='pl-0.5 text-gray-500'>
+                {product.sold_count}+ sold
+              </span>
             </div>
           </CardFooter>
         </div>

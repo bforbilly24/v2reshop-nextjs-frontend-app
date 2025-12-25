@@ -1,4 +1,4 @@
-import { ReCommunitySection } from "./components/recommunity-section"
+import { ReCommunitySection } from './components/recommunity-section'
 
 const ReCommunity = async () => {
   return (

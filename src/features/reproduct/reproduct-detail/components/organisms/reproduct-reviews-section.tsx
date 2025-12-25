@@ -3,13 +3,18 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Avatar, AvatarFallback } from '@/components/atoms/avatar'
-import { Icon } from '@/components/atoms/icon'
-import { Button } from '@/components/atoms/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/atoms/dialog'
 import { toast } from 'sonner'
-import { Review } from '../../types'
+import { Avatar, AvatarFallback } from '@/components/atoms/avatar'
+import { Button } from '@/components/atoms/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/atoms/dialog'
+import { Icon } from '@/components/atoms/icon'
 import { createProductReview, deleteProductReview } from '../../actions'
+import { Review } from '../../types'
 
 interface ReProductReviewsSectionProps {
   productId: number
@@ -18,11 +23,11 @@ interface ReProductReviewsSectionProps {
   onReviewAdded?: () => void
 }
 
-const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({ 
+const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
   productId,
-  averageRating, 
+  averageRating,
   reviews,
-  onReviewAdded
+  onReviewAdded,
 }) => {
   const { data: session } = useSession()
   const router = useRouter()
@@ -135,7 +140,7 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
             </div>
           </div>
           <div className='col-span-12 md:col-span-6 flex justify-center md:justify-end items-center order-1 md:order-2'>
-            <Button 
+            <Button
               onClick={handleRateProductClick}
               className='bg-yellow-400 hover:bg-yellow-500 text-white'
             >
@@ -148,7 +153,9 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
                 </DialogHeader>
                 <div className='space-y-4'>
                   <div>
-                    <label className='text-sm font-medium mb-2 block'>Rating</label>
+                    <label className='text-sm font-medium mb-2 block'>
+                      Rating
+                    </label>
                     <div className='flex gap-2'>
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -159,14 +166,20 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
                         >
                           <Icon
                             icon='ph:star-fill'
-                            className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
+                            className={
+                              star <= rating
+                                ? 'text-yellow-400'
+                                : 'text-gray-300'
+                            }
                           />
                         </button>
                       ))}
                     </div>
                   </div>
                   <div>
-                    <label className='text-sm font-medium mb-2 block'>Comment</label>
+                    <label className='text-sm font-medium mb-2 block'>
+                      Comment
+                    </label>
                     <textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
@@ -199,7 +212,9 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
           reviews.map((review) => (
             <div key={review.id} className='flex gap-3'>
               <Avatar>
-                <AvatarFallback>{review.user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>
+                  {review.user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className='flex-1'>
                 <div>
@@ -209,11 +224,14 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
                         {review.user.name}
                       </p>
                       <p className='text-muted-foreground font-normal text-xs pb-1'>
-                        {new Date(review.created_at).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
+                        {new Date(review.created_at).toLocaleDateString(
+                          'en-US',
+                          {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          }
+                        )}
                       </p>
                     </div>
                     {session?.user?.email === review.user.email && (
@@ -248,7 +266,7 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
             </div>
           ))
         ) : (
-          <div className="text-center text-muted-foreground py-8">
+          <div className='text-center text-muted-foreground py-8'>
             No reviews yet. Be the first to review this product!
           </div>
         )}

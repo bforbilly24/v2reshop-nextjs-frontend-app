@@ -1,20 +1,20 @@
 'use client'
 
+import React from 'react'
+import { HOME_CATEGORIES, HomeCategoryItem } from '@/constant'
+import Autoplay from 'embla-carousel-autoplay'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
-import Autoplay from 'embla-carousel-autoplay'
 import { cn } from '@/lib/cn'
-import { TypingAnimation } from '@/components/atoms/typing-animation'
 import AnimationContainer from '@/components/atoms/animation-container'
-import Wrapper from '@/components/atoms/wrapper'
-import SectionBadge from '@/components/atoms/section-badge'
-import { HOME_CATEGORIES, HomeCategoryItem } from '@/constant'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/atoms/carousel'
+import SectionBadge from '@/components/atoms/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import Wrapper from '@/components/atoms/wrapper'
 
 type CategoryItemProps = {
   category: HomeCategoryItem
@@ -22,15 +22,15 @@ type CategoryItemProps = {
 
 const CategoryItem = React.memo(({ category }: CategoryItemProps) => {
   const [isDragging, setIsDragging] = React.useState(false)
-  
+
   const handleMouseDown = () => {
     setIsDragging(false)
   }
-  
+
   const handleMouseMove = () => {
     setIsDragging(true)
   }
-  
+
   const handleClick = (e: React.MouseEvent) => {
     if (isDragging) {
       e.preventDefault()
@@ -41,7 +41,7 @@ const CategoryItem = React.memo(({ category }: CategoryItemProps) => {
   return (
     <div className='max-w-lg w-full'>
       <div className='group relative transition-all duration-500'>
-        <Link 
+        <Link
           href={`/categories/${category.slug}`}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -87,51 +87,56 @@ type CategoriesSliderProps = {
   categories: HomeCategoryItem[]
 }
 
-const CategorySlider: React.FC<CategoriesSliderProps> = React.memo(({ categories }) => {
-  const plugin = React.useRef(
-    Autoplay({ 
-      delay: 3000, 
-      stopOnInteraction: true, 
-      stopOnMouseEnter: true,
-      stopOnFocusIn: true,
-    })
-  )
+const CategorySlider: React.FC<CategoriesSliderProps> = React.memo(
+  ({ categories }) => {
+    const plugin = React.useRef(
+      Autoplay({
+        delay: 3000,
+        stopOnInteraction: true,
+        stopOnMouseEnter: true,
+        stopOnFocusIn: true,
+      })
+    )
 
-  return (
-    <div className="w-full touch-pan-y">
-      <Carousel
-        opts={{
-          align: 'center',
-          loop: true,
-          dragFree: true,
-          containScroll: 'trimSnaps',
-          slidesToScroll: 1,
-          skipSnaps: false,
-          inViewThreshold: 0.7,
-          watchDrag: true,
-          watchResize: true,
-          duration: 25,
-          dragThreshold: 10,
-        }}
-        plugins={[plugin.current]}
-        className="w-full cursor-grab active:cursor-grabbing"
-        onMouseEnter={() => plugin.current.stop()}
-        onMouseLeave={() => plugin.current.reset()}
-      >
-        <CarouselContent className="-ml-4" style={{ touchAction: 'pan-y pinch-zoom' }}>
-          {categories.map((category) => (
-            <CarouselItem 
-              key={category.id}
-              className="pl-4 basis-full md:basis-1/2 lg:basis-1/3 select-none"
-            >
-              <CategoryItem category={category} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-    </div>
-  )
-})
+    return (
+      <div className='w-full touch-pan-y'>
+        <Carousel
+          opts={{
+            align: 'center',
+            loop: true,
+            dragFree: true,
+            containScroll: 'trimSnaps',
+            slidesToScroll: 1,
+            skipSnaps: false,
+            inViewThreshold: 0.7,
+            watchDrag: true,
+            watchResize: true,
+            duration: 25,
+            dragThreshold: 10,
+          }}
+          plugins={[plugin.current]}
+          className='w-full cursor-grab active:cursor-grabbing'
+          onMouseEnter={() => plugin.current.stop()}
+          onMouseLeave={() => plugin.current.reset()}
+        >
+          <CarouselContent
+            className='-ml-4'
+            style={{ touchAction: 'pan-y pinch-zoom' }}
+          >
+            {categories.map((category) => (
+              <CarouselItem
+                key={category.id}
+                className='pl-4 basis-full md:basis-1/2 lg:basis-1/3 select-none'
+              >
+                <CategoryItem category={category} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+    )
+  }
+)
 
 CategorySlider.displayName = 'CategorySlider'
 
@@ -140,48 +145,47 @@ type CategoriesSliderSectionProps = {
   className?: string
 }
 
-const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> = React.memo(({
-  categories: providedCategories,
-}) => {
-  const categoriesToShow = React.useMemo(
-    () => providedCategories || HOME_CATEGORIES,
-    [providedCategories]
-  )
+const CategoriesSliderSection: React.FC<CategoriesSliderSectionProps> =
+  React.memo(({ categories: providedCategories }) => {
+    const categoriesToShow = React.useMemo(
+      () => providedCategories || HOME_CATEGORIES,
+      [providedCategories]
+    )
 
-  return (
-    <>
-      <Wrapper>
-        <div className='flex flex-col lg:flex-row justify-between items-center lg:items-center mb-6 sm:mb-8 gap-4 lg:gap-8'>
-          <div className='flex flex-col items-center w-full lg:items-start justify-center gap-y-3 sm:gap-y-4'>
-            <AnimationContainer animation='fadeLeft' delay={0.2}>
-              <SectionBadge title='Our Categories Product' />
-            </AnimationContainer>
-            <AnimationContainer animation='fadeLeft' delay={0.4}>
-              <div className='space-y-1'>
-                <TypingAnimation
-                  duration={50}
-                  className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400 text-center lg:text-left'
-                >
-                  Best solutions for your dream.
-                </TypingAnimation>
-              </div>
+    return (
+      <>
+        <Wrapper>
+          <div className='flex flex-col lg:flex-row justify-between items-center lg:items-center mb-6 sm:mb-8 gap-4 lg:gap-8'>
+            <div className='flex flex-col items-center w-full lg:items-start justify-center gap-y-3 sm:gap-y-4'>
+              <AnimationContainer animation='fadeLeft' delay={0.2}>
+                <SectionBadge title='Our Categories Product' />
+              </AnimationContainer>
+              <AnimationContainer animation='fadeLeft' delay={0.4}>
+                <div className='space-y-1'>
+                  <TypingAnimation
+                    duration={50}
+                    className='text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400 text-center lg:text-left'
+                  >
+                    Best solutions for your dream.
+                  </TypingAnimation>
+                </div>
+              </AnimationContainer>
+            </div>
+            <AnimationContainer animation='fadeRight' delay={0.8}>
+              <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center lg:text-right'>
+                Explore our diverse range of categories, each designed to
+                provide the best solutions for your needs. From electronics to
+                fashion, we&apos;ve got you covered with top-quality products.
+              </p>
             </AnimationContainer>
           </div>
-          <AnimationContainer animation='fadeRight' delay={0.8}>
-            <p className='text-sm md:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-center lg:text-right'>
-              Explore our diverse range of categories, each designed to provide
-              the best solutions for your needs. From electronics to fashion,
-              we&apos;ve got you covered with top-quality products.
-            </p>
-          </AnimationContainer>
-        </div>
-      </Wrapper>
-      <AnimationContainer animation='fadeDown' delay={1}>
-        <CategorySlider categories={categoriesToShow} />
-      </AnimationContainer>
-    </>
-  )
-})
+        </Wrapper>
+        <AnimationContainer animation='fadeDown' delay={1}>
+          <CategorySlider categories={categoriesToShow} />
+        </AnimationContainer>
+      </>
+    )
+  })
 
 CategoriesSliderSection.displayName = 'CategoriesSliderSection'
 

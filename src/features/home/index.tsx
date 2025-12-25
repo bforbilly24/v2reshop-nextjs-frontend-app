@@ -1,15 +1,18 @@
 import Image from 'next/image'
+import { BannerSection } from '@/components/organisms/banner-section'
 import { AnnouncementBannerSection } from './components/announcement-banner-section'
 import { CategoriesSliderSection } from './components/categories-slider-section'
 import { FeaturesSection } from './components/features-section'
 import { HeroSliderSection } from './components/hero-slider-section'
 import { LatestProductsSection } from './components/latest-products-section'
-import { BannerSection } from '@/components/organisms/banner-section'
 
 const Home = async () => {
   return (
     <>
-      <section id='background' className='w-full lg:pt-24 pt-20 lg:pb-0 pb-8 relative'>
+      <section
+        id='background'
+        className='w-full lg:pt-24 pt-20 lg:pb-0 pb-8 relative'
+      >
         <div className='absolute left-0 top-0 -z-10 h-full w-full bg-emerald-100' />
         <div className='absolute right-0 top-0 -z-10 bg-emerald-50 h-full w-[34rem]' />
         {/* <div className='container mx-auto'> */}

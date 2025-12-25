@@ -1,26 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { SidebarProductProps } from '../types'
-import {
-  PRICES,
-  RATINGS,
-  CUSTOMIZATIONS as ECOMMERCE_CUSTOMIZATIONS,
-  SELECT_CATEGORIES,
-} from '@/features/reproduct/constants'
+import { Badge } from '@/components/atoms/badge'
 import { Button } from '@/components/atoms/button'
+import { Icon } from '@/components/atoms/icon'
 import { Input } from '@/components/atoms/input'
 import { ScrollArea } from '@/components/atoms/scroll-area'
-import { Icon } from '@/components/atoms/icon'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/atoms/sheet'
-import { Badge } from '@/components/atoms/badge'
-
 import {
   Select,
   SelectContent,
@@ -28,6 +13,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/atoms/select'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/atoms/sheet'
+import {
+  PRICES,
+  RATINGS,
+  CUSTOMIZATIONS as ECOMMERCE_CUSTOMIZATIONS,
+  SELECT_CATEGORIES,
+} from '@/features/reproduct/constants'
+import { SidebarProductProps } from '../types'
 
 const SidebarProductMobile = ({
   searchTerm = '',
@@ -53,9 +52,9 @@ const SidebarProductMobile = ({
   const [localSortBy, setLocalSortBy] = useState(sortBy)
   const [isOpen, setIsOpen] = useState(false)
 
-  const categoriesToRender = (availableCategories || []).map((c) => ({ 
-    label: c.name, 
-    value: c.id.toString() 
+  const categoriesToRender = (availableCategories || []).map((c) => ({
+    label: c.name,
+    value: c.id.toString(),
   }))
 
   useEffect(() => {

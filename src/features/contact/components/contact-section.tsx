@@ -3,10 +3,10 @@
 import { CONTACT } from '@/constant'
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
-import { TypingAnimation } from '@/components/atoms/typing-animation'
 import AnimationContainer from '@/components/atoms/animation-container'
-import Wrapper from '@/components/atoms/wrapper'
 import SectionBadge from '@/components/atoms/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import Wrapper from '@/components/atoms/wrapper'
 
 const ContactSection: React.FC = () => {
   return (
@@ -21,7 +21,7 @@ const ContactSection: React.FC = () => {
               duration={50}
               className='text-2xl md:text-4xl lg:text-5xl font-medium !leading-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-neutral-400'
             >
-                We&apos;d love to hear from you!
+              We&apos;d love to hear from you!
             </TypingAnimation>
           </AnimationContainer>
         </div>

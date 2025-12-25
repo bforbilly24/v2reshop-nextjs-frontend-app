@@ -3,12 +3,21 @@
 import { env } from '@/config/environment'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { ApiResponse } from "../types"
-import { ProductDetail, Review, CreateReviewPayload } from "./types"
+import type {
+  GetProductDetailResponse,
+  GetProductReviewsResponse,
+  CreateReviewRequest,
+  CreateReviewResponse,
+  DeleteReviewResponse,
+} from './types'
 
+/**
+ * Get product detail by slug
+ * Public endpoint - no auth required
+ */
 export const getProductBySlug = async (
   slug: string
-): Promise<ApiResponse<ProductDetail>> => {
+): Promise<GetProductDetailResponse> => {
   const res = await fetch(`${env.api.baseUrl}/products/${slug}`, {
     headers: {
       Accept: 'application/json',
@@ -18,7 +27,9 @@ export const getProductBySlug = async (
 
   if (!res.ok) {
     const errorBody = await res.text()
-    throw new Error(`Failed to fetch product detail: ${res.status} ${errorBody}`)
+    throw new Error(
+      `Failed to fetch product detail: ${res.status} ${errorBody}`
+    )
   }
 
   return res.json()
@@ -31,13 +42,16 @@ export const getProductBySlug = async (
  */
 export const getProductReviews = async (
   productId: number
-): Promise<ApiResponse<Review[]>> => {
-  const res = await fetch(`${env.api.baseUrl}/reviews?product_id=${productId}`, {
-    headers: {
-      Accept: 'application/json',
-    },
-    cache: 'no-store',
-  })
+): Promise<GetProductReviewsResponse> => {
+  const res = await fetch(
+    `${env.api.baseUrl}/reviews?product_id=${productId}`,
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    }
+  )
 
   if (!res.ok) {
     const errorBody = await res.text()
@@ -45,12 +59,12 @@ export const getProductReviews = async (
   }
 
   const response = await res.json()
-  
+
   // API returns paginated response, extract the data array
   return {
     status: response.status,
     message: response.message,
-    data: response.data?.data || []
+    data: response.data?.data || [],
   }
 }
 
@@ -59,8 +73,8 @@ export const getProductReviews = async (
  * Requires authentication - must be logged in
  */
 export const createProductReview = async (
-  payload: CreateReviewPayload
-): Promise<ApiResponse<Review | null>> => {
+  payload: CreateReviewRequest
+): Promise<CreateReviewResponse> => {
   const session = await getServerSession(authOptions)
 
   if (!session?.accessToken) {
@@ -107,7 +121,7 @@ export const createProductReview = async (
  */
 export const deleteProductReview = async (
   reviewId: number
-): Promise<ApiResponse<{ message: string }>> => {
+): Promise<DeleteReviewResponse> => {
   const session = await getServerSession(authOptions)
 
   if (!session?.accessToken) {

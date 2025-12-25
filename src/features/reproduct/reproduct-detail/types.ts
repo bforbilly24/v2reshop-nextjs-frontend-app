@@ -1,5 +1,19 @@
 import { Category } from '@/features/reproduct/types'
 
+// ============================================
+// API RESPONSE TYPES
+// ============================================
+
+export interface ApiResponse<T> {
+  status: boolean
+  message: string
+  data: T
+}
+
+// ============================================
+// PRODUCT DETAIL TYPES
+// ============================================
+
 export interface VariantOption {
   id: number
   value: string
@@ -27,7 +41,10 @@ export interface ProductDetail {
   }
 }
 
-// Review Types
+// ============================================
+// REVIEW TYPES
+// ============================================
+
 export interface Review {
   id: number
   user_id: number
@@ -43,8 +60,31 @@ export interface Review {
   }
 }
 
-export interface CreateReviewPayload {
+// ============================================
+// API REQUEST TYPES
+// ============================================
+
+export interface GetProductBySlugRequest {
+  slug: string
+}
+
+export interface CreateReviewRequest {
   product_id: number
   rating: number
   comment: string
 }
+
+// ============================================
+// API RESPONSE TYPES
+// ============================================
+
+export type GetProductDetailResponse = ApiResponse<ProductDetail>
+
+export type GetProductReviewsResponse = ApiResponse<Review[]>
+
+export type CreateReviewResponse = ApiResponse<Review | null>
+
+export type DeleteReviewResponse = ApiResponse<{ message: string }>
+
+// Legacy alias for backward compatibility
+export type CreateReviewPayload = CreateReviewRequest

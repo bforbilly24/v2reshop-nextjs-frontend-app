@@ -1,4 +1,3 @@
-// src/features/recommunity/data/community-data.ts
 import { faker } from '@faker-js/faker'
 import {
   CommunityCategory,
@@ -8,7 +7,6 @@ import {
 
 faker.seed(123)
 
-// Sample community data
 const COMMUNITIES: DetailedCommunityItem[] = [
   {
     id: 1,
@@ -83,7 +81,6 @@ const COMMUNITIES: DetailedCommunityItem[] = [
   },
 ]
 
-// Community categories
 const COMMUNITY_CATEGORIES: CommunityCategory[] = [
   { label: 'All', value: 'all', count: '3' },
   { label: 'Technology', value: 'Technology', count: '1' },
@@ -91,7 +88,6 @@ const COMMUNITY_CATEGORIES: CommunityCategory[] = [
   { label: 'Literature', value: 'Literature', count: '1' },
 ]
 
-// Community member ranges
 const MEMBER_RANGES: MemberRange[] = [
   {
     label: '0 - 50',

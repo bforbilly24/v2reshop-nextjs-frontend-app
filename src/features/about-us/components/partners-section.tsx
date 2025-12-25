@@ -2,11 +2,11 @@
 
 import { PartnerItem, PARTNERS } from '@/constant'
 import Image from 'next/image'
-import { Marquee } from '@/components/atoms/marquee'
-import { TypingAnimation } from '@/components/atoms/typing-animation'
 import AnimationContainer from '@/components/atoms/animation-container'
-import Wrapper from '@/components/atoms/wrapper'
+import { Marquee } from '@/components/atoms/marquee'
 import SectionBadge from '@/components/atoms/section-badge'
+import { TypingAnimation } from '@/components/atoms/typing-animation'
+import Wrapper from '@/components/atoms/wrapper'
 
 const PartnersSection: React.FC = () => {
   return (

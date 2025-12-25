@@ -1,9 +1,9 @@
 'use client'
 
+import { PartnerItem, PARTNERS } from '@/constant'
 import Image from 'next/image'
 import { cn } from '@/lib/cn'
 import { Marquee } from '@/components/atoms/marquee'
-import { PartnerItem, PARTNERS } from '@/constant'
 
 const PartnerCard = ({ image, alt }: { image: string; alt: string }) => {
   return (

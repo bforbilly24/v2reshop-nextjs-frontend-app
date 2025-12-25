@@ -4,7 +4,7 @@ import { SidebarCommunity } from './community/sidebar-community'
 const ReCommunitySection: React.FC = () => {
   return (
     <Wrapper className='py-20 lg:py-32 relative'>
-      <SidebarCommunity  />
+      <SidebarCommunity />
     </Wrapper>
   )
 }

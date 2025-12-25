@@ -130,21 +130,24 @@ export const Particles: React.FC<ParticlesProps> = ({
 
   const rgb = hexToRgb(color)
 
-  const drawCircle = useCallback((circle: Circle, update = false) => {
-    if (context.current) {
-      const { x, y, translateX, translateY, size, alpha } = circle
-      context.current.translate(translateX, translateY)
-      context.current.beginPath()
-      context.current.arc(x, y, size, 0, 2 * Math.PI)
-      context.current.fillStyle = `rgba(${rgb.join(', ')}, ${alpha})`
-      context.current.fill()
-      context.current.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const drawCircle = useCallback(
+    (circle: Circle, update = false) => {
+      if (context.current) {
+        const { x, y, translateX, translateY, size, alpha } = circle
+        context.current.translate(translateX, translateY)
+        context.current.beginPath()
+        context.current.arc(x, y, size, 0, 2 * Math.PI)
+        context.current.fillStyle = `rgba(${rgb.join(', ')}, ${alpha})`
+        context.current.fill()
+        context.current.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-      if (!update) {
-        circles.current.push(circle)
+        if (!update) {
+          circles.current.push(circle)
+        }
       }
-    }
-  }, [rgb, dpr])
+    },
+    [rgb, dpr]
+  )
 
   const clearContext = useCallback(() => {
     if (context.current) {
@@ -166,22 +169,24 @@ export const Particles: React.FC<ParticlesProps> = ({
     }
   }, [clearContext, quantity, circleParams, drawCircle])
 
-  const remapValue = useCallback((
-    value: number,
-    start1: number,
-    end1: number,
-    start2: number,
-    end2: number
-  ): number => {
-    const remapped =
-      ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
-    return remapped > 0 ? remapped : 0
-  }, [])
+  const remapValue = useCallback(
+    (
+      value: number,
+      start1: number,
+      end1: number,
+      start2: number,
+      end2: number
+    ): number => {
+      const remapped =
+        ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
+      return remapped > 0 ? remapped : 0
+    },
+    []
+  )
 
   const animate = useCallback(() => {
     clearContext()
     circles.current.forEach((circle: Circle, i: number) => {
-     
       const edge = [
         circle.x + circle.translateX - circle.size,
         canvasSize.current.w - circle.x - circle.translateX - circle.size,
@@ -211,23 +216,29 @@ export const Particles: React.FC<ParticlesProps> = ({
 
       drawCircle(circle, true)
 
-     
       if (
         circle.x < -circle.size ||
         circle.x > canvasSize.current.w + circle.size ||
         circle.y < -circle.size ||
         circle.y > canvasSize.current.h + circle.size
       ) {
-       
         circles.current.splice(i, 1)
-       
+
         const newCircle = circleParams()
         drawCircle(newCircle)
-       
       }
     })
     window.requestAnimationFrame(animate)
-  }, [clearContext, remapValue, vx, vy, staticity, ease, drawCircle, circleParams])
+  }, [
+    clearContext,
+    remapValue,
+    vx,
+    vy,
+    staticity,
+    ease,
+    drawCircle,
+    circleParams,
+  ])
 
   const initCanvas = useCallback(() => {
     resizeCanvas()

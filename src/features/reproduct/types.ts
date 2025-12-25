@@ -1,8 +1,16 @@
+// ============================================
+// API RESPONSE TYPES
+// ============================================
+
 export interface ApiResponse<T> {
   status: boolean
   message: string
   data: T
 }
+
+// ============================================
+// PAGINATION TYPES
+// ============================================
 
 export interface PaginatedResponse<T> {
   current_page: number
@@ -24,6 +32,10 @@ export interface PaginatedResponse<T> {
   to: number
   total: number
 }
+
+// ============================================
+// PRODUCT TYPES
+// ============================================
 
 export interface Product {
   id: number
@@ -60,10 +72,14 @@ export interface Variant {
   type: 'COLOR' | 'SIZE' | 'SHAPE'
 }
 
-export interface ProductParams {
+// ============================================
+// API REQUEST TYPES
+// ============================================
+
+export interface GetProductsRequest {
   search?: string
   category_id?: number
-  customized?: boolean 
+  customized?: boolean
   price_min?: number
   price_max?: number
   rating_min?: number
@@ -72,3 +88,15 @@ export interface ProductParams {
   page?: number
 }
 
+// ============================================
+// API RESPONSE TYPES
+// ============================================
+
+export type GetProductsResponse = ApiResponse<PaginatedResponse<Product>>
+
+export type GetProductCategoriesResponse = ApiResponse<Category[]>
+
+export type GetProductVariantsResponse = ApiResponse<Variant[]>
+
+// Legacy alias for backward compatibility
+export type ProductParams = GetProductsRequest

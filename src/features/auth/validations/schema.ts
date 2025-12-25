@@ -5,9 +5,7 @@ export const loginSchema = z.object({
     .string()
     .min(1, 'Email is required')
     .email('Email must be valid and contain @'),
-  password: z
-    .string()
-    .min(1, 'Password is required'),
+  password: z.string().min(1, 'Password is required'),
 })
 
 export const registerSchema = z.object({

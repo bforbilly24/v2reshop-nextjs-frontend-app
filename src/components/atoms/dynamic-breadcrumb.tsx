@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import {
   Breadcrumb,
@@ -10,7 +11,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/atoms/breadcrumb'
 import { Icon } from '@/components/atoms/icon'
-import React from 'react'
 
 export interface BreadcrumbItem {
   label: string
@@ -47,7 +47,7 @@ export const DynamicBreadcrumb: React.FC<DynamicBreadcrumbProps> = ({
             </BreadcrumbItem>
             {index < items.length - 1 && (
               <BreadcrumbSeparator>
-                <Icon icon="lucide:slash" className="size-4" />
+                <Icon icon='lucide:slash' className='size-4' />
               </BreadcrumbSeparator>
             )}
           </React.Fragment>
