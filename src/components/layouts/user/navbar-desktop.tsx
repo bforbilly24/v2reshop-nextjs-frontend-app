@@ -117,7 +117,7 @@ export function NavbarDesktop({
   const router = useRouter()
   const pathname = usePathname()
   const { data: session } = useSession()
-  const { cartItems, itemCount } = useCart()
+  const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
 

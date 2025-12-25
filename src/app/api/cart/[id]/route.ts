@@ -9,7 +9,7 @@ import { authOptions } from '@/lib/auth'
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -19,7 +19,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const cartItemId = params.id
+    const { id: cartItemId } = await context.params
 
     const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`, {
       method: 'PUT',
@@ -56,7 +56,7 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -65,7 +65,7 @@ export async function DELETE(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
-    const cartItemId = params.id
+    const { id: cartItemId } = await context.params
 
     const res = await fetch(`${env.api.baseUrl}${env.api.endpoints.cart.delete(cartItemId)}`, {
       method: 'DELETE',

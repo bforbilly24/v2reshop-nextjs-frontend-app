@@ -42,7 +42,7 @@ export default function NavbarMobile({
   const [isOpen, setIsOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string>('')
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-  const { cartItems, itemCount } = useCart()
+  const { cartItems: _cartItems, itemCount } = useCart()
   const pathname = usePathname()
   const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen
 
