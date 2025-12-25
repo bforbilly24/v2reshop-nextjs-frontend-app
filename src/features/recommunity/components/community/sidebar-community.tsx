@@ -8,10 +8,10 @@ import {
 } from '@/constant'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent, CardHeader } from '@/components/atoms/card'
+import { Icon } from '@/components/atoms/icon'
 import { Input } from '@/components/atoms/input'
 import { Label } from '@/components/atoms/label'
 import { ScrollArea } from '@/components/atoms/scroll-area'
-import { Icon } from '@/components/atoms/icon'
 
 const SidebarCommunity = ({
   searchTerm = '',
@@ -19,7 +19,7 @@ const SidebarCommunity = ({
   selectedId = 1,
   onSelectedIdChange,
   onCreateCommunity,
-  communityItems = COMMUNITIES, 
+  communityItems = COMMUNITIES,
 }: ReSidebarCommunityProps) => {
   const [activeId, setActiveId] = useState<number>(selectedId)
 

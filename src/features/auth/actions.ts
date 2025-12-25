@@ -1,9 +1,14 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
 import { env } from '@/config/environment'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { AuthResponse, LoginRequest, RegisterRequest, UserProfileResponse } from './types'
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  UserProfileResponse,
+} from './types'
 
 export const loginUser = async (
   credentials: LoginRequest

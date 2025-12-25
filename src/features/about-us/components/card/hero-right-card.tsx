@@ -2,8 +2,10 @@ import { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react'
 import { ArrowDownIcon } from 'lucide-react'
 import Link from 'next/link'
 
-interface HeroRightCardProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href' | 'onClick'> {
+interface HeroRightCardProps extends Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  'href' | 'onClick'
+> {
   href: string
   children?: ReactNode
 }

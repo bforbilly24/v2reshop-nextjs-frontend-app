@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from 'react'
 import { HEROSLIDERHOME } from '@/constant'
+import Autoplay from 'embla-carousel-autoplay'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '@/components/atoms/button'
@@ -16,7 +17,6 @@ import {
 } from '@/components/atoms/carousel'
 import { HeroLeftCard } from './cards/hero-left-card'
 import { HeroRightCard } from './cards/hero-right-card'
-import Autoplay from 'embla-carousel-autoplay'
 
 const HeroSliderSection: React.FC = () => {
   const [api, setApi] = useState<CarouselApi>()
@@ -30,9 +30,12 @@ const HeroSliderSection: React.FC = () => {
     api?.scrollNext()
   }, [api])
 
-  const handlePaginationClick = useCallback((index: number) => {
-    api?.scrollTo(index)
-  }, [api])
+  const handlePaginationClick = useCallback(
+    (index: number) => {
+      api?.scrollTo(index)
+    },
+    [api]
+  )
 
   React.useEffect(() => {
     if (!api) return
@@ -116,8 +119,8 @@ const HeroSliderSection: React.FC = () => {
         >
           <CarouselContent className='ml-0 md:-ml-4'>
             {HEROSLIDERHOME.map((slide, index) => (
-              <CarouselItem 
-                key={slide.id} 
+              <CarouselItem
+                key={slide.id}
                 className='pl-0 md:pl-4 basis-full md:basis-auto'
               >
                 <Card className='border-0 shadow-none'>
@@ -137,7 +140,7 @@ const HeroSliderSection: React.FC = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          
+
           {/* Hidden default controls */}
           <CarouselPrevious className='hidden' />
           <CarouselNext className='hidden' />
@@ -154,7 +157,7 @@ const HeroSliderSection: React.FC = () => {
           >
             <ChevronLeftIcon className='size-5 text-white' />
           </Button>
-          
+
           {/* Pagination Dots */}
           <div className='flex items-center gap-x-2'>
             {HEROSLIDERHOME.map((_, index) => (

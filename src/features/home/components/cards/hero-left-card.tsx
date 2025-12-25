@@ -1,10 +1,6 @@
 import React from 'react'
+import { CardContainer, CardBody, CardItem } from '@/components/atoms/3d-card'
 import { Button } from '@/components/atoms/button'
-import {
-  CardContainer,
-  CardBody,
-  CardItem,
-} from '@/components/atoms/3d-card'
 
 const HeroLeftCard: React.FC = () => {
   return (

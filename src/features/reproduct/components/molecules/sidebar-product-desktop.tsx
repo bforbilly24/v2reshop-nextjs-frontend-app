@@ -1,17 +1,17 @@
 'use client'
 
-import { SidebarProductProps } from '../types'
+import { Card, CardContent, CardHeader } from '@/components/atoms/card'
+import { Checkbox } from '@/components/atoms/checkbox'
+import { Icon } from '@/components/atoms/icon'
+import { Input } from '@/components/atoms/input'
+import { Label } from '@/components/atoms/label'
+import { ScrollArea } from '@/components/atoms/scroll-area'
 import {
   PRICES,
   RATINGS,
   CUSTOMIZATIONS as ECOMMERCE_CUSTOMIZATIONS,
 } from '@/features/reproduct/constants'
-import { Card, CardContent, CardHeader } from '@/components/atoms/card'
-import { Checkbox } from '@/components/atoms/checkbox'
-import { Input } from '@/components/atoms/input'
-import { Label } from '@/components/atoms/label'
-import { ScrollArea } from '@/components/atoms/scroll-area'
-import { Icon } from '@/components/atoms/icon'
+import { SidebarProductProps } from '../types'
 
 const SidebarProductDesktop = ({
   searchTerm = '',
@@ -26,7 +26,6 @@ const SidebarProductDesktop = ({
   onCustomizationChange,
   availableCategories = [],
 }: SidebarProductProps) => {
-
   const updatedCategories = availableCategories.map((category) => ({
     label: category.name,
     value: category.id.toString(),
@@ -37,7 +36,6 @@ const SidebarProductDesktop = ({
   const updatedRatings = RATINGS
 
   const updatedCustomizations = ECOMMERCE_CUSTOMIZATIONS
-
 
   const handleCategoryToggle = (categoryValue: string) => {
     if (typeof onCategoryChange !== 'function') {
@@ -252,9 +250,7 @@ const SidebarProductDesktop = ({
                     </span>
                   </Label>
                 </div>
-                <span className='text-muted-foreground text-xs'>
-                  
-                </span>
+                <span className='text-muted-foreground text-xs'></span>
               </div>
             ))}
           </div>

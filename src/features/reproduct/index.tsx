@@ -3,33 +3,35 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/atoms/button'
-import Wrapper from '@/components/atoms/wrapper'
+import { Empty } from '@/components/atoms/empty'
 import { Icon } from '@/components/atoms/icon'
+import Wrapper from '@/components/atoms/wrapper'
+import { getProducts, getProductCategories } from './actions'
+import { ProductBoxSkeleton } from './components/atoms/product-box-skeleton'
+import { ProductListSkeleton } from './components/atoms/product-list-skeleton'
+import ProductBoxSection from './components/organisms/product-box-section'
 import ProductListSection from './components/organisms/product-list-section'
 import { ProductPaginationSection } from './components/organisms/product-pagination-section'
 import { ProductWrapperSection } from './components/organisms/product-wrapper-section'
-import { Empty } from '@/components/atoms/empty'
-import ProductBoxSection from './components/organisms/product-box-section'
-import { ProductBoxSkeleton } from '@/components/atoms/product-box-skeleton'
-import { ProductListSkeleton } from '@/components/atoms/product-list-skeleton'
-import { getProducts, getProductCategories } from './actions'
-import type { Category, ProductParams } from './types'
 import { SidebarProductProps } from './components/types'
 import { PRICES } from './constants'
+import type { Category, ProductParams } from './types'
 
 const ReProductView = () => {
   const [categories, setCategories] = useState<Category[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [sortBy, setSortBy] = useState('rating_high_low')
+  const [initialLoading, setInitialLoading] = useState(true)
 
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
   const [selectedRatings, setSelectedRatings] = useState<number[]>([])
-  const [selectedCustomizations, setSelectedCustomizations] = useState<boolean[]>([])
+  const [selectedCustomizations, setSelectedCustomizations] = useState<
+    boolean[]
+  >([])
 
-  // Fetch categories once on mount (server-side data, no need tanstack)
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -45,7 +47,6 @@ const ReProductView = () => {
     fetchCategories()
   }, [])
 
-  // Build query params
   const queryParams = useMemo(() => {
     const params: ProductParams = {
       page: currentPage,
@@ -57,9 +58,15 @@ const ReProductView = () => {
     }
 
     if (selectedCustomizations.length > 0) {
-      if (selectedCustomizations.includes(true) && !selectedCustomizations.includes(false)) {
+      if (
+        selectedCustomizations.includes(true) &&
+        !selectedCustomizations.includes(false)
+      ) {
         params.customized = true
-      } else if (selectedCustomizations.includes(false) && !selectedCustomizations.includes(true)) {
+      } else if (
+        selectedCustomizations.includes(false) &&
+        !selectedCustomizations.includes(true)
+      ) {
         params.customized = false
       }
     }
@@ -67,8 +74,8 @@ const ReProductView = () => {
     if (selectedPriceRanges.length > 0) {
       let min = Infinity
       let max = -Infinity
-      selectedPriceRanges.forEach(rangeLabel => {
-        const range = PRICES.find(p => p.label === rangeLabel)
+      selectedPriceRanges.forEach((rangeLabel) => {
+        const range = PRICES.find((p) => p.label === rangeLabel)
         if (range) {
           if (range.value.min * 1000 < min) min = range.value.min * 1000
           if (range.value.max * 1000 > max) max = range.value.max * 1000
@@ -97,27 +104,34 @@ const ReProductView = () => {
     }
 
     return params
-  }, [currentPage, searchTerm, selectedCategories, selectedCustomizations, selectedPriceRanges, selectedRatings, sortBy])
+  }, [
+    currentPage,
+    searchTerm,
+    selectedCategories,
+    selectedCustomizations,
+    selectedPriceRanges,
+    selectedRatings,
+    sortBy,
+  ])
 
-  // Use Tanstack Query for products pagination (client-side caching)
-  const {
-    data: productsData,
-    isLoading,
-  } = useQuery({
+  const { data: productsData, isLoading } = useQuery({
     queryKey: ['products', queryParams],
     queryFn: async () => {
       const res = await getProducts(queryParams)
       if (!res.status) {
         throw new Error('Failed to fetch products')
       }
+      setInitialLoading(false)
       return res.data
     },
-    staleTime: 30 * 1000, // 30 seconds
-    placeholderData: (previousData) => previousData, // Keep previous data while fetching
+    staleTime: 30 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const products = productsData?.data || []
   const totalPages = productsData?.last_page || 1
+
+  const showSkeleton = initialLoading || isLoading
 
   const updatedGetEcommerceNav = () => {
     return [
@@ -214,16 +228,19 @@ const ReProductView = () => {
               <div className='flex flex-wrap gap-2'>
                 {selectedCategories &&
                   selectedCategories.map((catId) => {
-                    const cat = categories.find(c => c.id.toString() === catId)
+                    const cat = categories.find(
+                      (c) => c.id.toString() === catId
+                    )
                     return (
-                    <span
-                      key={catId}
-                      className='inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full border border-primary/20'
-                    >
-                      <Icon icon='heroicons:tag' className='size-3 mr-1' />
-                      {cat ? cat.name : catId}
-                    </span>
-                  )})}
+                      <span
+                        key={catId}
+                        className='inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full border border-primary/20'
+                      >
+                        <Icon icon='heroicons:tag' className='size-3 mr-1' />
+                        {cat ? cat.name : catId}
+                      </span>
+                    )
+                  })}
 
                 {selectedPriceRanges &&
                   selectedPriceRanges.map((price) => (
@@ -264,15 +281,21 @@ const ReProductView = () => {
             </div>
           )}
 
-          {isLoading ? (
-            <div className={viewMode === 'grid' ? 'grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4' : 'flex flex-col space-y-4'}>
-              {Array.from({ length: 6 }).map((_, index) => (
+          {showSkeleton ? (
+            <div
+              className={
+                viewMode === 'grid'
+                  ? 'grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4'
+                  : 'flex flex-col space-y-4'
+              }
+            >
+              {Array.from({ length: 6 }).map((_, index) =>
                 viewMode === 'grid' ? (
                   <ProductBoxSkeleton key={index} />
                 ) : (
                   <ProductListSkeleton key={index} />
                 )
-              ))}
+              )}
             </div>
           ) : products.length === 0 ? (
             <Empty

@@ -1,10 +1,11 @@
+import { siteConfig } from '@/config/seo'
 import { Metadata } from 'next'
 import { AboutUs } from '@/features/about-us'
-import { siteConfig } from '@/config/seo'
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about ReShop mission to create a sustainable marketplace for eco-friendly products.',
+  description:
+    'Learn about ReShop mission to create a sustainable marketplace for eco-friendly products.',
   alternates: {
     canonical: `${siteConfig.url}/about-us`,
   },

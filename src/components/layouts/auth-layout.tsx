@@ -1,10 +1,9 @@
 'use client'
 
+import type { ComponentProps } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
-
-import type { ComponentProps } from 'react'
 
 interface AuthLayoutProps extends ComponentProps<'div'> {
   imgSrc?: string
@@ -26,21 +25,21 @@ export function AuthLayout({
       )}
       {...props}
     >
-      <div className="flex-1 relative grid">
-        <div className="absolute top-0 inset-x-0 flex justify-between items-center px-4 py-2.5">
+      <div className='flex-1 relative grid'>
+        <div className='absolute top-0 inset-x-0 flex justify-between items-center px-4 py-2.5'>
           <Link
-            href="/"
-            className="flex items-center gap-2 text-foreground font-black z-50"
+            href='/'
+            className='flex items-center gap-2 text-foreground font-black z-50'
           >
             <Image
-            src="/images/brand/brand-name.png"
-              alt="ReShop"
+              src='/images/brand/brand-name.png'
+              alt='ReShop'
               height={48}
               width={161}
             />
           </Link>
         </div>
-        <div className="max-w-md w-full m-auto px-6 py-12 space-y-6">
+        <div className='max-w-md w-full m-auto px-6 py-12 space-y-6'>
           {children}
         </div>
       </div>
@@ -64,11 +63,11 @@ export function AuthImage({ className, imgSrc, ...props }: AuthImageProps) {
     >
       <Image
         src={imgSrc}
-        alt="Welcome"
+        alt='Welcome'
         fill
-        sizes="(max-width: 1200px) 60vw, 38vw"
+        sizes='(max-width: 1200px) 60vw, 38vw'
         priority
-        className="object-cover"
+        className='object-cover'
       />
     </div>
   )

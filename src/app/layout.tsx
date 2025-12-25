@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
-import '../style/globals.css'
-import { Lato as Font } from 'next/font/google'
-import { BProgressProvider } from '@/providers/bprogress-provider'
-import { AuthProvider } from '@/providers/auth-provider'
-import { QueryProvider } from '@/providers/query-provider'
-import { Toaster } from '@/components/atoms/sonner'
 import { defaultMetadata } from '@/config/seo'
+import { AuthProvider } from '@/providers/auth-provider'
+import { BProgressProvider } from '@/providers/bprogress-provider'
+import { QueryProvider } from '@/providers/query-provider'
+import { Lato as Font } from 'next/font/google'
+import { Toaster } from '@/components/atoms/sonner'
 import { JsonLd } from '@/components/seo/json-ld'
+import '../style/globals.css'
 
 const font = Font({
   weight: ['400'],
@@ -33,20 +33,21 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html className={font.className} lang="en">
+    <html className={font.className} lang='en'>
       <head>
-        <JsonLd type="website" />
-        <JsonLd type="organization" />
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+        <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
+        <link rel='apple-touch-icon' href='/apple-icon' />
+        <JsonLd type='website' />
+        <JsonLd type='organization' />
       </head>
       <body>
         <AuthProvider>
           <QueryProvider>
-            <BProgressProvider>
-              {children}
-            </BProgressProvider>
+            <BProgressProvider>{children}</BProgressProvider>
           </QueryProvider>
         </AuthProvider>
-        <Toaster richColors position="top-right" theme="light" offset="100px" />
+        <Toaster richColors position='top-right' theme='light' offset='100px' />
       </body>
     </html>
   )

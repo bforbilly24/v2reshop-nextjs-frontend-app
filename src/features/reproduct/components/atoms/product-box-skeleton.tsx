@@ -1,4 +1,9 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/atoms/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/atoms/card'
 import { Skeleton } from '@/components/atoms/skeleton'
 
 export const ProductBoxSkeleton = () => {

@@ -13,17 +13,15 @@ export default function CoreLayout({ children }: CoreLayoutProps) {
   return (
     <CartProvider>
       <CartFeedbackProvider>
-        <div className="min-h-screen flex flex-col">
+        <div className='min-h-screen flex flex-col'>
           <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className='flex-1'>{children}</main>
           <Footer />
-          
-          <ScrollProgressToTop 
+
+          <ScrollProgressToTop
             showOffset={300}
-            size="md"
-            variant="default"
+            size='md'
+            variant='default'
             showTopProgress={true}
           />
         </div>

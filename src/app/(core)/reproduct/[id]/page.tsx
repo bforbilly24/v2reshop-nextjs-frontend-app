@@ -1,8 +1,8 @@
+import { siteConfig } from '@/config/seo'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ReProductDetailView } from '@/features/reproduct/reproduct-detail'
 import { getProductBySlug } from '@/features/reproduct/reproduct-detail/actions'
-import { siteConfig } from '@/config/seo'
 
 interface Props {
   params: Promise<{

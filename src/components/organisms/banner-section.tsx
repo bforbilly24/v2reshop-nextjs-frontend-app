@@ -8,9 +8,9 @@ import { FlickeringGrid } from '@/components/atoms/flickering-grid'
 import { Icon } from '@/components/atoms/icon'
 import SectionBadge from '@/components/atoms/section-badge'
 import AnimationContainer from '../atoms/animation-container'
-import { TypingAnimation } from '../atoms/typing-animation'
 import { Particles } from '../atoms/particles'
 import RetroGrid from '../atoms/retro-grid'
+import { TypingAnimation } from '../atoms/typing-animation'
 
 const HIGHLIGHTS = [
   {
@@ -39,7 +39,7 @@ const BannerSection: React.FC = () => {
       <div className='flex flex-col items-center text-center relative gap-4 py-8 sm:py-12 overflow-hidden z-0 rounded-xl max-w-full mx-auto'>
         <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-emerald-200/80 dark:from-foreground w-full h-1/2 z-10' />
 
-        <AnimationContainer 
+        <AnimationContainer
           animation='scaleUp'
           delay={0.2}
           className='w-full mx-auto'

@@ -47,7 +47,7 @@ const ReProductColorSection: React.FC<ReProductColorSectionProps> = ({
         {colors.map((color, index) => {
           const isSelected = color === selectedColor
           const colorValue = getColorValue(color)
-          
+
           return (
             <label key={index} className='relative cursor-pointer group'>
               <input
@@ -69,9 +69,15 @@ const ReProductColorSection: React.FC<ReProductColorSectionProps> = ({
                 title={color}
               />
               {isSelected && (
-                 <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Icon icon="ph:check" className={cn("w-4 h-4", color === 'White' ? 'text-black' : 'text-white')} />
-                 </span>
+                <span className='absolute inset-0 flex items-center justify-center pointer-events-none'>
+                  <Icon
+                    icon='ph:check'
+                    className={cn(
+                      'w-4 h-4',
+                      color === 'White' ? 'text-black' : 'text-white'
+                    )}
+                  />
+                </span>
               )}
             </label>
           )

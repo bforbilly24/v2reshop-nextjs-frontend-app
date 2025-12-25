@@ -1,4 +1,3 @@
-
 const HeroLeftCard = () => {
   return (
     <div className='absolute -bottom-10 left-20 z-10 h-fit inline-flex w-56 items-start rounded-lg justify-center bg-white/70 p-8 backdrop-blur-lg lg:top-40 lg:w-[26rem]'>

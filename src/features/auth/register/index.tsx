@@ -13,7 +13,7 @@ import { RegisterFormSection } from './components/organisms/register-form-sectio
 
 const RegisterView = () => {
   return (
-    <AuthLayout imgSrc="/images/auth/welcome.svg">
+    <AuthLayout imgSrc='/images/auth/welcome.svg'>
       <AuthHeader>
         <AuthTitle>Register</AuthTitle>
         <AuthDescription>Create your account to get started</AuthDescription>
@@ -22,19 +22,19 @@ const RegisterView = () => {
         <RegisterFormSection />
       </AuthForm>
       <AuthFooter>
-        <div className="text-center text-sm">
+        <div className='text-center text-sm'>
           Already have an account?{' '}
           <Link
-            href="/auth/login"
-            className="underline underline-offset-4 hover:text-primary"
+            href='/auth/login'
+            className='underline underline-offset-4 hover:text-primary'
           >
             Login
           </Link>
         </div>
-        <div className="text-center text-sm text-muted-foreground">
+        <div className='text-center text-sm text-muted-foreground'>
           <Link
-            href="/"
-            className="underline underline-offset-4 hover:text-primary"
+            href='/'
+            className='underline underline-offset-4 hover:text-primary'
           >
             Back to home
           </Link>

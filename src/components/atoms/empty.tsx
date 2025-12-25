@@ -19,12 +19,8 @@ const Empty: React.FC<EmptyProps> = ({
   return (
     <div className='grid gap-4 w-60 mx-auto flex-flex-col items-center justify-center text-center'>
       <EmptyCartIcon className='mx-auto' />
-      <h2 className='text-base font-semibold text-foreground mb-1'>
-        {Title}
-      </h2>
-      <p className='text-sm font-normal text-foreground mb-4'>
-        {Desc}
-      </p>
+      <h2 className='text-base font-semibold text-foreground mb-1'>{Title}</h2>
+      <p className='text-sm font-normal text-foreground mb-4'>{Desc}</p>
       <Button
         variant={'default'}
         size={'lg'}

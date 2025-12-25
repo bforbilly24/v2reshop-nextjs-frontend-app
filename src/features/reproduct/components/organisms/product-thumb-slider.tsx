@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { ProductDetail } from '@/features/reproduct/reproduct-detail/types'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/splide/css'
 import Image from 'next/image'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
+import { ProductDetail } from '@/features/reproduct/reproduct-detail/types'
 
 interface ProductThumbSliderProps {
   product: ProductDetail
@@ -29,7 +29,9 @@ const ProductThumbSlider: React.FC<ProductThumbSliderProps> = ({ product }) => {
   }, [])
 
   const images =
-    product.images && product.images.length > 0 ? product.images : ['https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image']
+    product.images && product.images.length > 0
+      ? product.images
+      : ['https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image']
 
   const mainOptions = {
     type: 'fade' as const,

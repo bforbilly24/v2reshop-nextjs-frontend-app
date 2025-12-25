@@ -4,6 +4,7 @@ import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import AnimationContainer from '@/components/atoms/animation-container'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
 import { Checkbox } from '@/components/atoms/checkbox'
@@ -15,13 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/atoms/form'
+import { Icon } from '@/components/atoms/icon'
 import { Input } from '@/components/atoms/input'
+import SectionBadge from '@/components/atoms/section-badge'
 import { Textarea } from '@/components/atoms/textarea'
 import { TypingAnimation } from '@/components/atoms/typing-animation'
-import AnimationContainer from '@/components/atoms/animation-container'
 import Wrapper from '@/components/atoms/wrapper'
-import { Icon } from '@/components/atoms/icon'
-import SectionBadge from '@/components/atoms/section-badge'
 import { contactFormSchema } from '../schema/form-schema'
 
 type ContactFormValues = z.infer<typeof contactFormSchema>

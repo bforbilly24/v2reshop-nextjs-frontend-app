@@ -7,13 +7,13 @@ import '@splidejs/react-splide/css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { handleSmoothScroll } from '@/utils/smooth-scroll'
-import { Button } from '@/components/atoms/button'
-import { BoxReveal } from '@/components/atoms/box-reveal'
-import { InteractiveHoverButton } from '@/components/atoms/interactive-hover-button'
 import AnimationContainer from '@/components/atoms/animation-container'
-import Wrapper from '@/components/atoms/wrapper'
+import { BoxReveal } from '@/components/atoms/box-reveal'
+import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
+import { InteractiveHoverButton } from '@/components/atoms/interactive-hover-button'
 import SectionBadge from '@/components/atoms/section-badge'
+import Wrapper from '@/components/atoms/wrapper'
 
 const heroImage = `relative w-full h-full before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-30 before:z-[1] before:pointer-events-none overflow-hidden`
 const heroContent = `absolute w-full max-w-7xl left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[2] h-full flex items-center justify-center`

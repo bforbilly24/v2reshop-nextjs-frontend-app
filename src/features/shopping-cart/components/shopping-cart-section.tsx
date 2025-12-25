@@ -1,47 +1,38 @@
 'use client'
 
-import { useState } from 'react'
-import { Minus, Plus, Truck } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatPrice } from '@/utils/format-price'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
-import { Input } from '@/components/atoms/input'
-import { Separator } from '@/components/atoms/separator'
-import Wrapper from '@/components/atoms/wrapper'
 import { Empty } from '@/components/atoms/empty'
+import { Separator } from '@/components/atoms/separator'
 import { Stepper } from '@/components/atoms/stepper'
+import Wrapper from '@/components/atoms/wrapper'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { useCartFeedback } from '@/features/shopping-cart/context/cart-feedback-context'
+import { ShoppingCartSkeleton } from './atoms/shopping-cart-skeleton'
 
 const ShoppingCartSection: React.FC = () => {
-  const { cartItems, updateQuantity, removeItem } = useCart()
-  const { showSuccess } = useCartFeedback()
-  const [voucherCode, setVoucherCode] = useState('')
+  const { cartItems, subtotal, updateQuantity, removeItem, initialLoading } =
+    useCart()
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
-  const savings = 0
-  const storePickup = 99
-  const tax = 199
-  const total = subtotal + storePickup + tax - savings
-
-  const handleUpdateQuantity = (id: string, newQuantity: number) => {
+  const handleUpdateQuantity = async (id: number, newQuantity: number) => {
     if (newQuantity >= 1) {
-      updateQuantity(id, newQuantity)
-      const item = cartItems.find((item) => item.id === id)
-      if (item) {
-        showSuccess({ ...item, quantity: newQuantity })
+      try {
+        await updateQuantity(id, newQuantity)
+      } catch (error) {
+        console.error('[ShoppingCart] Failed to update quantity:', error)
       }
     }
   }
 
-  const handleRemoveItem = (id: string, name: string) => {
-    removeItem(id)
-    showSuccess(`Removed ${name} from your cart`)
+  const handleRemoveItem = async (id: number) => {
+    try {
+      await removeItem(id)
+    } catch (error) {
+      console.error('[ShoppingCart] Failed to remove item:', error)
+    }
   }
 
   const steps = [
@@ -57,7 +48,9 @@ const ShoppingCartSection: React.FC = () => {
           <h1 className='text-xl font-semibold text-gray-900 dark:text-white mb-6'>
             Your Cart
           </h1>
-          {cartItems.length === 0 ? (
+          {initialLoading ? (
+            <ShoppingCartSkeleton />
+          ) : cartItems.length === 0 ? (
             <Empty />
           ) : (
             <div className='space-y-4'>
@@ -69,8 +62,8 @@ const ShoppingCartSection: React.FC = () => {
                   <CardContent className='p-4 flex justify-between gap-4'>
                     <div className='w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0'>
                       <Image
-                        src={item.image}
-                        alt={item.name}
+                        src={item.product.image[0] || '/placeholder.png'}
+                        alt={item.product.name}
                         width={48}
                         height={36}
                         className='object-cover rounded'
@@ -78,25 +71,21 @@ const ShoppingCartSection: React.FC = () => {
                     </div>
                     <div className='flex-1'>
                       <h3 className='text-sm font-medium text-gray-900 dark:text-white line-clamp-2 mb-1'>
-                        {item.name}
+                        {item.product.name}
                       </h3>
                       <p className='text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2'>
-                        {item.description}
+                        {item.product.description}
                       </p>
-                      <div className='flex gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400'>
-                        {item.color && (
+                      {item.variant && (
+                        <div className='flex gap-2 mb-2 text-xs text-gray-500 dark:text-gray-400'>
                           <span>
-                            <span className='font-medium'>Color:</span>{' '}
-                            {item.color}
+                            <span className='font-medium'>
+                              {item.variant.type}:
+                            </span>{' '}
+                            {item.variant.value}
                           </span>
-                        )}
-                        {item.size && (
-                          <span>
-                            <span className='font-medium'>Size:</span>{' '}
-                            {item.size}
-                          </span>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       <div className='flex items-center gap-2 mb-2'>
                         <Button
                           size='icon'
@@ -123,28 +112,16 @@ const ShoppingCartSection: React.FC = () => {
                           <Plus className='h-4 w-4' />
                         </Button>
                         <span className='text-sm font-semibold text-gray-900 dark:text-white ml-auto'>
-                          {formatPrice(item.price)}
+                          {formatPrice(item.total_price)}
                         </span>
                       </div>
-                      <div className='flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-2'>
-                        <Truck className='h-4 w-4' />
-                        <span>Delivery on {item.deliveryDate}</span>
-                      </div>
-                      <div className='flex items-center gap-4 text-xs'>
-                        <Button
-                          variant='link'
-                          className='p-0 h-auto text-emerald-600 dark:text-emerald-400'
-                        >
-                          Move to Favorites
-                        </Button>
-                        <Button
-                          variant='link'
-                          className='p-0 h-auto text-red-600 dark:text-red-400'
-                          onClick={() => handleRemoveItem(item.id, item.name)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
+                      <Button
+                        variant='link'
+                        className='p-0 h-auto text-red-600 dark:text-red-400 text-xs'
+                        onClick={() => handleRemoveItem(item.id)}
+                      >
+                        Remove
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -164,24 +141,10 @@ const ShoppingCartSection: React.FC = () => {
                   <span>Subtotal</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
-                <div className='flex justify-between text-gray-600 dark:text-gray-300'>
-                  <span>Savings</span>
-                  <span className='text-green-600 dark:text-green-400'>
-                    {formatPrice(savings)}
-                  </span>
-                </div>
-                <div className='flex justify-between text-gray-600 dark:text-gray-300'>
-                  <span>Store Pickup</span>
-                  <span>{formatPrice(storePickup)}</span>
-                </div>
-                <div className='flex justify-between text-gray-600 dark:text-gray-300'>
-                  <span>Tax</span>
-                  <span>{formatPrice(tax)}</span>
-                </div>
                 <Separator className='bg-gray-200 dark:bg-gray-700' />
                 <div className='flex justify-between font-semibold text-gray-900 dark:text-white'>
                   <span>Total</span>
-                  <span>{formatPrice(total)}</span>
+                  <span>{formatPrice(subtotal)}</span>
                 </div>
               </div>
 
@@ -201,42 +164,7 @@ const ShoppingCartSection: React.FC = () => {
                 </Button>
               )}
 
-              <div className='text-center text-xs text-gray-500 dark:text-gray-400'>
-                One or more items require an account.{' '}
-                <Link
-                  href='/auth/signin'
-                  className='text-emerald-600 dark:text-emerald-400 hover:underline'
-                >
-                  Sign in
-                </Link>{' '}
-                or{' '}
-                <Link
-                  href='/auth/signup'
-                  className='text-emerald-600 dark:text-emerald-400 hover:underline'
-                >
-                  create an account
-                </Link>
-                .
-              </div>
-              <div className='space-y-2'>
-                <p className='text-sm font-medium text-gray-900 dark:text-white'>
-                  Voucher or Gift Card
-                </p>
-                <div className='flex gap-2'>
-                  <Input
-                    placeholder='Enter code'
-                    value={voucherCode}
-                    onChange={(e) => setVoucherCode(e.target.value)}
-                    className='bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white'
-                  />
-                  <Button
-                    variant='outline'
-                    className='border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300'
-                  >
-                    Apply
-                  </Button>
-                </div>
-              </div>
+
             </CardContent>
           </Card>
         </div>

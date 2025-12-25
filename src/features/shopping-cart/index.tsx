@@ -1,4 +1,4 @@
-import { ShoppingCartSection } from "./components/shopping-cart-section"
+import { ShoppingCartSection } from './components/shopping-cart-section'
 
 const ShoppingCart = async () => {
   return (

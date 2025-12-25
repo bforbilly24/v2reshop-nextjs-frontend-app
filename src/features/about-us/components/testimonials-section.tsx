@@ -1,8 +1,8 @@
 import { TESTIMONIALS } from '@/constant'
 import { StarIcon, UserIcon } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import { Marquee } from '@/components/atoms/marquee'
 import AnimationContainer from '@/components/atoms/animation-container'
+import { Marquee } from '@/components/atoms/marquee'
 import SectionBadge from '@/components/atoms/section-badge'
 
 const firstRow = TESTIMONIALS.slice(0, TESTIMONIALS.length / 2)
@@ -34,10 +34,9 @@ const TestimonialsSection: React.FC = () => {
 
       <AnimationContainer animation='fadeUp' delay={0.8}>
         <div className='relative w-full'>
-
           <div className='relative flex h-full w-full flex-col items-center justify-center overflow-hidden'>
-          <div className='absolute -left-1 top-0 w-20 h-full bg-gradient-to-r from-background dark:from-foreground to-transparent z-10' />
-          <div className='absolute -right-1 top-0 w-20 h-full bg-gradient-to-l from-background dark:from-foreground to-transparent z-10' />
+            <div className='absolute -left-1 top-0 w-20 h-full bg-gradient-to-r from-background dark:from-foreground to-transparent z-10' />
+            <div className='absolute -right-1 top-0 w-20 h-full bg-gradient-to-l from-background dark:from-foreground to-transparent z-10' />
             <Marquee pauseOnHover className='[--duration:20s] select-none'>
               {firstRow.map((review, index) => (
                 <figure

@@ -125,5 +125,5 @@ export {
   type FooterGroupItem,
   FOOTER_SOCIAL,
   FOOTER_LANGUAGES,
-  type FooterLinkItem
+  type FooterLinkItem,
 }

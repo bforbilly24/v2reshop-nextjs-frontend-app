@@ -8,9 +8,26 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/auth/'],
+        disallow: [
+          '/api/',
+          '/auth/login',
+          '/auth/register',
+          '/checkout',
+          '/shopping-cart',
+        ],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: ['/api/', '/auth/', '/checkout', '/shopping-cart'],
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: ['/api/', '/auth/', '/checkout', '/shopping-cart'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
   }
 }

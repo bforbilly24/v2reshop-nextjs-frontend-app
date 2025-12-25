@@ -77,14 +77,14 @@ export function generateJsonLd({ type, data }: JsonLdProps) {
       return {
         '@context': baseContext,
         '@type': 'BreadcrumbList',
-        itemListElement: (data.items as Array<{ name: string; url?: string }>).map(
-          (item, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            name: item.name,
-            item: item.url ? `${siteConfig.url}${item.url}` : undefined,
-          })
-        ),
+        itemListElement: (
+          data.items as Array<{ name: string; url?: string }>
+        ).map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.name,
+          item: item.url ? `${siteConfig.url}${item.url}` : undefined,
+        })),
       }
 
     case 'article':
@@ -123,7 +123,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
 
   return (
     <script
-      type="application/ld+json"
+      type='application/ld+json'
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
   )
