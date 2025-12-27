@@ -65,32 +65,31 @@ export function useUpdateCartItem() {
       payload: UpdateCartQuantityRequest
     }) => updateCartItemAPI(cartItemId, payload),
     onMutate: async ({ cartItemId, payload }) => {
-      // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: cartKeys.items() })
 
-      // Snapshot previous value
       const previousCart = queryClient.getQueryData(cartKeys.items())
 
-      // Optimistically update
-      queryClient.setQueryData(cartKeys.items(), (old: GetCartResponse | undefined) => {
-        if (!old?.data?.items) return old
-        return {
-          ...old,
-          data: {
-            ...old.data,
-            items: old.data.items.map((item: CartItem) =>
-              item.id === cartItemId
-                ? { ...item, quantity: payload.quantity }
-                : item
-            ),
-          },
+      queryClient.setQueryData(
+        cartKeys.items(),
+        (old: GetCartResponse | undefined) => {
+          if (!old?.data?.items) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              items: old.data.items.map((item: CartItem) =>
+                item.id === cartItemId
+                  ? { ...item, quantity: payload.quantity }
+                  : item
+              ),
+            },
+          }
         }
-      })
+      )
 
       return { previousCart }
     },
     onError: (error: Error, variables, context) => {
-      // Rollback on error
       if (context?.previousCart) {
         queryClient.setQueryData(cartKeys.items(), context.previousCart)
       }
@@ -115,16 +114,21 @@ export function useRemoveCartItem() {
 
       const previousCart = queryClient.getQueryData(cartKeys.items())
 
-      queryClient.setQueryData(cartKeys.items(), (old: GetCartResponse | undefined) => {
-        if (!old?.data?.items) return old
-        return {
-          ...old,
-          data: {
-            ...old.data,
-            items: old.data.items.filter((item: CartItem) => item.id !== cartItemId),
-          },
+      queryClient.setQueryData(
+        cartKeys.items(),
+        (old: GetCartResponse | undefined) => {
+          if (!old?.data?.items) return old
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              items: old.data.items.filter(
+                (item: CartItem) => item.id !== cartItemId
+              ),
+            },
+          }
         }
-      })
+      )
 
       return { previousCart }
     },

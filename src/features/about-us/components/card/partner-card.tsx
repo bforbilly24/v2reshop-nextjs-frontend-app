@@ -10,9 +10,7 @@ const PartnerCard = ({ image, alt }: { image: string; alt: string }) => {
     <figure
       className={cn(
         'relative h-48 w-48 cursor-pointer overflow-hidden rounded-xl border p-4',
-        // Light styles
         'border-emerald-200 bg-emerald-50/5 hover:bg-emerald-50/10',
-        // Dark styles
         'dark:border-emerald-800/10 dark:bg-emerald-800/10 dark:hover:bg-emerald-800/15'
       )}
     >
