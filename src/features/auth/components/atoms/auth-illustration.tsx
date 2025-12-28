@@ -1,7 +1,7 @@
 'use client'
 
-import { Quote } from 'lucide-react'
 import React from 'react'
+import { Quote } from 'lucide-react'
 import MeshGradient from './mesh-gradient'
 
 export const AuthIllustration = () => {
@@ -18,12 +18,12 @@ export const AuthIllustration = () => {
       <div className='relative z-40 max-w-sm rounded-xl bg-black/50 p-4 backdrop-blur-sm'>
         <Quote className='mb-3 size-8 text-emerald-400' />
         <h2 className='text-white'>
-          Shop smarter with quality refurbished products. Save money while making
-          sustainable choices for a better future.
+          Shop smarter with quality refurbished products. Save money while
+          making sustainable choices for a better future.
         </h2>
         <p className='mt-4 flex items-center gap-2 text-sm text-emerald-400'>
           <svg className='size-4' viewBox='0 0 24 24' fill='currentColor'>
-            <path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/>
+            <path d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' />
           </svg>
           <span className='font-semibold'>Verified by ReShop</span>
         </p>

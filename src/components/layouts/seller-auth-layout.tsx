@@ -1,12 +1,12 @@
 'use client'
 
 import type { ComponentProps } from 'react'
+import { Quote } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Quote } from 'lucide-react'
 import { cn } from '@/lib/cn'
-import { Card, CardContent } from '@/components/atoms/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/avatar'
+import { Card, CardContent } from '@/components/atoms/card'
 
 interface SellerAuthLayoutProps {
   children: React.ReactNode
@@ -15,21 +15,21 @@ interface SellerAuthLayoutProps {
 export function SellerAuthLayout({ children }: SellerAuthLayoutProps) {
   return (
     <section className='container mx-auto items-center flex flex-col min-h-screen justify-center'>
-        <div className='max-w-3xl flex flex-col items-center justify-center'>
-      <Card className='md:bg-sidebar/70 relative grid min-h-140 grid-cols-1 gap-0 overflow-hidden border-0 bg-transparent p-0 md:grid-cols-2'>
-          <div className="relative isolate min-h-96 flex-1 overflow-hidden">
-            <div className="via-sidebar/30 from-sidebar/70 to-sidebar/10 absolute inset-x-0 bottom-0 z-[-1] h-0 bg-gradient-to-t md:h-12" />
-            <div className="bg-background absolute top-0 left-1/2 -z-1 h-200 w-300 -translate-x-1/2 translate-y-1/5 rounded-full blur-2xl will-change-transform md:hidden"></div>
+      <div className='max-w-3xl flex flex-col items-center justify-center'>
+        <Card className='md:bg-sidebar/70 relative grid min-h-140 grid-cols-1 gap-0 overflow-hidden border-0 bg-transparent p-0 md:grid-cols-2'>
+          <div className='relative isolate min-h-96 flex-1 overflow-hidden'>
+            <div className='via-sidebar/30 from-sidebar/70 to-sidebar/10 absolute inset-x-0 bottom-0 z-[-1] h-0 bg-gradient-to-t md:h-12' />
+            <div className='bg-background absolute top-0 left-1/2 -z-1 h-200 w-300 -translate-x-1/2 translate-y-1/5 rounded-full blur-2xl will-change-transform md:hidden'></div>
 
-            <div className="bg-background/10 absolute inset-0 -z-2 backdrop-blur-[85px] will-change-transform md:backdrop-blur-[92px]" />
+            <div className='bg-background/10 absolute inset-0 -z-2 backdrop-blur-[85px] will-change-transform md:backdrop-blur-[92px]' />
             <Image
-              src="/images/auth/noise.webp"
-              alt="Noise texture"
+              src='/images/auth/noise.webp'
+              alt='Noise texture'
               fill
-              className="mask-b-from-40% mask-b-to-80% object-cover opacity-30 md:opacity-20"
+              className='mask-b-from-40% mask-b-to-80% object-cover opacity-30 md:opacity-20'
             />
-            <GradientSVG className="absolute top-0 right-0 -z-10 scale-250 opacity-80 md:scale-100 md:opacity-100" />
-            <div className="relative z-10 flex h-full flex-col justify-between p-8">
+            <GradientSVG className='absolute top-0 right-0 -z-10 scale-250 opacity-80 md:scale-100 md:opacity-100' />
+            <div className='relative z-10 flex h-full flex-col justify-between p-8'>
               <Link href='/' className='inline-block'>
                 <Image
                   src='/images/brand/brand-name.png'
@@ -42,12 +42,16 @@ export function SellerAuthLayout({ children }: SellerAuthLayoutProps) {
               <div className='space-y-4'>
                 <Quote className='fill-foreground text-foreground size-10 rotate-180 opacity-10 md:size-16' />
                 <blockquote className='mt-0.5 text-lg font-medium'>
-                  The best platform for sellers. ReShop makes managing and growing your business effortless!
+                  The best platform for sellers. ReShop makes managing and
+                  growing your business effortless!
                 </blockquote>
 
                 <figure className='flex items-center gap-4'>
                   <Avatar className='h-8 w-8'>
-                    <AvatarImage src='/images/brand/app-brand.svg' alt='ReShop' />
+                    <AvatarImage
+                      src='/images/brand/app-brand.svg'
+                      alt='ReShop'
+                    />
                     <AvatarFallback>RS</AvatarFallback>
                   </Avatar>
                   <figcaption>
@@ -73,7 +77,10 @@ export function SellerAuthLayout({ children }: SellerAuthLayoutProps) {
 
         <div className='text-muted-foreground mx-auto mt-4 text-center text-sm'>
           Want to shop instead?{' '}
-          <Link href='/auth/sign-in' className='text-emerald-600 hover:text-emerald-700 font-medium hover:underline'>
+          <Link
+            href='/auth/sign-in'
+            className='text-emerald-600 hover:text-emerald-700 font-medium hover:underline'
+          >
             Sign In as Buyer
           </Link>
         </div>

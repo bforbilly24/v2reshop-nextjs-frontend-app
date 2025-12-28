@@ -15,16 +15,19 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          const response = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.login}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-            }),
-          })
+          const response = await fetch(
+            `${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.login}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: credentials?.email,
+                password: credentials?.password,
+              }),
+            }
+          )
 
           if (!response.ok) {
             return null

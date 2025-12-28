@@ -27,7 +27,10 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, 'Password must contain at least one special character (@, #, $, etc.)'),
+    .regex(
+      /[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+      'Password must contain at least one special character (@, #, $, etc.)'
+    ),
 })
 
 export const sellerLoginSchema = z.object({
@@ -53,7 +56,10 @@ export const sellerRegisterSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/, 'Password must contain at least one special character (@, #, $, etc.)'),
+    .regex(
+      /[@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/,
+      'Password must contain at least one special character (@, #, $, etc.)'
+    ),
 })
 
 export type LoginInput = z.infer<typeof loginSchema>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { forwardRef } from 'react'
+import { env } from '@/config/environment'
 import {
   ECOMMERCE_ACTION_LINKS,
   ECOMMERCE_NAV_LINKS,
@@ -32,7 +33,6 @@ import {
 } from '@/components/atoms/navigation-menu'
 import { ProfileModal } from '@/components/organisms/profile-modal'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { env } from '@/config/environment'
 
 const ListItem = forwardRef<
   React.ElementRef<typeof Link>,
@@ -264,7 +264,7 @@ export function NavbarDesktop({
                 <span className='text-sm font-medium'>Dashboard</span>
               </Button>
             )}
-            
+
             {ECOMMERCE_ACTION_LINKS.map((item) => (
               <div key={item.title}>
                 {item.title === 'Cart' ? (

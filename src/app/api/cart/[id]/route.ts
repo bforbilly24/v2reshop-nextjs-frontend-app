@@ -21,15 +21,18 @@ export async function PUT(
     const body = await request.json()
     const { id: cartItemId } = await context.params
 
-    const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      body: JSON.stringify(body),
-    })
+    const res = await fetch(
+      `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`,
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    )
 
     if (!res.ok) {
       const error = await res.text()
@@ -67,13 +70,16 @@ export async function DELETE(
 
     const { id: cartItemId } = await context.params
 
-    const res = await fetch(`${env.api.baseUrl}${env.api.endpoints.cart.delete(cartItemId)}`, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    })
+    const res = await fetch(
+      `${env.api.baseUrl}${env.api.endpoints.cart.delete(cartItemId)}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      }
+    )
 
     if (!res.ok) {
       const error = await res.text()

@@ -15,7 +15,9 @@ export default function CoreLayout({ children }: CoreLayoutProps) {
       <CartFeedbackProvider>
         <div className='min-h-screen flex flex-col'>
           <Navbar />
-          <main className='flex flex-col items-center justify-center'>{children}</main>
+          <main className='flex flex-col items-center justify-center'>
+            {children}
+          </main>
           <Footer />
 
           <ScrollProgressToTop
