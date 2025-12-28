@@ -120,7 +120,6 @@ const LatestProductsSection = () => {
       </div>
 
       <AnimationContainer animation='fadeDown' delay={1}>
-        {/* Desktop and Tablet View */}
         <div className='hidden sm:block'>
           <ProductWrapperSection
             getEcommerceNav={updatedGetEcommerceNav}
@@ -148,7 +147,6 @@ const LatestProductsSection = () => {
           </ProductWrapperSection>
         </div>
 
-        {/* Mobile Carousel View */}
         <div className='block sm:hidden'>
           <div className='flex justify-center mb-4'>
             <div className='flex gap-2'>
@@ -215,7 +213,6 @@ const LatestProductsSection = () => {
               <CarouselNext className='hidden' />
             </Carousel>
 
-            {/* Navigation and Progress indicator */}
             <div className='flex justify-between items-center mt-6 px-2'>
               <div className='flex items-center gap-2'>
                 <button

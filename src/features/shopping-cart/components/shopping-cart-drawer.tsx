@@ -78,9 +78,7 @@ const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
               </DrawerClose>
             </DrawerHeader>
 
-            {/* Scrollable Content Area with Visual Indicators */}
             <div className='relative flex-1 overflow-hidden'>
-              {/* Top Fade Indicator */}
               <div className='absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-gray-900 to-transparent z-10 pointer-events-none' />
 
               <ScrollArea.Root className='h-full w-full'>
@@ -214,7 +212,6 @@ const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
                   </div>
                 </ScrollArea.Viewport>
 
-                {/* Enhanced Scrollbar - More Visible */}
                 <ScrollArea.Scrollbar
                   orientation='vertical'
                   className='flex w-3 touch-none select-none bg-gray-300/50 dark:bg-gray-600/50 rounded-full m-1 transition-opacity hover:opacity-100'
@@ -223,7 +220,6 @@ const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
                 </ScrollArea.Scrollbar>
               </ScrollArea.Root>
 
-              {/* Bottom Scroll Indicator */}
               {showScrollIndicator && (
                 <div className='absolute bottom-[28rem] left-0 right-0 pointer-events-none z-20'>
                   <div className='flex flex-col items-center animate-bounce'>
@@ -232,13 +228,11 @@ const ShoppingCartDrawer: React.FC<ShoppingCartDrawerProps> = ({
                       <ChevronDown className='h-3 w-3' />
                     </div>
                   </div>
-                  {/* Fade overlay at bottom of scroll area */}
                   <div className='h-16 bg-gradient-to-t from-white dark:from-gray-900 to-transparent' />
                 </div>
               )}
             </div>
 
-            {/* Fixed Bottom Section - Summary & Actions */}
             <div className='border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'>
               <Separator className='bg-gray-200 dark:bg-gray-700' />
               <Card className='border-gray-200 dark:border-gray-700 m-4 shadow-sm'>

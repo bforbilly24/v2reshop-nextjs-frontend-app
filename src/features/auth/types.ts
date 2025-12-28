@@ -61,3 +61,21 @@ export interface UserProfileResponse {
   status: boolean
   user: UserProfile
 }
+
+export interface SellerAuthResponse {
+  status: boolean
+  message: string
+  token: string
+  redirect_url: string
+  user: {
+    id: number
+    name: string
+    email: string
+    email_verified_at: string | null
+    image: string | null
+    phone: string
+    bio: string
+    created_at: string
+    updated_at: string
+  }
+}

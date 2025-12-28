@@ -28,7 +28,6 @@ export const routes = {
   contactUs: '/contact-us',
 } as const
 
-// Type for all possible route paths
 export type RouteKey = keyof typeof routes
 export type RoutePath = string
 

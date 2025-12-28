@@ -74,7 +74,6 @@ const CheckoutSection: React.FC = () => {
     }
   }
 
-  // Success Page
   if (checkoutSuccess && checkoutData) {
     return (
       <Wrapper className='py-20 lg:py-32'>
@@ -162,7 +161,6 @@ const CheckoutSection: React.FC = () => {
     )
   }
 
-  // Checkout Form
   return (
     <Wrapper className='py-20 lg:py-32'>
       <Stepper steps={steps} activeStep='checkout' />

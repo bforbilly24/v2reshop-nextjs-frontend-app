@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/atoms/skeleton'
 export const ProductDetailSkeleton = () => {
   return (
     <div className='w-full space-y-6'>
-      {/* Breadcrumb Skeleton */}
       <div className='hidden lg:flex items-center gap-2'>
         <Skeleton className='h-4 w-12' />
         <Skeleton className='h-4 w-4' />
@@ -13,9 +12,7 @@ export const ProductDetailSkeleton = () => {
         <Skeleton className='h-4 w-24' />
       </div>
 
-      {/* Main Content */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-        {/* Image Gallery Skeleton */}
         <div className='space-y-4'>
           <Skeleton className='w-full h-[25rem] rounded-lg' />
           <div className='flex gap-3'>
@@ -26,18 +23,14 @@ export const ProductDetailSkeleton = () => {
           </div>
         </div>
 
-        {/* Product Info Skeleton */}
         <div className='space-y-6'>
-          {/* Category Badge */}
           <Skeleton className='h-6 w-24 rounded-full' />
 
-          {/* Title */}
           <div className='space-y-2'>
             <Skeleton className='h-8 w-full' />
             <Skeleton className='h-8 w-3/4' />
           </div>
 
-          {/* Rating */}
           <div className='flex items-center gap-2'>
             <Skeleton className='h-5 w-24' />
             <Skeleton className='h-4 w-16' />
@@ -45,13 +38,11 @@ export const ProductDetailSkeleton = () => {
             <Skeleton className='h-4 w-16' />
           </div>
 
-          {/* Price */}
           <div className='space-y-2'>
             <Skeleton className='h-10 w-32' />
             <Skeleton className='h-6 w-24' />
           </div>
 
-          {/* Variants */}
           <div className='space-y-4'>
             <div className='space-y-2'>
               <Skeleton className='h-5 w-16' />
@@ -71,22 +62,18 @@ export const ProductDetailSkeleton = () => {
             </div>
           </div>
 
-          {/* Quantity */}
           <div className='space-y-2'>
             <Skeleton className='h-5 w-20' />
             <Skeleton className='h-10 w-32' />
           </div>
 
-          {/* Stock */}
           <Skeleton className='h-5 w-32' />
 
-          {/* Actions */}
           <div className='flex gap-3'>
             <Skeleton className='h-12 flex-1' />
             <Skeleton className='h-12 w-12' />
           </div>
 
-          {/* Description */}
           <div className='space-y-2'>
             <Skeleton className='h-6 w-32' />
             <Skeleton className='h-4 w-full' />
@@ -96,7 +83,6 @@ export const ProductDetailSkeleton = () => {
         </div>
       </div>
 
-      {/* Reviews Section */}
       <Card className='p-6'>
         <Skeleton className='h-6 w-48 mb-6' />
         <div className='space-y-6'>

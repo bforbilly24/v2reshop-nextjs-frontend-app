@@ -17,11 +17,11 @@ import {
   type RegisterInput,
 } from '@/features/auth/validations/schema'
 
-interface RegisterFormSectionProps {
+interface SignUpFormSectionProps {
   onSuccess?: () => void
 }
 
-const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
+const SignUpFormSection: React.FC<SignUpFormSectionProps> = ({
   onSuccess,
 }) => {
   const router = useRouter()
@@ -51,8 +51,8 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
       })
 
       if (response.status) {
-        toast.success('Registration Successful', {
-          description: 'Your account has been created. Logging you in...',
+        toast.success('Sign Up Successful', {
+          description: 'Your account has been created. Signing you in...',
         })
 
         const result = await signIn('credentials', {
@@ -63,10 +63,10 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
 
         if (result?.error) {
           setError(
-            'Registration successful but login failed. Please try logging in.'
+            'Sign up successful but sign in failed. Please try signing in.'
           )
-          toast.error('Auto-login Failed', {
-            description: 'Please try logging in manually.',
+          toast.error('Auto-sign in Failed', {
+            description: 'Please try signing in manually.',
           })
         } else if (result?.ok) {
           if (onSuccess) {
@@ -81,7 +81,7 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
       const errorMessage =
         err instanceof Error ? err.message : 'Something went wrong'
       setError(errorMessage)
-      toast.error('Registration Failed', {
+      toast.error('Sign Up Failed', {
         description: errorMessage,
       })
     } finally {
@@ -90,7 +90,7 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-8'>
       {error && (
         <Alert variant='destructive'>
           <Icon icon='ph:warning-circle' className='h-4 w-4' />
@@ -98,58 +98,61 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
         </Alert>
       )}
 
-      <div className='space-y-2'>
-        <Label htmlFor='name'>Full Name</Label>
+      <div>
+        <Label>Full Name</Label>
         <Input
           id='name'
           type='text'
           placeholder='John Doe'
+          className='mt-4 border-none focus:ring-gray-300'
           {...register('name')}
           disabled={isLoading}
         />
         {errors.name && (
-          <p className='text-sm text-red-500'>{errors.name.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.name.message}</p>
         )}
       </div>
 
-      <div className='space-y-2'>
-        <Label htmlFor='email'>Email</Label>
+      <div>
+        <Label>Email</Label>
         <Input
           id='email'
           type='email'
           placeholder='name@example.com'
+          className='mt-4 border-none focus:ring-gray-300'
           {...register('email')}
           disabled={isLoading}
         />
         {errors.email && (
-          <p className='text-sm text-red-500'>{errors.email.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
         )}
       </div>
 
-      <div className='space-y-2'>
-        <Label htmlFor='phone'>Phone Number</Label>
+      <div>
+        <Label>Phone Number</Label>
         <Input
           id='phone'
           type='tel'
           placeholder='081234567890'
+          className='mt-4 border-none focus:ring-gray-300'
           {...register('phone')}
           disabled={isLoading}
         />
         {errors.phone && (
-          <p className='text-sm text-red-500'>{errors.phone.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.phone.message}</p>
         )}
       </div>
 
-      <div className='space-y-2'>
-        <Label htmlFor='password'>Password</Label>
-        <div className='relative'>
+      <div>
+        <Label>Password</Label>
+        <div className='relative mt-4'>
           <Input
             id='password'
             type={showPassword ? 'text' : 'password'}
             placeholder='••••••••'
+            className='border-none focus:ring-gray-300 pr-10'
             {...register('password')}
             disabled={isLoading}
-            className='pr-10'
           />
           <button
             type='button'
@@ -163,7 +166,7 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
           </button>
         </div>
         {errors.password && (
-          <p className='text-sm text-red-500'>{errors.password.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.password.message}</p>
         )}
       </div>
 
@@ -184,4 +187,4 @@ const RegisterFormSection: React.FC<RegisterFormSectionProps> = ({
   )
 }
 
-export { RegisterFormSection }
+export { SignUpFormSection }

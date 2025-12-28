@@ -13,7 +13,7 @@ import {
 } from '@/components/atoms/dialog'
 import { Icon } from '@/components/atoms/icon'
 import { Separator } from '@/components/atoms/separator'
-import { getCurrentUser } from '@/features/auth/actions'
+import { getCurrentUser, getCurrentUserWithToken } from '@/features/auth/actions'
 import type { UserProfile } from '@/features/auth/types'
 
 interface ProfileModalProps {
@@ -34,7 +34,18 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const fetchUserProfile = async () => {
     setIsLoading(true)
     try {
-      const response = await getCurrentUser()
+     
+      const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
+      
+      let response
+      if (sellerToken) {
+       
+        response = await getCurrentUserWithToken(sellerToken)
+      } else {
+       
+        response = await getCurrentUser()
+      }
+      
       if (response.status) {
         setUser(response.user)
       }
@@ -49,10 +60,18 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         toast.error('Session expired', {
           description: 'Please login again',
         })
-        await signOut({
-          redirect: true,
-          callbackUrl: '/auth/login',
-        })
+        
+       
+        const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
+        if (sellerToken) {
+          localStorage.removeItem('seller_token')
+          window.location.href = '/seller/auth/sign-in'
+        } else {
+          await signOut({
+            redirect: true,
+            callbackUrl: '/auth/sign-in',
+          })
+        }
         return
       }
 
@@ -66,22 +85,36 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleLogout = async () => {
     try {
-      await signOut({
-        redirect: false,
-        callbackUrl: '/auth/login',
-      })
+     
+      const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
+      
+      if (sellerToken) {
+       
+        localStorage.removeItem('seller_token')
+        toast.success('Logged Out', {
+          description: 'You have been logged out successfully.',
+        })
+        onClose()
+        window.location.href = '/seller/auth/sign-in'
+      } else {
+       
+        await signOut({
+          redirect: false,
+          callbackUrl: '/auth/login',
+        })
 
-      if (typeof window !== 'undefined') {
-        localStorage.clear()
-        sessionStorage.clear()
+        if (typeof window !== 'undefined') {
+          localStorage.clear()
+          sessionStorage.clear()
+        }
+
+        toast.success('Logged Out', {
+          description: 'You have been logged out successfully.',
+        })
+        onClose()
+
+        window.location.href = '/auth/sign-in'
       }
-
-      toast.success('Logged Out', {
-        description: 'You have been logged out successfully.',
-      })
-      onClose()
-
-      window.location.href = '/auth/login'
     } catch {
       toast.error('Logout Failed', {
         description: 'Failed to logout. Please try again.',

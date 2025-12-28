@@ -1,11 +1,11 @@
 import { Metadata } from 'next'
-import { RegisterView } from '@/features/auth/register'
+import { SignUpView } from '@/features/auth/sign-up'
 
 export const metadata: Metadata = {
   title: 'Sign Up | ReShop',
-  description: 'Create a new ReShop account',
+  description: 'Create your ReShop account and start shopping',
 }
 
 export default function RegisterPage() {
-  return <RegisterView />
+  return <SignUpView />
 }

@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     request.cookies.get('__Secure-next-auth.session-token')
 
   const isAuthPage =
-    pathname.startsWith('/auth/login') || pathname.startsWith('/auth/register')
+    pathname.startsWith('/auth/sign-in') || pathname.startsWith('/auth/sign-up')
 
   const protectedRoutes = [
     '/checkout',
@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
   )
 
   if (isProtectedRoute && !sessionToken) {
-    const loginUrl = new URL('/auth/login', request.url)
+    const loginUrl = new URL('/auth/sign-in', request.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)
   }

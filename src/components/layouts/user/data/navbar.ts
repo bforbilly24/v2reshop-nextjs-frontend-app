@@ -90,13 +90,13 @@ const ACTION_LINKS: NavbarItem[] = [
       {
         title: 'Login',
         tagline: 'Sign in to your account.',
-        href: '/auth/login',
+        href: '/auth/sign-in',
         icon: User,
       },
       {
         title: 'Register',
         tagline: 'Create a new account.',
-        href: '/auth/register',
+        href: '/auth/sign-up',
         icon: User,
       },
     ],

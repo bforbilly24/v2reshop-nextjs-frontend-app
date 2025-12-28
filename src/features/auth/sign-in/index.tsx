@@ -11,17 +11,19 @@ import {
 } from '@/components/layouts/auth-layout'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
-import { LoginFormSection } from './components/organisms/login-form-section'
+import { SignInFormSection } from './components/organisms/sign-in-form-section'
 
-const LoginView = () => {
+const SignInView = () => {
   return (
-    <AuthLayout imgSrc='/images/auth/welcome.svg'>
+    <AuthLayout useIllustration={true}>
       <AuthHeader>
-        <AuthTitle>Sign In</AuthTitle>
-        <AuthDescription>Sign in to your account to continue</AuthDescription>
+        <AuthTitle>Welcome back!</AuthTitle>
+        <AuthDescription className='mt-4'>
+          Sign in to your account to continue shopping and manage your orders
+        </AuthDescription>
       </AuthHeader>
       <AuthForm>
-        <LoginFormSection />
+        <SignInFormSection />
       </AuthForm>
       <AuthFooter>
         <div className='relative'>
@@ -34,21 +36,19 @@ const LoginView = () => {
         </div>
         <Button variant='outline' className='w-full' asChild>
           <Link
-            href='https://reshop.circleit.dev/seller/login'
-            target='_blank'
-            rel='noopener noreferrer'
+            href='/seller/auth/sign-in'
           >
             <Icon icon='ph:storefront' className='w-5 h-5' />
-            Login as Seller
+            Sign In as Seller
           </Link>
         </Button>
         <div className='text-center text-sm'>
           Don&apos;t have an account?{' '}
           <Link
-            href='/auth/register'
-            className='underline underline-offset-4 hover:text-primary'
+            href='/auth/sign-up'
+            className='font-semibold underline underline-offset-4 hover:text-primary'
           >
-            Register
+            Sign Up
           </Link>
         </div>
         <div className='text-center text-sm text-muted-foreground'>
@@ -64,4 +64,4 @@ const LoginView = () => {
   )
 }
 
-export { LoginView }
+export { SignInView }

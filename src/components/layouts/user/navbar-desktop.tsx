@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import {
   ECOMMERCE_ACTION_LINKS,
@@ -8,7 +8,7 @@ import {
   ECOMMERCE_NAVBAR_CONFIG,
 } from '@/constant'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, LayoutDashboard } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -32,6 +32,7 @@ import {
 } from '@/components/atoms/navigation-menu'
 import { ProfileModal } from '@/components/organisms/profile-modal'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
+import { env } from '@/config/environment'
 
 const ListItem = forwardRef<
   React.ElementRef<typeof Link>,
@@ -120,6 +121,12 @@ export function NavbarDesktop({
   const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [sellerToken, setSellerToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('seller_token')
+    setSellerToken(token)
+  }, [])
 
   const handleNavigation = (href: string) => {
     if (href === '/shopping-cart') {
@@ -127,7 +134,7 @@ export function NavbarDesktop({
     } else if (href === '/profile') {
       setIsProfileModalOpen(true)
     } else if (href === '/logout') {
-      signOut({ callbackUrl: '/auth/login' })
+      signOut({ callbackUrl: '/auth/sign-in' })
     } else {
       router.push(href)
     }
@@ -241,6 +248,23 @@ export function NavbarDesktop({
         </div>
         <AnimationContainer animation='fadeLeft' delay={0.1}>
           <div className='flex items-center gap-x-2'>
+            {sellerToken && (
+              <Button
+                variant='ghost'
+                onClick={() => {
+                  window.location.href = `${env.seller.dashboardUrl}?token=${sellerToken}`
+                }}
+                className={cn(
+                  'rounded-lg transition-all duration-500 flex items-center gap-2',
+                  isAboutUsNotScrolled
+                    ? 'text-white hover:text-slate-200 hover:bg-transparent focus:bg-transparent'
+                    : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
+                )}
+              >
+                <span className='text-sm font-medium'>Dashboard</span>
+              </Button>
+            )}
+            
             {ECOMMERCE_ACTION_LINKS.map((item) => (
               <div key={item.title}>
                 {item.title === 'Cart' ? (
@@ -261,11 +285,76 @@ export function NavbarDesktop({
                     </span>
                   </Button>
                 ) : item.menu && item.menu.length > 0 ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                  session || sellerToken ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size='icon'
+                          variant='ghost'
+                          className={cn(
+                            'rounded-lg transition-all duration-500',
+                            isAboutUsNotScrolled
+                              ? 'text-white hover:text-slate-200 hover:bg-transparent focus:bg-transparent'
+                              : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
+                          )}
+                        >
+                          {item.icon && <item.icon className='size-5' />}
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
+                        {session ? (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => handleNavigation('/profile')}
+                              className='cursor-pointer rounded-lg'
+                            >
+                              <div className='flex items-center gap-2'>
+                                {item.icon && <item.icon className='size-4' />}
+                                <span>Profile</span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleNavigation('/logout')}
+                              className='cursor-pointer rounded-lg'
+                            >
+                              <div className='flex items-center gap-2'>
+                                {item.icon && <item.icon className='size-4' />}
+                                <span>Logout</span>
+                              </div>
+                            </DropdownMenuItem>
+                          </>
+                        ) : (
+                          <>
+                            <DropdownMenuItem
+                              onClick={() => setIsProfileModalOpen(true)}
+                              className='cursor-pointer rounded-lg'
+                            >
+                              <div className='flex items-center gap-2'>
+                                {item.icon && <item.icon className='size-4' />}
+                                <span>Profile</span>
+                              </div>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                localStorage.removeItem('seller_token')
+                                window.location.href = '/seller/auth/sign-in'
+                              }}
+                              className='cursor-pointer rounded-lg'
+                            >
+                              <div className='flex items-center gap-2'>
+                                {item.icon && <item.icon className='size-4' />}
+                                <span>Logout</span>
+                              </div>
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <div className='flex items-center gap-2'>
                       <Button
-                        size='icon'
                         variant='ghost'
+                        onClick={() => handleNavigation('/auth/sign-in')}
                         className={cn(
                           'rounded-lg transition-all duration-500',
                           isAboutUsNotScrolled
@@ -273,49 +362,17 @@ export function NavbarDesktop({
                             : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
                         )}
                       >
-                        {item.icon && <item.icon className='size-5' />}
+                        Sign In
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                      {session ? (
-                        <>
-                          <DropdownMenuItem
-                            onClick={() => handleNavigation('/profile')}
-                            className='cursor-pointer rounded-lg'
-                          >
-                            <div className='flex items-center gap-2'>
-                              {item.icon && <item.icon className='size-4' />}
-                              <span>Profile</span>
-                            </div>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleNavigation('/logout')}
-                            className='cursor-pointer rounded-lg'
-                          >
-                            <div className='flex items-center gap-2'>
-                              {item.icon && <item.icon className='size-4' />}
-                              <span>Logout</span>
-                            </div>
-                          </DropdownMenuItem>
-                        </>
-                      ) : (
-                        item.menu.map((subItem) => (
-                          <DropdownMenuItem
-                            key={subItem.title}
-                            onClick={() => handleNavigation(subItem.href)}
-                            className='cursor-pointer rounded-lg'
-                          >
-                            <div className='flex items-center gap-2'>
-                              {subItem.icon && (
-                                <subItem.icon className='size-4' />
-                              )}
-                              <span>{subItem.title}</span>
-                            </div>
-                          </DropdownMenuItem>
-                        ))
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      <Button
+                        variant='default'
+                        onClick={() => handleNavigation('/auth/sign-up')}
+                        className='rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white'
+                      >
+                        Sign Up
+                      </Button>
+                    </div>
+                  )
                 ) : (
                   <Button
                     size='icon'

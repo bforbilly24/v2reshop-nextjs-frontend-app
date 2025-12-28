@@ -4,10 +4,12 @@ import type { ComponentProps } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/cn'
+import { AuthIllustration } from '@/features/auth/components/atoms/auth-illustration'
 
 interface AuthLayoutProps extends ComponentProps<'div'> {
   imgSrc?: string
   imgClassName?: string
+  useIllustration?: boolean
 }
 
 export function AuthLayout({
@@ -15,35 +17,42 @@ export function AuthLayout({
   children,
   imgSrc,
   imgClassName,
+  useIllustration = true,
   ...props
 }: AuthLayoutProps) {
   return (
     <section
       className={cn(
-        'bg-background dark:bg-sidebar-accent min-h-screen w-full flex justify-between',
+        'bg-background min-h-screen w-full py-10 md:py-20',
         className
       )}
       {...props}
     >
-      <div className='flex-1 relative grid'>
-        <div className='absolute top-0 inset-x-0 flex justify-between items-center px-4 py-2.5'>
-          <Link
-            href='/'
-            className='flex items-center gap-2 text-foreground font-black z-50'
-          >
-            <Image
-              src='/images/brand/brand-name.png'
-              alt='ReShop'
-              height={48}
-              width={161}
-            />
-          </Link>
-        </div>
-        <div className='max-w-md w-full m-auto px-6 py-12 space-y-6'>
-          {children}
+      <div className='container mx-auto'>
+        <div className='grid grid-cols-1 gap-10 px-4 md:grid-cols-2 md:px-8 lg:gap-40'>
+          <div>
+            <Link
+              href='/'
+              className='inline-block mb-4'
+            >
+              <Image
+                src='/images/brand/brand-name.png'
+                alt='ReShop'
+                height={40}
+                width={134}
+              />
+            </Link>
+            {children}
+          </div>
+          {useIllustration ? (
+            <div className='hidden md:block'>
+              <AuthIllustration />
+            </div>
+          ) : (
+            imgSrc && <AuthImage imgSrc={imgSrc} className={cn('', imgClassName)} />
+          )}
         </div>
       </div>
-      {imgSrc && <AuthImage imgSrc={imgSrc} className={cn('', imgClassName)} />}
     </section>
   )
 }
@@ -56,7 +65,7 @@ export function AuthImage({ className, imgSrc, ...props }: AuthImageProps) {
   return (
     <div
       className={cn(
-        'basis-1/2 relative hidden min-h-screen bg-muted md:block',
+        'relative hidden min-h-[500px] md:block rounded-lg overflow-hidden',
         className
       )}
       {...props}
@@ -65,7 +74,7 @@ export function AuthImage({ className, imgSrc, ...props }: AuthImageProps) {
         src={imgSrc}
         alt='Welcome'
         fill
-        sizes='(max-width: 1200px) 60vw, 38vw'
+        sizes='(max-width: 1200px) 50vw, 600px'
         priority
         className='object-cover'
       />
@@ -74,14 +83,14 @@ export function AuthImage({ className, imgSrc, ...props }: AuthImageProps) {
 }
 
 export function AuthHeader({ className, ...props }: ComponentProps<'div'>) {
-  return <div className={cn('space-y-2 text-center', className)} {...props} />
+  return <div className={cn('space-y-2 text-left', className)} {...props} />
 }
 
 export function AuthTitle({ className, ...props }: ComponentProps<'h1'>) {
   return (
     <h1
       className={cn(
-        'text-2xl font-semibold leading-none tracking-tight',
+        'text-2xl lg:text-4xl font-semibold leading-tight tracking-tight',
         className
       )}
       {...props}
@@ -91,14 +100,14 @@ export function AuthTitle({ className, ...props }: ComponentProps<'h1'>) {
 
 export function AuthDescription({ className, ...props }: ComponentProps<'p'>) {
   return (
-    <p className={cn('text-sm text-muted-foreground', className)} {...props} />
+    <p className={cn('text-sm text-muted-foreground max-w-xl', className)} {...props} />
   )
 }
 
 export function AuthForm({ className, ...props }: ComponentProps<'div'>) {
-  return <div className={className} {...props} />
+  return <div className={cn('mt-6 flex flex-col gap-8', className)} {...props} />
 }
 
 export function AuthFooter({ className, ...props }: ComponentProps<'div'>) {
-  return <div className={cn('grid gap-6', className)} {...props} />
+  return <div className={cn('mt-6 flex flex-col gap-4', className)} {...props} />
 }

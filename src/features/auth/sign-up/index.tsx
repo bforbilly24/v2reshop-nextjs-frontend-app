@@ -9,26 +9,28 @@ import {
   AuthForm,
   AuthFooter,
 } from '@/components/layouts/auth-layout'
-import { RegisterFormSection } from './components/organisms/register-form-section'
+import { SignUpFormSection } from './components/organisms/sign-up-form-section'
 
-const RegisterView = () => {
+const SignUpView = () => {
   return (
-    <AuthLayout imgSrc='/images/auth/welcome.svg'>
+    <AuthLayout useIllustration={true}>
       <AuthHeader>
-        <AuthTitle>Register</AuthTitle>
-        <AuthDescription>Create your account to get started</AuthDescription>
+        <AuthTitle>Create an account</AuthTitle>
+        <AuthDescription className='mt-4'>
+          Join ReShop today and discover amazing deals on quality products
+        </AuthDescription>
       </AuthHeader>
       <AuthForm>
-        <RegisterFormSection />
+        <SignUpFormSection />
       </AuthForm>
       <AuthFooter>
         <div className='text-center text-sm'>
           Already have an account?{' '}
           <Link
-            href='/auth/login'
-            className='underline underline-offset-4 hover:text-primary'
+            href='/auth/sign-in'
+            className='font-semibold underline underline-offset-4 hover:text-primary'
           >
-            Login
+            Sign In
           </Link>
         </div>
         <div className='text-center text-sm text-muted-foreground'>
@@ -44,4 +46,4 @@ const RegisterView = () => {
   )
 }
 
-export { RegisterView }
+export { SignUpView }

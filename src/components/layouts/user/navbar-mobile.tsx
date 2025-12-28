@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ECOMMERCE_NAV_LINKS, ECOMMERCE_NAVBAR_CONFIG } from '@/constant'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, User } from 'lucide-react'
+import { ShoppingCart, User, LayoutDashboard } from 'lucide-react'
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -27,6 +27,7 @@ import { ScrollArea } from '@/components/atoms/scroll-area'
 import Wrapper from '@/components/atoms/wrapper'
 import { ProfileModal } from '@/components/organisms/profile-modal'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
+import { env } from '@/config/environment'
 
 interface NavbarMobileProps {
   scrolled: boolean
@@ -45,6 +46,12 @@ export default function NavbarMobile({
   const { cartItems: _cartItems, itemCount } = useCart()
   const pathname = usePathname()
   const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen
+  const [sellerToken, setSellerToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('seller_token')
+    setSellerToken(token)
+  }, [])
 
   const handleNavigation = () => {
     setIsOpen(false)
@@ -137,6 +144,22 @@ export default function NavbarMobile({
             </Link>
 
             <div className='flex items-center gap-2'>
+              {sellerToken && (
+                <Button
+                  variant='ghost'
+                  onClick={() => {
+                    window.location.href = `${env.seller.dashboardUrl}?token=${sellerToken}`
+                  }}
+                  className={cn(
+                    'lg:hidden flex items-center gap-1.5 px-3',
+                    isWhiteText ? 'text-white' : 'text-foreground'
+                  )}
+                >
+                  <LayoutDashboard className='size-4' />
+                  <span className='text-sm font-medium'>Dashboard</span>
+                </Button>
+              )}
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -151,47 +174,75 @@ export default function NavbarMobile({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                  {session ? (
-                    <>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setIsProfileModalOpen(true)
-                        }}
-                        className='cursor-pointer rounded-lg'
-                      >
-                        <div className='flex items-center gap-2'>
-                          <User className='size-4' />
-                          <span>Profile</span>
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => signOut({ callbackUrl: '/auth/login' })}
-                        className='cursor-pointer rounded-lg'
-                      >
-                        <div className='flex items-center gap-2'>
-                          <User className='size-4' />
-                          <span>Logout</span>
-                        </div>
-                      </DropdownMenuItem>
-                    </>
+                  {session || sellerToken ? (
+                    session ? (
+                      <>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setIsProfileModalOpen(true)
+                          }}
+                          className='cursor-pointer rounded-lg'
+                        >
+                          <div className='flex items-center gap-2'>
+                            <User className='size-4' />
+                            <span>Profile</span>
+                          </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => signOut({ callbackUrl: '/auth/sign-in' })}
+                          className='cursor-pointer rounded-lg'
+                        >
+                          <div className='flex items-center gap-2'>
+                            <User className='size-4' />
+                            <span>Logout</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setIsProfileModalOpen(true)
+                          }}
+                          className='cursor-pointer rounded-lg'
+                        >
+                          <div className='flex items-center gap-2'>
+                            <User className='size-4' />
+                            <span>Profile</span>
+                          </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            localStorage.removeItem('seller_token')
+                            window.location.href = '/seller/auth/sign-in'
+                          }}
+                          className='cursor-pointer rounded-lg'
+                        >
+                          <div className='flex items-center gap-2'>
+                            <User className='size-4' />
+                            <span>Logout</span>
+                          </div>
+                        </DropdownMenuItem>
+                      </>
+                    )
                   ) : (
                     <>
                       <DropdownMenuItem
-                        onClick={() => router.push('/auth/login')}
+                        onClick={() => router.push('/auth/sign-in')}
                         className='cursor-pointer rounded-lg'
                       >
                         <div className='flex items-center gap-2'>
                           <User className='size-4' />
-                          <span>Login</span>
+                          <span>Sign In</span>
                         </div>
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => router.push('/auth/register')}
+                        onClick={() => router.push('/auth/sign-up')}
                         className='cursor-pointer rounded-lg'
                       >
                         <div className='flex items-center gap-2'>
                           <User className='size-4' />
-                          <span>Register</span>
+                          <span>Sign Up</span>
                         </div>
                       </DropdownMenuItem>
                     </>
@@ -294,7 +345,6 @@ export default function NavbarMobile({
                   Main navigation menu with links to all sections of the website
                 </div>
 
-                {/* Scrollable Menu Area */}
                 <div className='flex-1 overflow-hidden'>
                   <ScrollArea className='h-full px-6 py-4'>
                     <div className='space-y-2 pb-4'>
@@ -312,7 +362,6 @@ export default function NavbarMobile({
                   </ScrollArea>
                 </div>
 
-                {/* Fixed Contact Section at Bottom */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

@@ -76,7 +76,6 @@ const SidebarCommunity = ({
 
       <ScrollArea className='h-[calc(100vh-16rem)]'>
         <CardContent className='space-y-4'>
-          {/* Community Menu Items */}
           <div className='space-y-2'>
             {filteredCommunityItems.map((item: ReCommunityItem) => (
               <button
@@ -131,7 +130,6 @@ const SidebarCommunity = ({
             ))}
           </div>
 
-          {/* Create Community Button */}
           <div className='pt-4 border-t border-border'>
             <Button
               onClick={handleCreateCommunity}
@@ -145,7 +143,6 @@ const SidebarCommunity = ({
             </Button>
           </div>
 
-          {/* Additional Filters Section */}
           <div className='space-y-4 pt-4 border-t border-border'>
             <div className='space-y-2'>
               <div className='text-foreground font-semibold text-xs uppercase pb-2'>

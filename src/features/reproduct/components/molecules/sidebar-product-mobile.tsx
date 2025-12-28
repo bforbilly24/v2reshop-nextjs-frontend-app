@@ -159,7 +159,6 @@ const SidebarProductMobile = ({
           </SheetHeader>
           <ScrollArea className='flex-1 p-4'>
             <div className='space-y-6'>
-              {/* Sort By */}
               <div>
                 <h3 className='font-semibold mb-3 text-sm'>Urutkan</h3>
                 <Select value={localSortBy} onValueChange={setLocalSortBy}>
@@ -176,7 +175,6 @@ const SidebarProductMobile = ({
                 </Select>
               </div>
 
-              {/* Categories */}
               <div>
                 <h3 className='font-semibold mb-3 text-sm'>Kategori</h3>
                 <div className='flex flex-wrap gap-2'>
@@ -197,7 +195,6 @@ const SidebarProductMobile = ({
                 </div>
               </div>
 
-              {/* Customization */}
               <div>
                 <h3 className='font-semibold mb-3 text-sm'>Tipe Penjual</h3>
                 <div className='flex flex-wrap gap-2'>
@@ -232,7 +229,6 @@ const SidebarProductMobile = ({
                 </div>
               </div>
 
-              {/* Price */}
               <div>
                 <h3 className='font-semibold mb-3 text-sm'>Batas Harga</h3>
                 <div className='flex flex-wrap gap-2'>
@@ -253,7 +249,6 @@ const SidebarProductMobile = ({
                 </div>
               </div>
 
-              {/* Ratings */}
               <div>
                 <h3 className='font-semibold mb-3 text-sm'>Penilaian</h3>
                 <div className='flex flex-wrap gap-2'>

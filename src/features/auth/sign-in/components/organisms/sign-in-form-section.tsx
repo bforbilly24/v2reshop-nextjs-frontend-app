@@ -16,11 +16,11 @@ import {
   type LoginInput,
 } from '@/features/auth/validations/schema'
 
-interface LoginFormSectionProps {
+interface SignInFormSectionProps {
   onSuccess?: () => void
 }
 
-const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
+const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -47,11 +47,11 @@ const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
 
       if (result?.error) {
         setError('Invalid email or password')
-        toast.error('Login Failed', {
+        toast.error('Sign In Failed', {
           description: 'Invalid email or password. Please try again.',
         })
       } else if (result?.ok) {
-        toast.success('Login Successful', {
+        toast.success('Sign In Successful', {
           description: 'Welcome back! Redirecting...',
         })
         if (onSuccess) {
@@ -72,7 +72,7 @@ const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-8'>
       {error && (
         <Alert variant='destructive'>
           <Icon icon='ph:warning-circle' className='h-4 w-4' />
@@ -80,30 +80,31 @@ const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
         </Alert>
       )}
 
-      <div className='space-y-2'>
-        <Label htmlFor='email'>Email</Label>
+      <div>
+        <Label>Email</Label>
         <Input
           id='email'
           type='email'
           placeholder='name@example.com'
+          className='mt-4 border-none focus:ring-gray-300'
           {...register('email')}
           disabled={isLoading}
         />
         {errors.email && (
-          <p className='text-sm text-red-500'>{errors.email.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
         )}
       </div>
 
-      <div className='space-y-2'>
-        <Label htmlFor='password'>Password</Label>
-        <div className='relative'>
+      <div>
+        <Label>Password</Label>
+        <div className='relative mt-4'>
           <Input
             id='password'
             type={showPassword ? 'text' : 'password'}
             placeholder='••••••••'
+            className='border-none focus:ring-gray-300 pr-10'
             {...register('password')}
             disabled={isLoading}
-            className='pr-10'
           />
           <button
             type='button'
@@ -117,7 +118,7 @@ const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
           </button>
         </div>
         {errors.password && (
-          <p className='text-sm text-red-500'>{errors.password.message}</p>
+          <p className='text-sm text-red-500 mt-1'>{errors.password.message}</p>
         )}
       </div>
 
@@ -138,4 +139,4 @@ const LoginFormSection: React.FC<LoginFormSectionProps> = ({ onSuccess }) => {
   )
 }
 
-export { LoginFormSection }
+export { SignInFormSection }

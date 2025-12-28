@@ -121,7 +121,7 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     if (status === 'unauthenticated' || !session) {
       toast.error('Please login to add items to cart')
       setTimeout(() => {
-        router.push('/auth/login')
+        router.push('/auth/sign-in')
       }, 1000)
       return
     }
@@ -282,12 +282,10 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         />
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12'>
-          {/* Left Column - Image Slider */}
           <div className='w-full'>
             <ProductThumbSlider product={product} />
           </div>
 
-          {/* Right Column - Product Details */}
           <div className='flex flex-col space-y-6'>
             <div className='space-y-2'>
               <div className='flex items-center justify-between'>
@@ -366,7 +364,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
             </p>
 
             <div className='space-y-6 pt-6 border-t border-gray-200 dark:border-gray-800'>
-              {/* Color Selection */}
               {colors.length > 0 && (
                 <ReProductColorSection
                   colors={colors.map((c) => c.value)}
@@ -375,7 +372,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                 />
               )}
 
-              {/* Size Selection */}
               {sizes.length > 0 && (
                 <ReProductSizeSection
                   sizes={sizes.map((s) => s.value)}
@@ -384,7 +380,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                 />
               )}
 
-              {/* Actions */}
               <ReProductCartSection
                 quantity={quantity}
                 setQuantity={setQuantity}
@@ -393,7 +388,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                 isLoading={isAddingToCart}
               />
 
-              {/* Additional Info */}
               <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6'>
                 <Card className='p-4 bg-gray-50 dark:bg-gray-800/50 border-none'>
                   <div className='flex items-center gap-3'>

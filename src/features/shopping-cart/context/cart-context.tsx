@@ -83,7 +83,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
           })
 
           signOut({ redirect: false }).then(() => {
-            window.location.href = '/auth/login?error=SessionExpired'
+            window.location.href = '/auth/sign-in?error=SessionExpired'
           })
           return
         }
@@ -128,8 +128,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         return
       }
 
-      setCartItems((items) =>
-        items.map((item) =>
+      setCartItems((items) => {
+        const updatedItems = items.map((item) =>
           item.id === id
             ? {
                 ...item,
@@ -138,7 +138,15 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
               }
             : item
         )
-      )
+
+        const newSubtotal = updatedItems.reduce(
+          (sum, item) => sum + item.total_price,
+          0
+        )
+        setSubtotal(newSubtotal)
+
+        return updatedItems
+      })
 
       pendingQuantities.current.set(id, quantity)
 
@@ -151,14 +159,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         const finalQuantity = pendingQuantities.current.get(id)
         if (!finalQuantity) return
 
-        setUpdatingItemIds((prev) => new Set(prev).add(id))
-
         try {
           await updateCartQuantity(id, { quantity: finalQuantity })
-
           pendingQuantities.current.delete(id)
-
-          await refreshCart()
         } catch (error) {
           const errorMessage =
             error instanceof Error ? error.message : 'Unknown error'
@@ -173,7 +176,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
               description: 'Please login again',
             })
             signOut({ redirect: false }).then(() => {
-              window.location.href = '/auth/login?error=SessionExpired'
+              window.location.href = '/auth/sign-in?error=SessionExpired'
             })
             return
           }
@@ -181,11 +184,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
           await refreshCart()
           toast.error('Failed to update quantity')
         } finally {
-          setUpdatingItemIds((prev) => {
-            const next = new Set(prev)
-            next.delete(id)
-            return next
-          })
           debounceTimers.current.delete(id)
         }
       }, 500)
@@ -208,7 +206,16 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         itemToRemove = items.find((item) => item.id === id)
         previousItems = [...items]
         if (!itemToRemove) return items
-        return items.filter((item) => item.id !== id)
+
+        const updatedItems = items.filter((item) => item.id !== id)
+
+        const newSubtotal = updatedItems.reduce(
+          (sum, item) => sum + item.total_price,
+          0
+        )
+        setSubtotal(newSubtotal)
+
+        return updatedItems
       })
 
       if (!itemToRemove) {
@@ -236,7 +243,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
             description: 'Please login again',
           })
           signOut({ redirect: false }).then(() => {
-            window.location.href = '/auth/login?error=SessionExpired'
+            window.location.href = '/auth/sign-in?error=SessionExpired'
           })
           return
         }
@@ -297,7 +304,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
-
 
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext)
