@@ -1,25 +1,46 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { env } from '@/config/environment'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { hasSellerToken } from '@/utils/secure-token'
 import { SellerAuthLayout } from '@/components/layouts/seller-auth-layout'
 import AnimationContainer from '@/components/atoms/animation-container'
+import { AuthLoadingState } from '@/components/atoms/auth-loading-state'
 import { TypingAnimation } from '@/components/atoms/typing-animation'
 import { SellerSignInFormSection } from './components/organisms/seller-sign-in-form-section'
 
 const SellerSignInView = () => {
   const router = useRouter()
+  const { data: session, status } = useSession()
+  const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    // Check if seller is already logged in
-    const sellerToken = localStorage.getItem('seller_token')
-    if (sellerToken) {
-      // Redirect to dashboard or home
-      window.location.href = env.seller.dashboardUrl
+    const checkAuth = async () => {
+      const hasToken = await hasSellerToken()
+      if (hasToken) {
+        window.location.href = env.seller.dashboardUrl
+        return
+      }
+
+      if (status === 'authenticated' && session) {
+        router.push('/')
+        return
+      }
+
+      if (status !== 'loading') {
+        setIsChecking(false)
+      }
     }
-  }, [])
+
+    checkAuth()
+  }, [session, status, router])
+
+  if (isChecking) {
+    return <AuthLoadingState message='Checking authentication...' />
+  }
 
   return (
     <SellerAuthLayout>

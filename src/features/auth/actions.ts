@@ -87,7 +87,6 @@ export const getCurrentUser = async (): Promise<UserProfileResponse> => {
   return res.json()
 }
 
-// Client-side function to get user profile with token (for sellers)
 export const getCurrentUserWithToken = async (
   token: string
 ): Promise<UserProfileResponse> => {

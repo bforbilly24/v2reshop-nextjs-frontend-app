@@ -121,11 +121,20 @@ export function NavbarDesktop({
   const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-  const [sellerToken, setSellerToken] = useState<string | null>(null)
+  const [hasSellerAuth, setHasSellerAuth] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('seller_token')
-    setSellerToken(token)
+    const checkSellerAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/seller/check-token', {
+          credentials: 'include',
+        })
+        setHasSellerAuth(response.ok)
+      } catch {
+        setHasSellerAuth(false)
+      }
+    }
+    checkSellerAuth()
   }, [])
 
   const handleNavigation = (href: string) => {
@@ -248,11 +257,31 @@ export function NavbarDesktop({
         </div>
         <AnimationContainer animation='fadeLeft' delay={0.1}>
           <div className='flex items-center gap-x-2'>
-            {sellerToken && (
+            {hasSellerAuth && (
               <Button
                 variant='ghost'
-                onClick={() => {
-                  window.location.href = `${env.seller.dashboardUrl}?token=${sellerToken}`
+                onClick={async () => {
+                  const response = await fetch(
+                    '/api/auth/seller/sso-redirect',
+                    {
+                      method: 'POST',
+                      credentials: 'include',
+                    }
+                  )
+                  if (response.ok) {
+                    const data = await response.json()
+
+                    const form = document.createElement('form')
+                    form.method = 'POST'
+                    form.action = data.dashboardUrl
+                    const tokenField = document.createElement('input')
+                    tokenField.type = 'hidden'
+                    tokenField.name = 'sso_token'
+                    tokenField.value = data.ssoToken
+                    form.appendChild(tokenField)
+                    document.body.appendChild(form)
+                    form.submit()
+                  }
                 }}
                 className={cn(
                   'rounded-lg transition-all duration-500 flex items-center gap-2',
@@ -285,7 +314,7 @@ export function NavbarDesktop({
                     </span>
                   </Button>
                 ) : item.menu && item.menu.length > 0 ? (
-                  session || sellerToken ? (
+                  session || hasSellerAuth ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -335,8 +364,11 @@ export function NavbarDesktop({
                               </div>
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => {
-                                localStorage.removeItem('seller_token')
+                              onClick={async () => {
+                                await fetch('/api/auth/seller/remove-token', {
+                                  method: 'POST',
+                                  credentials: 'include',
+                                })
                                 window.location.href = '/seller/auth/sign-in'
                               }}
                               className='cursor-pointer rounded-lg'

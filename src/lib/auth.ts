@@ -71,10 +71,29 @@ export const authOptions = {
   },
   pages: {
     signIn: '/auth/sign-in',
+    error: '/auth/sign-in',
+    signOut: '/auth/sign-in',
   },
   session: {
     strategy: 'jwt' as const,
+    maxAge: 7 * 24 * 60 * 60,
   },
+  cookies: {
+    sessionToken: {
+      name:
+        process.env.NODE_ENV === 'production'
+          ? '__Secure-next-auth.session-token'
+          : 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
+
+  useSecureCookies: process.env.NODE_ENV === 'production',
 }
 
 export default NextAuth(authOptions)
