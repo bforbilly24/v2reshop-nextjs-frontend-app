@@ -55,7 +55,6 @@ const HeroSliderSection: React.FC = () => {
   return (
     <section id='hero-slider' className='w-full relative md:pt-0 pt-'>
       <div className='flex h-full w-full flex-col items-center justify-center gap-y-8'>
-        {/* Desktop Controls - Hidden on mobile */}
         <div className='hidden md:flex flex-row w-full items-center justify-center'>
           <div className='flex w-full items-center justify-end gap-x-2'>
             {HEROSLIDERHOME.map((_, index) => (
@@ -101,7 +100,6 @@ const HeroSliderSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Carousel */}
         <Carousel
           setApi={setApi}
           className='w-full cursor-pointer'
@@ -141,14 +139,11 @@ const HeroSliderSection: React.FC = () => {
             ))}
           </CarouselContent>
 
-          {/* Hidden default controls */}
           <CarouselPrevious className='hidden' />
           <CarouselNext className='hidden' />
         </Carousel>
 
-        {/* Mobile Controls - Only visible on mobile */}
         <div className='hidden md:hidden flex-row w-full items-center justify-center gap-x-4 px-4'>
-          {/* Navigation Buttons */}
           <Button
             variant='default'
             size='icon'
@@ -158,7 +153,6 @@ const HeroSliderSection: React.FC = () => {
             <ChevronLeftIcon className='size-5 text-white' />
           </Button>
 
-          {/* Pagination Dots */}
           <div className='flex items-center gap-x-2'>
             {HEROSLIDERHOME.map((_, index) => (
               <Button
@@ -190,13 +184,11 @@ const HeroSliderSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Desktop Cards - Overlay positioned */}
       <div className='hidden md:block'>
         <HeroLeftCard />
         <HeroRightCard />
       </div>
 
-      {/* Mobile Cards - Below carousel */}
       <div className='md:hidden w-full px-4 space-y-4 mt-6'>
         <HeroLeftCard />
         <HeroRightCard />

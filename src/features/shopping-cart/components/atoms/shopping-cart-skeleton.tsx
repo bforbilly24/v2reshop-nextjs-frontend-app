@@ -10,10 +10,8 @@ export const ShoppingCartSkeleton = () => {
           className='border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
         >
           <div className='p-4 flex gap-4'>
-            {/* Image */}
             <Skeleton className='h-24 w-24 rounded-lg flex-shrink-0' />
 
-            {/* Content */}
             <div className='flex-1 space-y-3'>
               <div className='space-y-2'>
                 <Skeleton className='h-5 w-3/4' />
@@ -26,7 +24,6 @@ export const ShoppingCartSkeleton = () => {
               </div>
             </div>
 
-            {/* Remove button */}
             <Skeleton className='h-8 w-8 rounded' />
           </div>
         </Card>

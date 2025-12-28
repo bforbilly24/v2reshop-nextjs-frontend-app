@@ -15,9 +15,7 @@ const Home = async () => {
       >
         <div className='absolute left-0 top-0 -z-10 h-full w-full bg-emerald-100' />
         <div className='absolute right-0 top-0 -z-10 bg-emerald-50 h-full w-[34rem]' />
-        {/* <div className='container mx-auto'> */}
         <HeroSliderSection />
-        {/* </div> */}
       </section>
       <section id='features' className='w-full relative py-8 lg:py-16'>
         <Image
@@ -36,9 +34,7 @@ const Home = async () => {
         <LatestProductsSection />
       </section>
       <section id='banner' className='w-full py-8 lg:py-16'>
-        {/* <div className='container mx-auto'> */}
         <BannerSection />
-        {/* </div> */}
       </section>
       <section id='announcement-banner' className='w-full'>
         <AnnouncementBannerSection />

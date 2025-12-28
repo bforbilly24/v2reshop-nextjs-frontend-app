@@ -34,9 +34,7 @@ const AnnouncementBannerSection: React.FC = () => {
   return (
     <Wrapper>
       <div className='fixed z-50 flex backdrop-blur-md flex-col justify-between w-full p-3 sm:p-4 -translate-x-1/2 bg-white/80 border border-gray-100 rounded-lg shadow-xs max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] lg:max-w-7xl left-1/2 bottom-4 sm:bottom-6 dark:bg-gray-700 dark:border-gray-600'>
-        {/* Mobile: Stacked Layout */}
         <div className='flex md:hidden flex-col w-full'>
-          {/* Header with logo and close button */}
           <div className='flex items-center justify-between mb-3'>
             <Link
               href='https://reshopid.com/recommunity'
@@ -62,14 +60,12 @@ const AnnouncementBannerSection: React.FC = () => {
             </button>
           </div>
 
-          {/* Content */}
           <p className='flex items-start gap-2 text-sm font-normal text-gray-500 dark:text-gray-400 mb-3 leading-relaxed'>
             <Icon icon='noto:party-popper' className='size-4 mt-0.5 shrink-0' />
             Something new! The latest UI and ReCommunity features are here for a
             better experience.
           </p>
 
-          {/* Action Button */}
           <Link
             href='/recommunity'
             className='w-full text-center px-4 py-2.5 text-sm font-medium text-white bg-emerald-500 rounded-lg hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-700 focus:outline-none dark:focus:ring-emerald-800 transition-colors'
@@ -78,7 +74,6 @@ const AnnouncementBannerSection: React.FC = () => {
           </Link>
         </div>
 
-        {/* Desktop: Original Layout */}
         <div className='hidden md:flex flex-row justify-between w-full'>
           <div className='flex flex-col items-start mb-3 me-4 md:items-center md:flex-row md:mb-0'>
             <Link

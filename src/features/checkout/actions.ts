@@ -34,7 +34,7 @@ export const checkoutCart = async (
 
   if (!res.ok) {
     if (res.status === 401) {
-      redirect('/auth/login')
+      redirect('/auth/sign-in')
     }
 
     const errorData = await res.json()

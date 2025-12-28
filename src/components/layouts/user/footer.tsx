@@ -16,9 +16,7 @@ const Footer: React.FC = () => {
         <div className='absolute left-1/2 right-1/2 top-0 h-1.5 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground' />
 
         <div className='flex flex-col items-center w-full justify-center gap-y-8'>
-          {/* Main Footer Content */}
           <div className='grid grid-cols-1 w-full md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12'>
-            {/* Logo */}
             <div className='lg:col-span-1 flex flex-col items-start'>
               <div className='w-fit flex items-center justify-center'>
                 <Image
@@ -30,7 +28,6 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Contact */}
             <div className='lg:col-span-1 flex flex-col items-start text-left'>
               <h3 className='text-xl lg:text-2xl font-light text-primary mb-6'>
                 Contact
@@ -58,7 +55,6 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Link Groups */}
             {ECOMMERCE_FOOTER_DATA.groups.map((group) => (
               <div
                 key={group.title}
@@ -83,10 +79,8 @@ const Footer: React.FC = () => {
             ))}
           </div>
 
-          {/* Footer Bottom */}
           <div className='border-t border-gray-200 py-8 w-full'>
             <div className='grid grid-cols-1 md:grid-cols-3 gap-6 items-center'>
-              {/* Copyright */}
               <div className='text-center md:text-left'>
                 <div className='flex items-center justify-center md:justify-start text-sm text-muted-foreground flex-wrap gap-1'>
                   <span>© {currentYear}</span>
@@ -95,7 +89,6 @@ const Footer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Social Links */}
               <div className='text-center'>
                 <ul className='flex justify-center space-x-6'>
                   {ECOMMERCE_FOOTER_DATA.social.map((social) => (
@@ -115,7 +108,6 @@ const Footer: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Language Selector */}
               <div className='text-center md:text-right'>
                 <ul className='flex justify-center md:justify-end space-x-6'>
                   {ECOMMERCE_FOOTER_DATA.languages.map((lang) => (

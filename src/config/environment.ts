@@ -35,4 +35,7 @@ export const env = {
     secret: process.env.NEXTAUTH_SECRET!,
     url: process.env.NEXTAUTH_URL!,
   },
+  seller: {
+    dashboardUrl: process.env.NEXT_PUBLIC_SELLER_DASHBOARD_URL || 'https://reshop.circleit.dev/admin/login',
+  },
 } as const

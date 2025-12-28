@@ -26,7 +26,7 @@ export function Unauthorized({
         <div className="flex flex-col sm:flex-row gap-3">
           {showLoginButton && (
             <Button asChild>
-              <Link href="/auth/login">Login</Link>
+              <Link href="/auth/sign-in">Sign In</Link>
             </Button>
           )}
           <Button variant="outline" asChild>

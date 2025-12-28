@@ -17,7 +17,7 @@ export const getCart = async (): Promise<GetCartResponse> => {
   const session = await getServerSession(authOptions)
 
   if (!session?.accessToken) {
-    redirect('/auth/login')
+    redirect('/auth/sign-in')
   }
 
   const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}?_t=${Date.now()}`, {
@@ -96,7 +96,7 @@ export const updateCartQuantity = async (
   const session = await getServerSession(authOptions)
 
   if (!session?.accessToken) {
-    redirect('/auth/login')
+    redirect('/auth/sign-in')
   }
 
   const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`, {
@@ -130,7 +130,7 @@ export const removeFromCart = async (
   const session = await getServerSession(authOptions)
 
   if (!session?.accessToken) {
-    redirect('/auth/login')
+    redirect('/auth/sign-in')
   }
 
   const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.delete(cartItemId)}`, {

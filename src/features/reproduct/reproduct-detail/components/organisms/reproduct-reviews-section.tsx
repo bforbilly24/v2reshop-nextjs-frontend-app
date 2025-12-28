@@ -42,7 +42,7 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
     if (!session) {
       toast.error('Please login to rate this product')
       setTimeout(() => {
-        router.push('/auth/login')
+        router.push('/auth/sign-in')
       }, 1000)
       return
     }
