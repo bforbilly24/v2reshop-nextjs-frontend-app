@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeClosed } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { setSellerToken } from '@/utils/secure-token'
 import { Alert, AlertDescription } from '@/components/atoms/alert'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
@@ -47,17 +48,17 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
       })
 
       if (response.status && response.redirect_url) {
-        localStorage.setItem('seller_token', response.token)
+        await setSellerToken(response.token)
 
         toast.success('Sign In Successful', {
-          description: 'Redirecting to seller dashboard...',
+          description: 'Welcome back! You can now explore products.',
         })
 
         if (onSuccess) {
           onSuccess()
         }
 
-        window.location.href = response.redirect_url
+        router.push('/reproduct')
       } else {
         setError('Invalid email or password')
         toast.error('Sign In Failed', {

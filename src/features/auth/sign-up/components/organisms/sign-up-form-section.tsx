@@ -70,7 +70,7 @@ const SignUpFormSection: React.FC<SignUpFormSectionProps> = ({ onSuccess }) => {
           if (onSuccess) {
             onSuccess()
           } else {
-            router.push('/')
+            router.push('/reproduct')
             router.refresh()
           }
         }

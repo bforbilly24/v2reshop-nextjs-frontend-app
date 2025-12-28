@@ -1,6 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { env } from '@/config/environment'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { hasSellerToken } from '@/utils/secure-token'
 import {
   AuthLayout,
   AuthHeader,
@@ -9,9 +14,39 @@ import {
   AuthForm,
   AuthFooter,
 } from '@/components/layouts/auth-layout'
+import { AuthLoadingState } from '@/components/atoms/auth-loading-state'
 import { SignUpFormSection } from './components/organisms/sign-up-form-section'
 
 const SignUpView = () => {
+  const router = useRouter()
+  const { data: session, status } = useSession()
+  const [isChecking, setIsChecking] = useState(true)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const hasToken = await hasSellerToken()
+      if (hasToken) {
+        window.location.href = env.seller.dashboardUrl
+        return
+      }
+
+      if (status === 'authenticated' && session) {
+        router.push('/')
+        return
+      }
+
+      if (status !== 'loading') {
+        setIsChecking(false)
+      }
+    }
+
+    checkAuth()
+  }, [session, status, router])
+
+  if (isChecking) {
+    return <AuthLoadingState message='Checking authentication...' />
+  }
+
   return (
     <AuthLayout useIllustration={true}>
       <AuthHeader>

@@ -6,24 +6,19 @@
 export const routes = {
   home: '/',
 
-  // Auth routes
   auth: {
     login: '/auth/login',
     register: '/auth/register',
   },
 
-  // Product routes
   reproduct: '/reproduct',
   reproductDetail: (slug: string) => `/reproduct/${slug}`,
 
-  // Community routes
   recommunity: '/recommunity',
 
-  // Cart & Checkout
   cart: '/shopping-cart',
   checkout: '/checkout',
 
-  // Info pages
   aboutUs: '/about-us',
   contactUs: '/contact-us',
 } as const
@@ -60,5 +55,4 @@ export const navigation = {
   ],
 } as const
 
-// Export types for usage
 export type NavigationItem = (typeof navigation.main)[number]

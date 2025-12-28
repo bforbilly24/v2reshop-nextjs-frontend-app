@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { env } from '@/config/environment'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -8,8 +9,13 @@ export async function middleware(request: NextRequest) {
     request.cookies.get('next-auth.session-token') ||
     request.cookies.get('__Secure-next-auth.session-token')
 
-  const isAuthPage =
+  const sellerToken = request.cookies.get('seller_token')
+
+  const isBuyerAuthPage =
     pathname.startsWith('/auth/sign-in') || pathname.startsWith('/auth/sign-up')
+  const isSellerAuthPage =
+    pathname.startsWith('/seller/auth/sign-in') ||
+    pathname.startsWith('/seller/auth/sign-up')
 
   const protectedRoutes = [
     '/checkout',
@@ -22,14 +28,32 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   )
 
-  if (isProtectedRoute && !sessionToken) {
-    const loginUrl = new URL('/auth/sign-in', request.url)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    return NextResponse.redirect(loginUrl)
+  if (isBuyerAuthPage) {
+    if (sellerToken) {
+      return NextResponse.redirect(
+        new URL(env.seller.dashboardUrl, request.url)
+      )
+    }
+    if (sessionToken) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
-  if (isAuthPage && sessionToken) {
-    return NextResponse.redirect(new URL('/', request.url))
+  if (isSellerAuthPage) {
+    if (sellerToken) {
+      return NextResponse.redirect(
+        new URL(env.seller.dashboardUrl, request.url)
+      )
+    }
+    if (sessionToken) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+  }
+
+  if (isProtectedRoute && !sessionToken && !sellerToken) {
+    const loginUrl = new URL('/auth/sign-in', request.url)
+    loginUrl.searchParams.set('callbackUrl', '/reproduct')
+    return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { signOut } from 'next-auth/react'
 import { toast } from 'sonner'
+import { getSellerToken, removeSellerToken } from '@/utils/secure-token'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/avatar'
 import { Button } from '@/components/atoms/button'
 import {
@@ -37,10 +38,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const fetchUserProfile = async () => {
     setIsLoading(true)
     try {
-      const sellerToken =
-        typeof window !== 'undefined'
-          ? localStorage.getItem('seller_token')
-          : null
+      const sellerToken = await getSellerToken()
 
       let response
       if (sellerToken) {
@@ -64,12 +62,9 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           description: 'Please login again',
         })
 
-        const sellerToken =
-          typeof window !== 'undefined'
-            ? localStorage.getItem('seller_token')
-            : null
+        const sellerToken = await getSellerToken()
         if (sellerToken) {
-          localStorage.removeItem('seller_token')
+          await removeSellerToken()
           window.location.href = '/seller/auth/sign-in'
         } else {
           await signOut({
@@ -90,13 +85,10 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleLogout = async () => {
     try {
-      const sellerToken =
-        typeof window !== 'undefined'
-          ? localStorage.getItem('seller_token')
-          : null
+      const sellerToken = await getSellerToken()
 
       if (sellerToken) {
-        localStorage.removeItem('seller_token')
+        await removeSellerToken()
         toast.success('Logged Out', {
           description: 'You have been logged out successfully.',
         })

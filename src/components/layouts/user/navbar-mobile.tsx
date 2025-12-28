@@ -46,11 +46,20 @@ export default function NavbarMobile({
   const { cartItems: _cartItems, itemCount } = useCart()
   const pathname = usePathname()
   const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen
-  const [sellerToken, setSellerToken] = useState<string | null>(null)
+  const [hasSellerAuth, setHasSellerAuth] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('seller_token')
-    setSellerToken(token)
+    const checkSellerAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/seller/check-token', {
+          credentials: 'include',
+        })
+        setHasSellerAuth(response.ok)
+      } catch {
+        setHasSellerAuth(false)
+      }
+    }
+    checkSellerAuth()
   }, [])
 
   const handleNavigation = () => {
@@ -144,11 +153,31 @@ export default function NavbarMobile({
             </Link>
 
             <div className='flex items-center gap-2'>
-              {sellerToken && (
+              {hasSellerAuth && (
                 <Button
                   variant='ghost'
-                  onClick={() => {
-                    window.location.href = `${env.seller.dashboardUrl}?token=${sellerToken}`
+                  onClick={async () => {
+                    const response = await fetch(
+                      '/api/auth/seller/sso-redirect',
+                      {
+                        method: 'POST',
+                        credentials: 'include',
+                      }
+                    )
+                    if (response.ok) {
+                      const data = await response.json()
+
+                      const form = document.createElement('form')
+                      form.method = 'POST'
+                      form.action = data.dashboardUrl
+                      const tokenField = document.createElement('input')
+                      tokenField.type = 'hidden'
+                      tokenField.name = 'sso_token'
+                      tokenField.value = data.ssoToken
+                      form.appendChild(tokenField)
+                      document.body.appendChild(form)
+                      form.submit()
+                    }
                   }}
                   className={cn(
                     'lg:hidden flex items-center gap-1.5 px-3',
@@ -174,7 +203,7 @@ export default function NavbarMobile({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                  {session || sellerToken ? (
+                  {session || hasSellerAuth ? (
                     session ? (
                       <>
                         <DropdownMenuItem
@@ -214,8 +243,11 @@ export default function NavbarMobile({
                           </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => {
-                            localStorage.removeItem('seller_token')
+                          onClick={async () => {
+                            await fetch('/api/auth/seller/remove-token', {
+                              method: 'POST',
+                              credentials: 'include',
+                            })
                             window.location.href = '/seller/auth/sign-in'
                           }}
                           className='cursor-pointer rounded-lg'

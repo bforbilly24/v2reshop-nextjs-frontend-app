@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { Alert, AlertDescription } from '@/components/atoms/alert'
 import { Button } from '@/components/atoms/button'
@@ -22,6 +22,7 @@ interface SignInFormSectionProps {
 
 const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
@@ -52,12 +53,13 @@ const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
         })
       } else if (result?.ok) {
         toast.success('Sign In Successful', {
-          description: 'Welcome back! Redirecting...',
+          description: 'Welcome back! Start exploring products.',
         })
         if (onSuccess) {
           onSuccess()
         } else {
-          router.push('/')
+          const callbackUrl = searchParams.get('callbackUrl') || '/reproduct'
+          router.push(callbackUrl)
           router.refresh()
         }
       }
