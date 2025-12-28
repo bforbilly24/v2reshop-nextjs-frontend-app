@@ -15,12 +15,15 @@ export async function GET() {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
-    const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}`, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    })
+    const res = await fetch(
+      `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      }
+    )
 
     if (!res.ok) {
       const error = await res.text()
@@ -62,15 +65,18 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
 
-    const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.post}`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      body: JSON.stringify(body),
-    })
+    const res = await fetch(
+      `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.post}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        body: JSON.stringify(body),
+      }
+    )
 
     const data = await res.json()
 

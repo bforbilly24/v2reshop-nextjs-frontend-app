@@ -20,13 +20,16 @@ export const getCart = async (): Promise<GetCartResponse> => {
     redirect('/auth/sign-in')
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}?_t=${Date.now()}`, {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-    cache: 'no-store',
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.get}?_t=${Date.now()}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      cache: 'no-store',
+    }
+  )
 
   if (!res.ok) {
     const errorBody = await res.text()
@@ -52,15 +55,18 @@ export const addToCart = async (
     }
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.post}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-    body: JSON.stringify(payload),
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.post}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  )
 
   const data = await res.json()
 
@@ -99,15 +105,18 @@ export const updateCartQuantity = async (
     redirect('/auth/sign-in')
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-    body: JSON.stringify(payload),
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.put(cartItemId)}`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  )
 
   const result = await res.json()
 
@@ -133,13 +142,16 @@ export const removeFromCart = async (
     redirect('/auth/sign-in')
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.delete(cartItemId)}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.cart.delete(cartItemId)}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+    }
+  )
 
   if (!res.ok) {
     const errorBody = await res.text()

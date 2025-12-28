@@ -22,15 +22,18 @@ export const checkoutCart = async (
     redirect('/auth/login')
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.checkout.create}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-    body: JSON.stringify(payload),
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.checkout.create}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  )
 
   if (!res.ok) {
     if (res.status === 401) {

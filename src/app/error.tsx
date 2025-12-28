@@ -16,7 +16,7 @@ export default function Error({
 
   return (
     <InternalError
-      message="Something went wrong! Please try again."
+      message='Something went wrong! Please try again.'
       onRetry={reset}
     />
   )

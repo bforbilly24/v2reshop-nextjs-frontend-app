@@ -13,7 +13,10 @@ import {
 } from '@/components/atoms/dialog'
 import { Icon } from '@/components/atoms/icon'
 import { Separator } from '@/components/atoms/separator'
-import { getCurrentUser, getCurrentUserWithToken } from '@/features/auth/actions'
+import {
+  getCurrentUser,
+  getCurrentUserWithToken,
+} from '@/features/auth/actions'
 import type { UserProfile } from '@/features/auth/types'
 
 interface ProfileModalProps {
@@ -34,18 +37,18 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const fetchUserProfile = async () => {
     setIsLoading(true)
     try {
-     
-      const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
-      
+      const sellerToken =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('seller_token')
+          : null
+
       let response
       if (sellerToken) {
-       
         response = await getCurrentUserWithToken(sellerToken)
       } else {
-       
         response = await getCurrentUser()
       }
-      
+
       if (response.status) {
         setUser(response.user)
       }
@@ -60,9 +63,11 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         toast.error('Session expired', {
           description: 'Please login again',
         })
-        
-       
-        const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
+
+        const sellerToken =
+          typeof window !== 'undefined'
+            ? localStorage.getItem('seller_token')
+            : null
         if (sellerToken) {
           localStorage.removeItem('seller_token')
           window.location.href = '/seller/auth/sign-in'
@@ -85,11 +90,12 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleLogout = async () => {
     try {
-     
-      const sellerToken = typeof window !== 'undefined' ? localStorage.getItem('seller_token') : null
-      
+      const sellerToken =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('seller_token')
+          : null
+
       if (sellerToken) {
-       
         localStorage.removeItem('seller_token')
         toast.success('Logged Out', {
           description: 'You have been logged out successfully.',
@@ -97,7 +103,6 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         onClose()
         window.location.href = '/seller/auth/sign-in'
       } else {
-       
         await signOut({
           redirect: false,
           callbackUrl: '/auth/login',

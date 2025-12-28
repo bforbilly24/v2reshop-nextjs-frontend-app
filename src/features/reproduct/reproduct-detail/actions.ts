@@ -18,12 +18,15 @@ import type {
 export const getProductBySlug = async (
   slug: string
 ): Promise<GetProductDetailResponse> => {
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.detail(slug)}`, {
-    headers: {
-      Accept: 'application/json',
-    },
-    cache: 'no-store',
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.products.detail(slug)}`,
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+    }
+  )
 
   if (!res.ok) {
     const errorBody = await res.text()
@@ -84,15 +87,18 @@ export const createProductReview = async (
     }
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.create}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-    body: JSON.stringify(payload),
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.create}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    }
+  )
 
   const data = await res.json()
 
@@ -127,13 +133,16 @@ export const deleteProductReview = async (
     throw new Error('Unauthorized: Please login to delete review')
   }
 
-  const res = await fetch(`${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.delete(reviewId)}`, {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
-    },
-  })
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.reviews.delete(reviewId)}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+    }
+  )
 
   if (!res.ok) {
     if (res.status === 401) {

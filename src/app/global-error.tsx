@@ -12,7 +12,7 @@ export default function GlobalError({
     <html>
       <body>
         <InternalError
-          message="A critical error occurred. Please refresh the page."
+          message='A critical error occurred. Please refresh the page.'
           onRetry={reset}
         />
       </body>

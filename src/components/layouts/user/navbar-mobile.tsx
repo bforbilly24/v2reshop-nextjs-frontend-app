@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { env } from '@/config/environment'
 import { ECOMMERCE_NAV_LINKS, ECOMMERCE_NAVBAR_CONFIG } from '@/constant'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingCart, User, LayoutDashboard } from 'lucide-react'
@@ -27,7 +28,6 @@ import { ScrollArea } from '@/components/atoms/scroll-area'
 import Wrapper from '@/components/atoms/wrapper'
 import { ProfileModal } from '@/components/organisms/profile-modal'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { env } from '@/config/environment'
 
 interface NavbarMobileProps {
   scrolled: boolean
@@ -159,7 +159,7 @@ export default function NavbarMobile({
                   <span className='text-sm font-medium'>Dashboard</span>
                 </Button>
               )}
-              
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -189,7 +189,9 @@ export default function NavbarMobile({
                           </div>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => signOut({ callbackUrl: '/auth/sign-in' })}
+                          onClick={() =>
+                            signOut({ callbackUrl: '/auth/sign-in' })
+                          }
                           className='cursor-pointer rounded-lg'
                         >
                           <div className='flex items-center gap-2'>

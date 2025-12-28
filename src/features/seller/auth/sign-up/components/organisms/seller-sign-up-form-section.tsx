@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Eye, EyeClosed } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { Eye, EyeClosed } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/atoms/alert'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
@@ -51,9 +51,10 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
 
       if (response.status && response.redirect_url) {
         localStorage.setItem('seller_token', response.token)
-        
+
         toast.success('Sign Up Successful', {
-          description: 'Your seller account has been created. Redirecting to dashboard...',
+          description:
+            'Your seller account has been created. Redirecting to dashboard...',
         })
 
         if (onSuccess) {

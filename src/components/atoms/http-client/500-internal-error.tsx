@@ -14,23 +14,19 @@ export function InternalError({
   onRetry,
 }: InternalErrorProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center space-y-6 text-center">
+    <div className='flex min-h-screen flex-col items-center justify-center px-4 py-16'>
+      <div className='flex flex-col items-center space-y-6 text-center'>
         <InternalErrorIcon />
 
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight">{title}</h1>
-          <p className="text-lg text-muted-foreground max-w-md">{message}</p>
+        <div className='space-y-2'>
+          <h1 className='text-4xl font-bold tracking-tight'>{title}</h1>
+          <p className='text-lg text-muted-foreground max-w-md'>{message}</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          {onRetry && (
-            <Button onClick={onRetry}>
-              Try Again
-            </Button>
-          )}
-          <Button variant="outline" asChild>
-            <Link href="/">Go Home</Link>
+        <div className='flex flex-col sm:flex-row gap-3'>
+          {onRetry && <Button onClick={onRetry}>Try Again</Button>}
+          <Button variant='outline' asChild>
+            <Link href='/'>Go Home</Link>
           </Button>
         </div>
       </div>

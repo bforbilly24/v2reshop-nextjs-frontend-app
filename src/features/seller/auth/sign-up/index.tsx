@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { env } from '@/config/environment'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { SellerAuthLayout } from '@/components/layouts/seller-auth-layout'
-import { SellerSignUpFormSection } from './components/organisms/seller-sign-up-form-section'
 import AnimationContainer from '@/components/atoms/animation-container'
 import { TypingAnimation } from '@/components/atoms/typing-animation'
-import { env } from '@/config/environment'
+import { SellerSignUpFormSection } from './components/organisms/seller-sign-up-form-section'
 
 const SellerSignUpView = () => {
   const router = useRouter()
@@ -43,11 +43,14 @@ const SellerSignUpView = () => {
             <SellerSignUpFormSection />
           </div>
         </AnimationContainer>
-        
+
         <AnimationContainer animation='fadeUp' delay={0.8}>
           <div className='text-xs'>
             <span className=''>Already have a seller account? </span>
-            <Link href='/seller/auth/sign-in' className='text-chart-1 font-bold hover:underline'>
+            <Link
+              href='/seller/auth/sign-in'
+              className='text-chart-1 font-bold hover:underline'
+            >
               Sign In
             </Link>
           </div>

@@ -35,9 +35,7 @@ const SignInView = () => {
           </div>
         </div>
         <Button variant='outline' className='w-full' asChild>
-          <Link
-            href='/seller/auth/sign-in'
-          >
+          <Link href='/seller/auth/sign-in'>
             <Icon icon='ph:storefront' className='w-5 h-5' />
             Sign In as Seller
           </Link>

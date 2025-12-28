@@ -1,13 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { env } from '@/config/environment'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { SellerAuthLayout } from '@/components/layouts/seller-auth-layout'
-import { SellerSignInFormSection } from './components/organisms/seller-sign-in-form-section'
 import AnimationContainer from '@/components/atoms/animation-container'
 import { TypingAnimation } from '@/components/atoms/typing-animation'
-import { env } from '@/config/environment'
+import { SellerSignInFormSection } from './components/organisms/seller-sign-in-form-section'
 
 const SellerSignInView = () => {
   const router = useRouter()
@@ -34,7 +34,9 @@ const SellerSignInView = () => {
             </TypingAnimation>
           </AnimationContainer>
           <AnimationContainer animation='fadeUp' delay={0.4}>
-            <p className='text-xs'>Sign in to your seller account to manage your store</p>
+            <p className='text-xs'>
+              Sign in to your seller account to manage your store
+            </p>
           </AnimationContainer>
         </div>
 
@@ -43,11 +45,14 @@ const SellerSignInView = () => {
             <SellerSignInFormSection />
           </div>
         </AnimationContainer>
-        
+
         <AnimationContainer animation='fadeUp' delay={0.8}>
           <div className='text-xs'>
             <span className=''>Don&apos;t have a seller account? </span>
-            <Link href='/seller/auth/sign-up' className='text-chart-1 font-bold hover:underline'>
+            <Link
+              href='/seller/auth/sign-up'
+              className='text-chart-1 font-bold hover:underline'
+            >
               Sign Up
             </Link>
           </div>
