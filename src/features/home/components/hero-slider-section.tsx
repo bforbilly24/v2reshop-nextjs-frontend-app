@@ -123,7 +123,7 @@ const HeroSliderSection: React.FC = () => {
               >
                 <Card className='border-0 shadow-none'>
                   <CardContent className='p-0 px-4 md:px-0'>
-                    <div className='relative h-[50vh] md:h-[80vh] w-full md:w-[70rem] mx-auto'>
+                    <div className='relative h-[50vh] md:h-[80vh] lg:h-[50vh] xl:h-[100vh] w-full md:w-[70rem] mx-auto'>
                       <Image
                         alt={slide.alt}
                         src={slide.image}
