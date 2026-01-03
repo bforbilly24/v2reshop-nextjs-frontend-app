@@ -270,17 +270,7 @@ export function NavbarDesktop({
                   )
                   if (response.ok) {
                     const data = await response.json()
-
-                    const form = document.createElement('form')
-                    form.method = 'POST'
-                    form.action = data.dashboardUrl
-                    const tokenField = document.createElement('input')
-                    tokenField.type = 'hidden'
-                    tokenField.name = 'sso_token'
-                    tokenField.value = data.ssoToken
-                    form.appendChild(tokenField)
-                    document.body.appendChild(form)
-                    form.submit()
+                    window.location.href = `${data.dashboardUrl}?api_token=${data.ssoToken}`
                   }
                 }}
                 className={cn(
