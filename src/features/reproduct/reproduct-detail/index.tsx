@@ -16,13 +16,12 @@ import { ProductThumbSlider } from '@/features/reproduct/components/organisms/pr
 import { addToCart as addToCartAPI } from '@/features/shopping-cart/actions'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
 import { useCartFeedback } from '@/features/shopping-cart/context/cart-feedback-context'
-import { getProductReviews } from './actions'
 import { ProductDetailSkeleton } from './components/atoms/product-detail-skeleton'
 import { ReProductCartSection } from './components/organisms/reproduct-cart-section'
 import { ReProductColorSection } from './components/organisms/reproduct-color-section'
 import { ReProductReviewsSection } from './components/organisms/reproduct-reviews-section'
 import { ReProductSizeSection } from './components/organisms/reproduct-size-section'
-import { ProductDetail, Review } from './types'
+import { ProductDetail } from './types'
 
 interface ReProductDetailViewProps {
   product: ProductDetail
@@ -38,7 +37,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
   const [quantity, setQuantity] = useState(1)
   const [isClient, setIsClient] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
-  const [reviews, setReviews] = useState<Review[]>([])
   const [initialLoading, setInitialLoading] = useState(true)
 
   const colors = useMemo(
@@ -61,32 +59,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     setIsClient(true)
     setTimeout(() => setInitialLoading(false), 100)
   }, [])
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const result = await getProductReviews(product.id)
-        if (result.status) {
-          setReviews(result.data)
-        }
-      } catch (error) {
-        console.error('Failed to fetch reviews:', error)
-      }
-    }
-
-    fetchReviews()
-  }, [product.id])
-
-  const handleReviewAdded = async () => {
-    try {
-      const result = await getProductReviews(product.id)
-      if (result.status) {
-        setReviews(result.data)
-      }
-    } catch (error) {
-      console.error('Failed to refresh reviews:', error)
-    }
-  }
 
   useEffect(() => {
     let stock = 0
@@ -215,11 +187,6 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
     }
   }
 
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-      : 0
-
   const breadcrumbItems = [
     {
       label: 'Home',
@@ -310,10 +277,10 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
                     className='w-5 h-5 text-yellow-400'
                   />
                   <span className='font-medium'>
-                    {averageRating.toFixed(1)}
+                    {product.rating_count.toFixed(1)}
                   </span>
                   <span className='text-gray-500 text-sm'>
-                    ({reviews.length} reviews)
+                    ({product.rating_count > 0 ? 'rated' : 'no reviews'})
                   </span>
                 </div>
                 <div className='w-px h-4 bg-gray-300' />
@@ -420,12 +387,7 @@ const ReProductDetailView: React.FC<ReProductDetailViewProps> = ({
         </div>
 
         <div className='mt-16'>
-          <ReProductReviewsSection
-            productId={product.id}
-            averageRating={averageRating}
-            reviews={reviews}
-            onReviewAdded={handleReviewAdded}
-          />
+          <ReProductReviewsSection productId={product.id} />
         </div>
       </Wrapper>
     </section>

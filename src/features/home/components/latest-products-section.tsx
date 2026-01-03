@@ -16,15 +16,12 @@ import { TypingAnimation } from '@/components/atoms/typing-animation'
 import Wrapper from '@/components/atoms/wrapper'
 import { getProducts } from '@/features/reproduct/actions'
 import ProductBoxSection from '@/features/reproduct/components/organisms/product-box-section'
-import ProductListSection from '@/features/reproduct/components/organisms/product-list-section'
-import { ProductWrapperSection } from '@/features/reproduct/components/organisms/product-wrapper-section'
 import { Product } from '@/features/reproduct/types'
 
 const ITEMS_PER_PAGE = 8
 
 const LatestProductsSection = () => {
   const [currentPage] = useState(1)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
@@ -79,23 +76,6 @@ const LatestProductsSection = () => {
     startIndex + ITEMS_PER_PAGE
   )
 
-  const updatedGetEcommerceNav = () => {
-    return [
-      {
-        label: 'grid view',
-        icon: 'heroicons:view-columns',
-        active: viewMode === 'grid',
-        onClick: () => setViewMode('grid'),
-      },
-      {
-        label: 'list view',
-        icon: 'heroicons:list-bullet',
-        active: viewMode === 'list',
-        onClick: () => setViewMode('list'),
-      },
-    ]
-  }
-
   return (
     <Wrapper>
       <div className='flex flex-col items-start justify-center mb-8 gap-y-4'>
@@ -121,67 +101,17 @@ const LatestProductsSection = () => {
 
       <AnimationContainer animation='fadeDown' delay={1}>
         <div className='hidden sm:block'>
-          <ProductWrapperSection
-            getEcommerceNav={updatedGetEcommerceNav}
-            showSidebar={false}
-            showSort={false}
-          >
-            {viewMode === 'grid' ? (
-              <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-3 h-max'>
-                {paginatedProducts.map((product: Product) => (
-                  <ProductBoxSection
-                    key={`grid_key_${product.id}`}
-                    product={product}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className='space-y-3 grid-cols-1 gap-5 h-max'>
-                {paginatedProducts.map((product: Product) => (
-                  <div key={`list_key_${product.id}`}>
-                    <ProductListSection product={product} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </ProductWrapperSection>
+          <div className='grid 2xl:grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-3 h-max'>
+            {paginatedProducts.map((product: Product) => (
+              <ProductBoxSection
+                key={`grid_key_${product.id}`}
+                product={product}
+              />
+            ))}
+          </div>
         </div>
 
         <div className='block sm:hidden'>
-          <div className='flex justify-center mb-4'>
-            <div className='flex gap-2'>
-              {updatedGetEcommerceNav().map(
-                ({ active, icon, onClick }, index) => (
-                  <button
-                    key={`mobile-view-button-${index}`}
-                    className={`p-2 rounded-md border transition-colors ${
-                      active
-                        ? 'border-foreground text-foreground'
-                        : 'border-gray-400 text-gray-400 hover:text-gray-600'
-                    }`}
-                    onClick={onClick}
-                  >
-                    <span className='sr-only'>
-                      {active ? 'Grid view' : 'List view'}
-                    </span>
-                    <svg
-                      width='20'
-                      height='20'
-                      viewBox='0 0 24 24'
-                      fill='currentColor'
-                    >
-                      {icon === 'heroicons:view-columns' ? (
-                        <path d='M3 3h7v18H3V3zm11 0h7v18h-7V3z' />
-                      ) : (
-                        <path d='M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z' />
-                      )}
-                    </svg>
-                  </button>
-                )
-              )}
-            </div>
-          </div>
-
           <div className='px-4'>
             <Carousel
               setApi={setApi}
@@ -197,15 +127,9 @@ const LatestProductsSection = () => {
                     key={`mobile_carousel_${product.id}`}
                     className='pl-2 md:pl-4 basis-full'
                   >
-                    {viewMode === 'grid' ? (
-                      <div className='max-w-sm mx-auto'>
-                        <ProductBoxSection product={product} />
-                      </div>
-                    ) : (
-                      <div className='max-w-sm mx-auto'>
-                        <ProductListSection product={product} />
-                      </div>
-                    )}
+                    <div className='max-w-sm mx-auto'>
+                      <ProductBoxSection product={product} />
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
