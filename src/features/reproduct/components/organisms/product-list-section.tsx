@@ -36,35 +36,6 @@ const ProductListSection = ({ product }: { product: Product }) => {
                 % OFF
               </Badge>
             )}
-            <div className='flex flex-col items-end invisible absolute end-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 gap-2'>
-              <Button
-                size='icon'
-                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
-              >
-                <Icon
-                  icon='ph:heart-fill'
-                  className='text-slate-400 group-hover/item:text-destructive'
-                />
-              </Button>
-              <Button
-                size='icon'
-                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
-              >
-                <Icon
-                  icon='ph:eye'
-                  className='text-slate-400 group-hover/item:text-destructive'
-                />
-              </Button>
-              <Button
-                size='icon'
-                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
-              >
-                <Icon
-                  icon='jam:refresh-reverse'
-                  className='text-slate-400 group-hover/item:text-destructive'
-                />
-              </Button>
-            </div>
           </div>
         </div>
       </Link>

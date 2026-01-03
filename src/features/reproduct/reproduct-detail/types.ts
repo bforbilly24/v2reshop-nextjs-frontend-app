@@ -55,7 +55,7 @@ export interface Review {
   user: {
     id: number
     name: string
-    email: string
+    email?: string
     avatar?: string
   }
 }

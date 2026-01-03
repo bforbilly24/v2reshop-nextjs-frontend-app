@@ -3,6 +3,7 @@ import { defaultMetadata } from '@/config/seo'
 import { AuthProvider } from '@/providers/auth-provider'
 import { BProgressProvider } from '@/providers/bprogress-provider'
 import { QueryProvider } from '@/providers/query-provider'
+import { SessionExpiryProvider } from '@/providers/session-expiry-provider'
 import { Lato as Font } from 'next/font/google'
 import { Toaster } from '@/components/atoms/sonner'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -43,9 +44,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body>
         <AuthProvider>
-          <QueryProvider>
-            <BProgressProvider>{children}</BProgressProvider>
-          </QueryProvider>
+          <SessionExpiryProvider>
+            <QueryProvider>
+              <BProgressProvider>{children}</BProgressProvider>
+            </QueryProvider>
+          </SessionExpiryProvider>
         </AuthProvider>
         <Toaster richColors position='top-right' theme='light' offset='100px' />
       </body>

@@ -4,6 +4,36 @@ import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import type { AuthResponse } from '@/features/auth/types'
 
+/**
+ * Decode JWT token and extract expiry time
+ */
+function decodeJWT(token: string): { exp?: number } | null {
+  try {
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    )
+    return JSON.parse(jsonPayload)
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Check if JWT token is expired
+ */
+function isTokenExpired(token: string): boolean {
+  const decoded = decodeJWT(token)
+  if (!decoded?.exp) return true
+
+  const currentTime = Math.floor(Date.now() / 1000)
+  return decoded.exp < currentTime + 60
+}
+
 export const authOptions = {
   secret: env.auth.secret,
   providers: [
@@ -56,10 +86,26 @@ export const authOptions = {
       if (user && 'accessToken' in user) {
         token.accessToken = user.accessToken
         token.id = user.id
+
+        const decoded = decodeJWT(user.accessToken as string)
+        if (decoded?.exp) {
+          token.accessTokenExpires = decoded.exp
+        }
       }
+
+      if (token.accessToken && typeof token.accessToken === 'string') {
+        if (isTokenExpired(token.accessToken)) {
+          return {} as JWT
+        }
+      }
+
       return token
     },
     async session({ session, token }: { session: Session; token: JWT }) {
+      if (!token.accessToken) {
+        throw new Error('Token expired')
+      }
+
       if (token) {
         session.user.id = token.id as string
         if (token.accessToken) {
@@ -76,7 +122,7 @@ export const authOptions = {
   },
   session: {
     strategy: 'jwt' as const,
-    maxAge: 7 * 24 * 60 * 60,
+    maxAge: 60 * 60,
   },
   cookies: {
     sessionToken: {

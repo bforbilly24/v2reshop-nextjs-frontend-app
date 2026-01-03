@@ -47,22 +47,6 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
                   Customizable
                 </Badge>
               )}
-              <div className='hidden lg:flex flex-col items-end invisible absolute end-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 gap-2'>
-                <Button
-                  size='icon'
-                  variant='secondary'
-                  className='rounded-full h-8 w-8 bg-white/80 backdrop-blur-sm hover:bg-white'
-                >
-                  <Icon icon='heroicons:heart' className='w-4 h-4' />
-                </Button>
-                <Button
-                  size='icon'
-                  variant='secondary'
-                  className='rounded-full h-8 w-8 bg-white/80 backdrop-blur-sm hover:bg-white'
-                >
-                  <Icon icon='heroicons:eye' className='w-4 h-4' />
-                </Button>
-              </div>
             </div>
           </div>
         </CardHeader>
