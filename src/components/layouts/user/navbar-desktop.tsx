@@ -152,7 +152,7 @@ export function NavbarDesktop({
   return (
     <motion.div
       animate={{
-        width: visible ? '1280px' : '100%',
+        width: visible ? '90%' : '100%',
         y: visible ? 20 : 0,
       }}
       transition={{

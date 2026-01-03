@@ -71,7 +71,7 @@ const BannerSection: React.FC = () => {
           >
             <Image
               alt='vector-community'
-              src='/images/bannerSection/community.svg'
+              src='/images/banner/community.svg'
               width={381}
               height={230}
               className='h-[180px] w-[300px] lg:h-[200px] lg:w-[340px] xl:h-[230px] xl:w-[381px]'

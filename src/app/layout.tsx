@@ -7,7 +7,7 @@ import { SessionExpiryProvider } from '@/providers/session-expiry-provider'
 import { Lato as Font } from 'next/font/google'
 import { Toaster } from '@/components/atoms/sonner'
 import { JsonLd } from '@/components/seo/json-ld'
-import '../style/globals.css'
+import '../styles/globals.css'
 
 const font = Font({
   weight: ['400'],

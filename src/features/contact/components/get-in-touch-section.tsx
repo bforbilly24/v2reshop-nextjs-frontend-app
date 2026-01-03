@@ -4,10 +4,19 @@ import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import { useState } from 'react'
 import AnimationContainer from '@/components/atoms/animation-container'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
 import { Checkbox } from '@/components/atoms/checkbox'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/atoms/dialog'
 import {
   Form,
   FormControl,
@@ -27,6 +36,8 @@ import { contactFormSchema } from '../schema/form-schema'
 type ContactFormValues = z.infer<typeof contactFormSchema>
 
 const GetInTouchSection: React.FC = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -37,6 +48,16 @@ const GetInTouchSection: React.FC = () => {
       acceptTerms: false,
     },
   })
+
+  const onSubmit = (data: ContactFormValues) => {
+    const whatsappNumber = '6281338144576'
+    const message = `*New Contact Form Submission*\n\n*Name:* ${data.firstName} ${data.lastName}\n*Email:* ${data.email}\n*Message:*\n${data.message}`
+    const encodedMessage = encodeURIComponent(message)
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
+    
+    window.open(whatsappUrl, '_blank')
+    form.reset()
+  }
 
   return (
     <Wrapper className='py-20 lg:py-32'>
@@ -56,7 +77,7 @@ const GetInTouchSection: React.FC = () => {
       <Card className='bg-accent shadow-none p-0'>
         <CardContent className='p-4 lg:p-8'>
           <Form {...form}>
-            <form className='space-y-6'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
               <div className='grid md:grid-cols-2 gap-5'>
                 <div className='col-span-2 sm:col-span-1'>
                   <FormField
@@ -151,9 +172,116 @@ const GetInTouchSection: React.FC = () => {
                         <div className='space-y-1 leading-none'>
                           <FormLabel>
                             You agree to our{' '}
-                            <Link href='#' className='underline'>
-                              terms and conditions
-                            </Link>
+                            <Dialog
+                              open={isDialogOpen}
+                              onOpenChange={setIsDialogOpen}
+                            >
+                              <DialogTrigger asChild>
+                                <button
+                                  type='button'
+                                  className='underline text-emerald-600 hover:text-emerald-700'
+                                >
+                                  terms and conditions
+                                </button>
+                              </DialogTrigger>
+                              <DialogContent className='max-w-2xl max-h-[80vh] overflow-y-auto'>
+                                <DialogHeader>
+                                  <DialogTitle className='text-2xl font-bold'>
+                                    Terms and Conditions
+                                  </DialogTitle>
+                                  <DialogDescription className='text-base'>
+                                    Please read these terms carefully before
+                                    using our services.
+                                  </DialogDescription>
+                                </DialogHeader>
+                                <div className='space-y-4 text-sm text-muted-foreground'>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      1. Acceptance of Terms
+                                    </h3>
+                                    <p>
+                                      By accessing and using ReShop&apos;s
+                                      services, you accept and agree to be
+                                      bound by these terms and conditions.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      2. Use of Services
+                                    </h3>
+                                    <p>
+                                      Our reconditioned products are sold with
+                                      quality guarantees. You agree to use our
+                                      services only for lawful purposes and in
+                                      accordance with these terms.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      3. Product Information
+                                    </h3>
+                                    <p>
+                                      We strive to provide accurate product
+                                      descriptions and images. However, we do
+                                      not warrant that product descriptions or
+                                      other content is error-free, complete, or
+                                      current.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      4. Privacy Policy
+                                    </h3>
+                                    <p>
+                                      Your privacy is important to us. We
+                                      collect and use your personal information
+                                      in accordance with our Privacy Policy to
+                                      provide better service and communication.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      5. Warranty and Returns
+                                    </h3>
+                                    <p>
+                                      All reconditioned products come with a
+                                      warranty period. Return policies apply as
+                                      per our return guidelines available on our
+                                      website.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className='font-semibold text-foreground mb-2'>
+                                      6. Contact Information
+                                    </h3>
+                                    <p>
+                                      For any questions about these terms,
+                                      please contact us via WhatsApp at
+                                      +62813-3814-4576 or email us through the
+                                      contact form.
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className='flex justify-end gap-3 mt-6'>
+                                  <Button
+                                    type='button'
+                                    variant='outline'
+                                    onClick={() => setIsDialogOpen(false)}
+                                  >
+                                    Close
+                                  </Button>
+                                  <Button
+                                    type='button'
+                                    onClick={() => {
+                                      form.setValue('acceptTerms', true)
+                                      setIsDialogOpen(false)
+                                    }}
+                                  >
+                                    I Agree
+                                  </Button>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
                             .
                           </FormLabel>
                           <FormMessage />
