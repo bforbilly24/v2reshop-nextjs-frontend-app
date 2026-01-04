@@ -121,23 +121,8 @@ export function NavbarDesktop({
   const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
-  const [hasSellerAuth, setHasSellerAuth] = useState(false)
   const [openMenu, setOpenMenu] = useState<string | null>(null)
-
-  useEffect(() => {
-    const checkSellerAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/seller/check-token', {
-          credentials: 'include',
-        })
-        const data = await response.json()
-        setHasSellerAuth(data.exists === true)
-      } catch (error) {
-        setHasSellerAuth(false)
-      }
-    }
-    checkSellerAuth()
-  }, [])
+  const isSellerRole = session?.user?.role === 'seller'
 
   const handleNavigation = (href: string) => {
     if (href === '/shopping-cart') {
@@ -270,21 +255,11 @@ export function NavbarDesktop({
         </div>
         <AnimationContainer animation='fadeLeft' delay={0.1}>
           <div className='flex items-center gap-x-2'>
-            {hasSellerAuth && (
+            {isSellerRole && (
               <Button
                 variant='ghost'
-                onClick={async () => {
-                  const response = await fetch(
-                    '/api/auth/seller/sso-redirect',
-                    {
-                      method: 'POST',
-                      credentials: 'include',
-                    }
-                  )
-                  if (response.ok) {
-                    const data = await response.json()
-                    window.location.href = `${data.dashboardUrl}?api_token=${data.ssoToken}`
-                  }
+                onClick={() => {
+                  window.location.href = env.seller.dashboardUrl
                 }}
                 className={cn(
                   'rounded-lg transition-all duration-500 flex items-center gap-2',
@@ -293,6 +268,7 @@ export function NavbarDesktop({
                     : 'text-gray-700 hover:text-primary-600 hover:bg-transparent focus:bg-transparent'
                 )}
               >
+                <LayoutDashboard className='size-4' />
                 <span className='text-sm font-medium'>Dashboard</span>
               </Button>
             )}
@@ -317,7 +293,7 @@ export function NavbarDesktop({
                     </span>
                   </Button>
                 ) : item.menu && item.menu.length > 0 ? (
-                  session || hasSellerAuth ? (
+                  session ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button

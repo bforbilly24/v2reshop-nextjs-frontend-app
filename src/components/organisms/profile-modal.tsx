@@ -1,9 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { toast } from 'sonner'
-import { getSellerToken, removeSellerToken } from '@/utils/secure-token'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/avatar'
 import { Button } from '@/components/atoms/button'
 import {
@@ -26,6 +25,7 @@ interface ProfileModalProps {
 }
 
 export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
+  const { data: session } = useSession()
   const [user, setUser] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -38,14 +38,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const fetchUserProfile = async () => {
     setIsLoading(true)
     try {
-      const sellerToken = await getSellerToken()
-
-      let response
-      if (sellerToken) {
-        response = await getCurrentUserWithToken(sellerToken)
-      } else {
-        response = await getCurrentUser()
-      }
+      const response = await getCurrentUser()
 
       if (response.status) {
         setUser(response.user)
@@ -62,16 +55,14 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
           description: 'Please login again',
         })
 
-        const sellerToken = await getSellerToken()
-        if (sellerToken) {
-          await removeSellerToken()
-          window.location.href = '/seller/auth/sign-in'
-        } else {
-          await signOut({
-            redirect: true,
-            callbackUrl: '/auth/sign-in',
-          })
-        }
+        const redirectUrl = session?.user?.role === 'seller'
+          ? '/seller/auth/sign-in'
+          : '/auth/sign-in'
+
+        await signOut({
+          redirect: true,
+          callbackUrl: redirectUrl,
+        })
         return
       }
 
@@ -85,33 +76,26 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   const handleLogout = async () => {
     try {
-      const sellerToken = await getSellerToken()
+      const redirectUrl = session?.user?.role === 'seller'
+        ? '/seller/auth/sign-in'
+        : '/auth/sign-in'
 
-      if (sellerToken) {
-        await removeSellerToken()
-        toast.success('Logged Out', {
-          description: 'You have been logged out successfully.',
-        })
-        onClose()
-        window.location.href = '/seller/auth/sign-in'
-      } else {
-        await signOut({
-          redirect: false,
-          callbackUrl: '/auth/login',
-        })
+      await signOut({
+        redirect: false,
+        callbackUrl: redirectUrl,
+      })
 
-        if (typeof window !== 'undefined') {
-          localStorage.clear()
-          sessionStorage.clear()
-        }
-
-        toast.success('Logged Out', {
-          description: 'You have been logged out successfully.',
-        })
-        onClose()
-
-        window.location.href = '/auth/sign-in'
+      if (typeof window !== 'undefined') {
+        localStorage.clear()
+        sessionStorage.clear()
       }
+
+      toast.success('Logged Out', {
+        description: 'You have been logged out successfully.',
+      })
+      onClose()
+
+      window.location.href = redirectUrl
     } catch {
       toast.error('Logout Failed', {
         description: 'Failed to logout. Please try again.',

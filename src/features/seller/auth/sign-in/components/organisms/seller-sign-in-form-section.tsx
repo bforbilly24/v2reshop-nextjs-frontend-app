@@ -6,12 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeClosed } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { setSellerToken } from '@/utils/secure-token'
+import { signIn } from 'next-auth/react'
 import { Alert, AlertDescription } from '@/components/atoms/alert'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
 import { Input } from '@/components/atoms/input'
-import { loginSeller } from '@/features/auth/actions'
 import {
   sellerLoginSchema,
   type SellerLoginInput,
@@ -42,14 +41,14 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
     setIsLoading(true)
 
     try {
-      const response = await loginSeller({
+      const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
+        role: 'seller',
+        redirect: false,
       })
 
-      if (response.status && response.redirect_url) {
-        await setSellerToken(response.token)
-
+      if (result?.ok) {
         toast.success('Sign In Successful', {
           description: 'Welcome back! Redirecting...',
         })

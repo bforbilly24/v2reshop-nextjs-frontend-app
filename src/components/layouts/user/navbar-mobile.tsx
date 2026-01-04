@@ -46,26 +46,7 @@ export default function NavbarMobile({
   const { cartItems: _cartItems, itemCount } = useCart()
   const pathname = usePathname()
   const isWhiteText = pathname === '/about-us' && !scrolled && !isOpen
-  const [hasSellerAuth, setHasSellerAuth] = useState(false)
-
-  useEffect(() => {
-    const checkSellerAuth = async () => {
-      try {
-        const response = await fetch('/api/auth/seller/check-token', {
-          credentials: 'include',
-        })
-        if (response.ok) {
-          setHasSellerAuth(true)
-        } else {
-          setHasSellerAuth(false)
-        }
-      } catch (error) {
-        console.error('Error checking seller auth:', error)
-        setHasSellerAuth(false)
-      }
-    }
-    checkSellerAuth()
-  }, [])
+  const isSellerRole = session?.user?.role === 'seller'
 
   const handleNavigation = () => {
     setIsOpen(false)
@@ -158,31 +139,11 @@ export default function NavbarMobile({
             </Link>
 
             <div className='flex items-center gap-2'>
-              {hasSellerAuth && (
+              {isSellerRole && (
                 <Button
                   variant='ghost'
-                  onClick={async () => {
-                    const response = await fetch(
-                      '/api/auth/seller/sso-redirect',
-                      {
-                        method: 'POST',
-                        credentials: 'include',
-                      }
-                    )
-                    if (response.ok) {
-                      const data = await response.json()
-
-                      const form = document.createElement('form')
-                      form.method = 'POST'
-                      form.action = data.dashboardUrl
-                      const tokenField = document.createElement('input')
-                      tokenField.type = 'hidden'
-                      tokenField.name = 'sso_token'
-                      tokenField.value = data.ssoToken
-                      form.appendChild(tokenField)
-                      document.body.appendChild(form)
-                      form.submit()
-                    }
+                  onClick={() => {
+                    window.location.href = env.seller.dashboardUrl
                   }}
                   className={cn(
                     'lg:hidden flex items-center gap-1.5 px-3',
