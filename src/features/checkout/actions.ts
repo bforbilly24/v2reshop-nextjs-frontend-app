@@ -6,17 +6,14 @@ import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth'
 import type { CheckoutRequest, CheckoutResponse } from './types'
 
-const GOAPI_KEY = 'b1f28663-1283-55a3-1858-8edb09fd'
-const GOAPI_BASE_URL = 'https://api.goapi.io'
-
 /**
  * Fetch all provinces in Indonesia
  */
 export async function fetchProvinces() {
   try {
-    const response = await fetch(`${GOAPI_BASE_URL}/regional/provinsi`, {
+    const response = await fetch(`${env.goapi.baseUrl}/regional/provinsi`, {
       headers: {
-        'X-API-KEY': GOAPI_KEY,
+        'X-API-KEY': env.goapi.key,
       },
       cache: 'no-store',
     })
@@ -49,10 +46,10 @@ export async function fetchCities(provinceId: string) {
   
   try {
     const response = await fetch(
-      `${GOAPI_BASE_URL}/regional/kota?provinsi_id=${provinceId}`,
+      `${env.goapi.baseUrl}/regional/kota?provinsi_id=${provinceId}`,
       {
         headers: {
-          'X-API-KEY': GOAPI_KEY,
+          'X-API-KEY': env.goapi.key,
         },
         cache: 'no-store',
       }
@@ -85,10 +82,10 @@ export async function fetchKecamatan(cityId: string) {
   
   try {
     const response = await fetch(
-      `${GOAPI_BASE_URL}/regional/kecamatan?kota_id=${cityId}`,
+      `${env.goapi.baseUrl}/regional/kecamatan?kota_id=${cityId}`,
       {
         headers: {
-          'X-API-KEY': GOAPI_KEY,
+          'X-API-KEY': env.goapi.key,
         },
         cache: 'no-store',
       }
