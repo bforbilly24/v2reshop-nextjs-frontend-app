@@ -67,7 +67,7 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  if (sessionToken && !token && !isBuyerAuthPage) {
+  if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
     )
@@ -79,7 +79,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (token?.accessToken && typeof token.accessToken === 'string') {
-    if (isTokenExpired(token.accessToken) && !isBuyerAuthPage) {
+    if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
       const response = NextResponse.redirect(
         new URL('/auth/sign-in', request.url)
       )
@@ -131,8 +131,13 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isProtectedRoute && !hasValidSession && !hasValidSellerToken) {
+    // Don't redirect if already on auth page to prevent loop
+    if (isBuyerAuthPage || isSellerAuthPage) {
+      return NextResponse.next()
+    }
+    
     const loginUrl = new URL('/auth/sign-in', request.url)
-    loginUrl.searchParams.set('callbackUrl', '/reproduct')
+    loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
