@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/map'
 import { RotateCcw, Mountain } from 'lucide-react'
 
-// Lokasi-lokasi penting di Surabaya
 const surabayaLocations = [
   {
     id: 1,
@@ -53,13 +52,11 @@ const surabayaLocations = [
   },
 ]
 
-// Route connecting all locations
 const surabayaRoute = surabayaLocations.map((loc) => [
   loc.lng,
   loc.lat,
 ]) as [number, number][]
 
-// 3D View Controller Component
 function MapController() {
   const { map, isLoaded } = useMap()
   const [pitch, setPitch] = useState(0)

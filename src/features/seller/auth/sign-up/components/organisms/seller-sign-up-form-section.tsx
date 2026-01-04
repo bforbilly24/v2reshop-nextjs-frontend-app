@@ -51,7 +51,6 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
       })
 
       if (response.status) {
-        // Auto login after successful registration
         const result = await signIn('credentials', {
           email: data.email,
           password: data.password,

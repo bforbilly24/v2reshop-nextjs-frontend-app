@@ -42,7 +42,7 @@ const ReCommunitySection: React.FC = () => {
     id: community.id,
     name: community.name,
     icon: 'heroicons:user-group-solid',
-    count: '0', // TODO: Get member count from API
+    count: '0', 
     description: community.description,
     slug: community.slug || generateSlugWithId(community.name, community.id),
   }))

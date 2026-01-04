@@ -169,62 +169,34 @@ export default function NavbarMobile({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                  {session || hasSellerAuth ? (
-                    session ? (
-                      <>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsProfileModalOpen(true)
-                          }}
-                          className='cursor-pointer rounded-lg'
-                        >
-                          <div className='flex items-center gap-2'>
-                            <User className='size-4' />
-                            <span>Profile</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            signOut({ callbackUrl: '/auth/sign-in' })
-                          }
-                          className='cursor-pointer rounded-lg'
-                        >
-                          <div className='flex items-center gap-2'>
-                            <User className='size-4' />
-                            <span>Logout</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </>
-                    ) : (
-                      <>
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setIsProfileModalOpen(true)
-                          }}
-                          className='cursor-pointer rounded-lg'
-                        >
-                          <div className='flex items-center gap-2'>
-                            <User className='size-4' />
-                            <span>Profile</span>
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={async () => {
-                            await fetch('/api/auth/seller/remove-token', {
-                              method: 'POST',
-                              credentials: 'include',
-                            })
-                            window.location.href = '/seller/auth/sign-in'
-                          }}
-                          className='cursor-pointer rounded-lg'
-                        >
-                          <div className='flex items-center gap-2'>
-                            <User className='size-4' />
-                            <span>Logout</span>
-                          </div>
-                        </DropdownMenuItem>
-                      </>
-                    )
+                  {session ? (
+                    <>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setIsProfileModalOpen(true)
+                        }}
+                        className='cursor-pointer rounded-lg'
+                      >
+                        <div className='flex items-center gap-2'>
+                          <User className='size-4' />
+                          <span>Profile</span>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          const redirectUrl = session?.user?.role === 'seller'
+                            ? '/seller/auth/sign-in'
+                            : '/auth/sign-in'
+                          signOut({ callbackUrl: redirectUrl })
+                        }}
+                        className='cursor-pointer rounded-lg'
+                      >
+                        <div className='flex items-center gap-2'>
+                          <User className='size-4' />
+                          <span>Logout</span>
+                        </div>
+                      </DropdownMenuItem>
+                    </>
                   ) : (
                     <>
                       <DropdownMenuItem

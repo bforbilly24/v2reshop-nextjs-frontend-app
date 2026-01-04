@@ -1,7 +1,7 @@
 export interface Community {
   id: number
   name: string
-  slug?: string // Generated from name
+  slug?: string 
   description: string
   location: string
   created_by: number

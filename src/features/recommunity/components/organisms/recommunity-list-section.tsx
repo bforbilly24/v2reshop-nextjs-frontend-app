@@ -32,11 +32,9 @@ const ReCommunityListSection: React.FC<ReCommunityListSectionProps> = ({
   >('none')
   const [isLoadingStatus, setIsLoadingStatus] = useState(true)
 
-  // Generate slug for community
   const communitySlug =
     community.slug || generateSlugWithId(community.name, community.id)
 
-  // Fetch membership status on component mount
   useEffect(() => {
     const fetchMembershipStatus = async () => {
       try {

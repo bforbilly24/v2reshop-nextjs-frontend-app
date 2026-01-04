@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { Check, ChevronsUpDown } from 'lucide-react'
+import Link from 'next/link'
 import { toast } from 'sonner'
+import { cn } from '@/lib/cn'
 import { fixWhatsAppUrl } from '@/utils/fix-whatsapp-url'
 import { formatPrice } from '@/utils/format-price'
-import { cn } from '@/lib/cn'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
 import {
@@ -28,7 +28,12 @@ import { Stepper } from '@/components/atoms/stepper'
 import { Textarea } from '@/components/atoms/textarea'
 import Wrapper from '@/components/atoms/wrapper'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { checkoutCart, fetchProvinces, fetchCities, fetchKecamatan } from '../../actions'
+import {
+  checkoutCart,
+  fetchProvinces,
+  fetchCities,
+  fetchKecamatan,
+} from '../../actions'
 
 const shippingServices = [
   { value: 'jne', label: 'JNE' },
@@ -57,7 +62,9 @@ const CheckoutSection: React.FC = () => {
     Array<{ id: string; name: string }>
   >([])
   const [cities, setCities] = useState<Array<{ id: string; name: string }>>([])
-  const [kecamatans, setKecamatans] = useState<Array<{ id: string; name: string }>>([])
+  const [kecamatans, setKecamatans] = useState<
+    Array<{ id: string; name: string }>
+  >([])
 
   const [formData, setFormData] = useState({
     shipping_service: '',
@@ -84,7 +91,7 @@ const CheckoutSection: React.FC = () => {
         setCities(citiesData)
       }
       loadCities()
-      // Reset city and kecamatan when province changes
+
       setFormData((prev) => ({ ...prev, city: '', kecamatan: '' }))
     } else {
       setCities([])
@@ -98,7 +105,7 @@ const CheckoutSection: React.FC = () => {
         setKecamatans(kecamatanData)
       }
       loadKecamatans()
-      // Reset kecamatan when city changes
+
       setFormData((prev) => ({ ...prev, kecamatan: '' }))
     } else {
       setKecamatans([])
@@ -148,11 +155,11 @@ const CheckoutSection: React.FC = () => {
     setIsSubmitting(true)
 
     try {
-      // Build complete address with province, city, and kecamatan
       const provinceName =
         provinces.find((p) => p.id === formData.province)?.name || ''
       const cityName = cities.find((c) => c.id === formData.city)?.name || ''
-      const kecamatanName = kecamatans.find((k) => k.id === formData.kecamatan)?.name || ''
+      const kecamatanName =
+        kecamatans.find((k) => k.id === formData.kecamatan)?.name || ''
       const completeAddress = `${formData.shipping_address}, ${kecamatanName}, ${cityName}, ${provinceName}`
 
       const response = await checkoutCart({
@@ -307,7 +314,9 @@ const CheckoutSection: React.FC = () => {
                           className='h-9'
                         />
                         <CommandList>
-                          <CommandEmpty>No shipping service found.</CommandEmpty>
+                          <CommandEmpty>
+                            No shipping service found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {shippingServices.map((service) => (
                               <CommandItem
@@ -466,7 +475,8 @@ const CheckoutSection: React.FC = () => {
                         className='w-full justify-between bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
                       >
                         {formData.kecamatan
-                          ? kecamatans.find((k) => k.id === formData.kecamatan)?.name
+                          ? kecamatans.find((k) => k.id === formData.kecamatan)
+                              ?.name
                           : 'Select kecamatan...'}
                         <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                       </Button>

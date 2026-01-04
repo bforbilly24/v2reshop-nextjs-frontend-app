@@ -233,7 +233,6 @@ export const MeshGradient: React.FC<MeshGradientProps> = ({
     }
   }, [colors, speed, resolutionScale, paused])
 
-  // Fallback CSS gradient for systems where WebGL is not supported (e.g., some Linux environments)
   if (!webglSupported) {
     return (
       <div

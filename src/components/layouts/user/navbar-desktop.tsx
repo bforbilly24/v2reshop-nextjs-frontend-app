@@ -331,34 +331,6 @@ export function NavbarDesktop({
                               </div>
                             </DropdownMenuItem>
                           </>
-                        ) : hasSellerAuth ? (
-                          <>
-                            <DropdownMenuItem
-                              onClick={() => setIsProfileModalOpen(true)}
-                              className='cursor-pointer rounded-lg'
-                            >
-                              <div className='flex items-center gap-2'>
-                                {item.icon && <item.icon className='size-4' />}
-                                <span>Profile</span>
-                              </div>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={async () => {
-                                await fetch('/api/auth/seller/remove-token', {
-                                  method: 'POST',
-                                  credentials: 'include',
-                                })
-                                setHasSellerAuth(false)
-                                window.location.reload()
-                              }}
-                              className='cursor-pointer rounded-lg'
-                            >
-                              <div className='flex items-center gap-2'>
-                                {item.icon && <item.icon className='size-4' />}
-                                <span>Logout</span>
-                              </div>
-                            </DropdownMenuItem>
-                          </>
                         ) : null}
                       </DropdownMenuContent>
                     </DropdownMenu>
