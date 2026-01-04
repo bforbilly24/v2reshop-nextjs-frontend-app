@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/atoms/button'
 import { Empty } from '@/components/atoms/empty'
@@ -18,8 +17,11 @@ import { SidebarProductProps } from './components/types'
 import { PRICES } from './constants'
 import type { Category, ProductParams } from './types'
 
-const ReProductView = () => {
-  const searchParams = useSearchParams()
+interface ReProductViewProps {
+  initialCategory?: string
+}
+
+const ReProductView = ({ initialCategory }: ReProductViewProps) => {
   const [categories, setCategories] = useState<Category[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -34,13 +36,12 @@ const ReProductView = () => {
     boolean[]
   >([])
 
-  // Read category from URL parameter on mount
+  // Set initial category from server-side prop
   useEffect(() => {
-    const categoryParam = searchParams.get('category')
-    if (categoryParam) {
-      setSelectedCategories([categoryParam])
+    if (initialCategory) {
+      setSelectedCategories([initialCategory])
     }
-  }, [searchParams])
+  }, [initialCategory])
   useEffect(() => {
     const fetchCategories = async () => {
       try {
