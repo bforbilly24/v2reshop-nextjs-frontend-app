@@ -38,7 +38,7 @@ export function generateJsonLd({ type, data }: JsonLdProps) {
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'Customer Service',
-          email: 'support@reshop.com',
+          email: 'support@reshopid.com',
         },
       }
 

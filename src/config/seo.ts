@@ -5,8 +5,8 @@ export const siteConfig = {
   title: 'ReShop - Sustainable Shopping Marketplace',
   description:
     'ReShop is your sustainable marketplace for recycled and eco-friendly products. Shop furniture, home decor, and building materials while reducing environmental impact.',
-  url: 'https://reshop.com',
-  ogImage: 'https://reshop.com/opengraph-image',
+  url: 'https://reshopid.com',
+  ogImage: 'https://reshopid.com/opengraph-image',
   links: {
     twitter: 'https://twitter.com/reshop',
     github: 'https://github.com/circleit/reshop',
@@ -94,11 +94,11 @@ export const defaultMetadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+      { url: '/images/brand/app-brand.svg', sizes: 'any', type: 'image/svg+xml' },
       { url: '/icon', sizes: '32x32', type: 'image/png' },
     ],
     apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/favicon.ico',
+    shortcut: '/images/brand/app-brand.svg',
   },
   manifest: '/site.webmanifest',
   alternates: {
