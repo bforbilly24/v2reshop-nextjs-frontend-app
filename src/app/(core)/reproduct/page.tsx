@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ReProductPage() {
-  return <ReProductView />
+export default function ReProductPage({
+  searchParams,
+}: {
+  searchParams: { category?: string }
+}) {
+  return <ReProductView initialCategory={searchParams.category} />
 }
