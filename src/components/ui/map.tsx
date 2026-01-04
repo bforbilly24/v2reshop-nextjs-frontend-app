@@ -840,7 +840,6 @@ function MapRoute({
   const sourceId = `route-source-${id}`;
   const layerId = `route-layer-${id}`;
 
-  // Add source and layer on mount
   useEffect(() => {
     if (!isLoaded || !map) return;
 
@@ -876,7 +875,6 @@ function MapRoute({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, map, sourceId, layerId]);
 
-  // When coordinates change, update the source data
   useEffect(() => {
     if (!isLoaded || !map || coordinates.length < 2) return;
 

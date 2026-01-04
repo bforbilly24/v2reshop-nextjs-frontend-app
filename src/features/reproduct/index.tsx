@@ -36,7 +36,6 @@ const ReProductView = ({ initialCategory }: ReProductViewProps) => {
     boolean[]
   >([])
 
-  // Set initial category from server-side prop
   useEffect(() => {
     if (initialCategory) {
       setSelectedCategories([initialCategory])

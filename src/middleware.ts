@@ -51,7 +51,6 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  // If session token exists but no valid JWT token, clear cookies and redirect
   if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
@@ -63,7 +62,6 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Check if access token is expired
   if (token?.accessToken && typeof token.accessToken === 'string') {
     if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
       const redirectUrl = token.role === 'seller' 
@@ -96,7 +94,6 @@ export async function middleware(request: NextRequest) {
   const isBuyerSession = hasValidSession && token.role === 'buyer'
   const isSellerSession = hasValidSession && token.role === 'seller'
 
-  // Buyer auth pages: redirect if already logged in
   if (isBuyerAuthPage) {
     if (isBuyerSession) {
       return NextResponse.redirect(new URL('/', request.url))
@@ -107,7 +104,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Seller auth pages: redirect if already logged in
   if (isSellerAuthPage) {
     if (isSellerSession) {
       return NextResponse.redirect(new URL('/reproduct', request.url))
@@ -118,7 +114,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Protected routes: require valid session
   if (isProtectedRoute && !hasValidSession) {
     const loginUrl = new URL('/auth/sign-in', request.url)
     loginUrl.searchParams.set('callbackUrl', pathname)

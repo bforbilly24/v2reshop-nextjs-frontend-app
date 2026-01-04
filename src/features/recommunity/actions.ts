@@ -104,7 +104,6 @@ export async function getMembershipStatus(
       }
     }
 
-    // Try to join - API will return existing membership if already joined
     const url = `${env.api.baseUrl}${env.api.version}${env.api.endpoints.communities.join(communityId)}`
     const response = await fetch(url, {
       method: 'POST',
@@ -116,7 +115,6 @@ export async function getMembershipStatus(
     })
 
     if (!response.ok) {
-      // If error, assume not a member
       return {
         success: true,
         data: { status: 'none' },
@@ -125,7 +123,6 @@ export async function getMembershipStatus(
 
     const result = await response.json()
     
-    // Return status from membership data
     if (result.success && result.data?.status) {
       return {
         success: true,
