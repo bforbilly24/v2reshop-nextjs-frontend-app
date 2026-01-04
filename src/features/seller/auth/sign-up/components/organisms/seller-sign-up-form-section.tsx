@@ -54,15 +54,15 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
         await setSellerToken(response.token)
 
         toast.success('Sign Up Successful', {
-          description: 'Redirecting to seller dashboard...',
+          description:
+            'Your seller account has been created. Start exploring products!',
         })
 
         if (onSuccess) {
           onSuccess()
         }
 
-        // Redirect to seller dashboard with full page reload
-        window.location.href = response.redirect_url
+        router.push('/reproduct')
       } else {
         setError('Sign up failed. Please try again.')
         toast.error('Sign Up Failed', {
