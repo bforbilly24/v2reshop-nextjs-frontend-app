@@ -49,4 +49,8 @@ export const env = {
       process.env.NEXT_PUBLIC_SELLER_DASHBOARD_URL ||
       'https://reshop.circleit.dev/admin/login',
   },
+  goapi: {
+    key: process.env.GOAPI_KEY!,
+    baseUrl: process.env.GOAPI_BASE_URL!,
+  },
 } as const

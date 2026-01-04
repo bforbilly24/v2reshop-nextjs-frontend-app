@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/cn'
 
 type MeshGradientProps = {
@@ -35,6 +35,7 @@ export const MeshGradient: React.FC<MeshGradientProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const rafRef = useRef<number | null>(null)
+  const [webglSupported, setWebglSupported] = useState(true)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -44,7 +45,13 @@ export const MeshGradient: React.FC<MeshGradientProps> = ({
       premultipliedAlpha: true,
       alpha: true,
     })
-    if (!glCtx) return
+    
+    if (!glCtx) {
+      console.warn('WebGL not supported, falling back to CSS gradient')
+      setWebglSupported(false)
+      return
+    }
+    
     const gl: WebGLRenderingContext = glCtx
 
     const getDpr = () =>
@@ -225,6 +232,21 @@ export const MeshGradient: React.FC<MeshGradientProps> = ({
       gl.deleteBuffer(buffer)
     }
   }, [colors, speed, resolutionScale, paused])
+
+  // Fallback CSS gradient for systems where WebGL is not supported (e.g., some Linux environments)
+  if (!webglSupported) {
+    return (
+      <div
+        className={cn(
+          'h-full w-full bg-gradient-to-br from-emerald-500/20 via-green-500/20 to-teal-500/20 animate-gradient-shift',
+          className
+        )}
+        style={{
+          backgroundSize: '200% 200%',
+        }}
+      />
+    )
+  }
 
   return <canvas ref={canvasRef} className={cn('h-full w-full', className)} />
 }

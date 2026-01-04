@@ -54,8 +54,13 @@ export default function NavbarMobile({
         const response = await fetch('/api/auth/seller/check-token', {
           credentials: 'include',
         })
-        setHasSellerAuth(response.ok)
-      } catch {
+        if (response.ok) {
+          setHasSellerAuth(true)
+        } else {
+          setHasSellerAuth(false)
+        }
+      } catch (error) {
+        console.error('Error checking seller auth:', error)
         setHasSellerAuth(false)
       }
     }

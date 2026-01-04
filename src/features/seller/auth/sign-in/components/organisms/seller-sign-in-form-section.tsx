@@ -51,14 +51,14 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
         await setSellerToken(response.token)
 
         toast.success('Sign In Successful', {
-          description: 'Welcome back! You can now explore products.',
+          description: 'Redirecting to seller dashboard...',
         })
 
         if (onSuccess) {
           onSuccess()
         }
 
-        router.push('/reproduct')
+        window.location.href = response.redirect_url
       } else {
         setError('Invalid email or password')
         toast.error('Sign In Failed', {
@@ -87,14 +87,20 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
       )}
 
       <div>
-        <Input
-          id='email'
-          type='email'
-          placeholder='Email Address'
-          className='!bg-background/20 h-10 placeholder:opacity-40'
-          {...register('email')}
-          disabled={isLoading}
-        />
+        <div className='relative'>
+          <Icon
+            icon='ph:envelope-simple'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10 pointer-events-none'
+          />
+          <Input
+            id='email'
+            type='email'
+            placeholder='Email Address'
+            className='!bg-background/20 h-10 placeholder:opacity-40 pl-10'
+            {...register('email')}
+            disabled={isLoading}
+          />
+        </div>
         {errors.email && (
           <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
         )}
@@ -102,11 +108,15 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
 
       <div>
         <div className='relative'>
+          <Icon
+            icon='ph:lock-simple'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10 pointer-events-none'
+          />
           <Input
             id='password'
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
-            className='!bg-background/20 h-10 pe-10 placeholder:opacity-40'
+            className='!bg-background/20 h-10 pl-10 pe-10 placeholder:opacity-40'
             {...register('password')}
             disabled={isLoading}
           />
@@ -129,8 +139,8 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
 
       <Button
         type='submit'
-        variant='secondary'
-        className='bg-secondary/20 hover:bg-secondary/30 text-chart-1 mt-1 h-10 w-full text-base'
+        variant='default'
+        className='mt-1 h-10 w-full text-base'
         disabled={isLoading}
       >
         {isLoading ? (
@@ -142,7 +152,10 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
             Signing in...
           </>
         ) : (
-          'Sign in'
+          <>
+            <Icon icon='ph:sign-in' className='mr-2 h-4 w-4' />
+            Sign in
+          </>
         )}
       </Button>
     </form>
