@@ -15,6 +15,7 @@ export const routes = {
   reproductDetail: (slug: string) => `/reproduct/${slug}`,
 
   recommunity: '/recommunity',
+  recommunityDetail: (slug: string) => `/recommunity/${slug}`,
 
   cart: '/shopping-cart',
   checkout: '/checkout',

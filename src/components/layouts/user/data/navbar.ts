@@ -51,27 +51,6 @@ const NAV_LINKS: NavbarItem[] = [
         href: '/recommunity',
         icon: HandHeart,
       },
-      {
-        title: 'Re-Charity',
-        tagline: 'Explore our charity services and solutions.',
-        href: '/coming-soon',
-        icon: Lock,
-        isComingSoon: true,
-      },
-      {
-        title: 'Re-Study',
-        tagline: 'Access educational resources and materials.',
-        href: '/coming-soon',
-        icon: Lock,
-        isComingSoon: true,
-      },
-      {
-        title: 'Re-Event',
-        tagline: 'Discover upcoming events and activities.',
-        href: '/coming-soon',
-        icon: Lock,
-        isComingSoon: true,
-      },
     ],
   },
   {

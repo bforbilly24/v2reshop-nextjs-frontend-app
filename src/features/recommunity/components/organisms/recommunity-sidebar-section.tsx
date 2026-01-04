@@ -13,7 +13,7 @@ import { Input } from '@/components/atoms/input'
 import { Label } from '@/components/atoms/label'
 import { ScrollArea } from '@/components/atoms/scroll-area'
 
-const SidebarCommunity = ({
+const ReCommunitySidebarSection = ({
   searchTerm = '',
   onSearchChange,
   selectedId = 1,
@@ -75,7 +75,7 @@ const SidebarCommunity = ({
       </CardHeader>
 
       <ScrollArea className='h-[calc(100vh-16rem)]'>
-        <CardContent className='space-y-4'>
+        <CardContent>
           <div className='space-y-2'>
             {filteredCommunityItems.map((item: ReCommunityItem) => (
               <button
@@ -129,43 +129,10 @@ const SidebarCommunity = ({
               </button>
             ))}
           </div>
-
-          <div className='pt-4 border-t border-border'>
-            <Button
-              onClick={handleCreateCommunity}
-              className='w-full h-10 gap-2 bg-emerald-50 hover:bg-emerald-500 active:bg-emerald-600 text-emerald-600 hover:text-white active:text-white border border-emerald-200 hover:border-emerald-500'
-              variant='outline'
-            >
-              <Icon icon='heroicons:plus' className='size-4' />
-              <span className='text-sm font-semibold'>
-                Create A New Community
-              </span>
-            </Button>
-          </div>
-
-          <div className='space-y-4 pt-4 border-t border-border'>
-            <div className='space-y-2'>
-              <div className='text-foreground font-semibold text-xs uppercase pb-2'>
-                Quick Filters
-              </div>
-              <div className='flex flex-wrap gap-2'>
-                {['Active', 'New', 'Popular', 'Following'].map((filter) => (
-                  <Button
-                    key={filter}
-                    variant='outline'
-                    size='sm'
-                    className='h-7 px-3 text-xs bg-muted hover:bg-primary hover:text-primary-foreground'
-                  >
-                    {filter}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
         </CardContent>
       </ScrollArea>
     </Card>
   )
 }
 
-export { SidebarCommunity }
+export { ReCommunitySidebarSection }
