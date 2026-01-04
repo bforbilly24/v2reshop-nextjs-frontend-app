@@ -93,7 +93,7 @@ export const authOptions = {
       if (user && 'accessToken' in user) {
         token.accessToken = user.accessToken
         token.id = user.id
-        token.role = (user as any).role || 'buyer'
+        token.role = ('role' in user ? user.role : 'buyer') as string
 
         const decoded = decodeJWT(user.accessToken as string)
         if (decoded?.exp) {

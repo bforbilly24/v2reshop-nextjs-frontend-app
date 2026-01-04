@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/avatar'
@@ -29,13 +29,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [user, setUser] = useState<UserProfile | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    if (isOpen) {
-      fetchUserProfile()
-    }
-  }, [isOpen])
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await getCurrentUser()
@@ -72,7 +66,13 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [session?.user?.role])
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchUserProfile()
+    }
+  }, [isOpen, fetchUserProfile])
 
   const handleLogout = async () => {
     try {
