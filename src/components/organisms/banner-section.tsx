@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Button } from '@/components/atoms/button'
 import { FlickeringGrid } from '@/components/atoms/flickering-grid'
 import { Icon } from '@/components/atoms/icon'
@@ -29,6 +30,7 @@ const HIGHLIGHTS = [
 
 const BannerSection: React.FC = () => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   const handleClick = (): void => {
     router.push('/recommunity')
@@ -132,12 +134,13 @@ const BannerSection: React.FC = () => {
                 >
                   <Button
                     asChild
-                    onClick={handleClick}
                     size='lg'
                     variant='default'
                     className='px-6 sm:px-8 w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400'
                   >
-                    <Link href=''>Register now</Link>
+                    <Link href='/recommunity'>
+                      {session ? 'Explore Community' : 'Register now'}
+                    </Link>
                   </Button>
                 </AnimationContainer>
 
