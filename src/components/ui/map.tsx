@@ -871,7 +871,6 @@ function MapRoute({
         if (map.getLayer(layerId)) map.removeLayer(layerId);
         if (map.getSource(sourceId)) map.removeSource(sourceId);
       } catch {
-        // ignore
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

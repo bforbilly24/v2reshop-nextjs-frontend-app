@@ -1,11 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { env } from '@/config/environment'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { hasSellerToken } from '@/utils/secure-token'
 import { SellerAuthLayout } from '@/components/layouts/seller-auth-layout'
 import AnimationContainer from '@/components/atoms/animation-container'
 import { AuthLoadingState } from '@/components/atoms/auth-loading-state'
@@ -21,12 +19,6 @@ const SellerSignInView = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const hasToken = await hasSellerToken()
-      if (hasToken) {
-        window.location.href = env.seller.dashboardUrl
-        return
-      }
-
       if (status === 'authenticated' && session) {
         router.push('/')
         return
