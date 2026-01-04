@@ -51,14 +51,14 @@ const SellerSignInFormSection: React.FC<SellerSignInFormSectionProps> = ({
         await setSellerToken(response.token)
 
         toast.success('Sign In Successful', {
-          description: 'Redirecting to seller dashboard...',
+          description: 'Welcome back! Redirecting...',
         })
 
         if (onSuccess) {
           onSuccess()
         }
 
-        window.location.href = response.redirect_url
+        router.push('/reproduct')
       } else {
         setError('Invalid email or password')
         toast.error('Sign In Failed', {

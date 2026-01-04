@@ -48,7 +48,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/seller/auth/sign-in') ||
     pathname.startsWith('/seller/auth/sign-up')
 
-  // Handle seller token expiry
   if (sellerToken?.value && isTokenExpired(sellerToken.value)) {
     if (!isSellerAuthPage) {
       const response = NextResponse.redirect(
@@ -68,7 +67,6 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  // Handle invalid session token
   if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
@@ -80,7 +78,6 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Handle expired access token
   if (token?.accessToken && typeof token.accessToken === 'string') {
     if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
       const response = NextResponse.redirect(
@@ -110,31 +107,25 @@ export async function middleware(request: NextRequest) {
     sellerToken?.value && !isTokenExpired(sellerToken.value)
 
   if (isBuyerAuthPage) {
-    if (hasValidSellerToken) {
-      return NextResponse.redirect(
-        new URL(env.seller.dashboardUrl, request.url)
-      )
-    }
     if (hasValidSession) {
       return NextResponse.redirect(new URL('/', request.url))
+    }
+    if (hasValidSellerToken) {
+      return NextResponse.redirect(new URL('/reproduct', request.url))
     }
     return NextResponse.next()
   }
 
   if (isSellerAuthPage) {
     if (hasValidSellerToken) {
-      return NextResponse.redirect(
-        new URL(env.seller.dashboardUrl, request.url)
-      )
+      return NextResponse.redirect(new URL('/reproduct', request.url))
     }
     if (hasValidSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
-    // Allow access to seller auth page if not logged in
     return NextResponse.next()
   }
 
-  // Protect routes - redirect to login if not authenticated
   if (isProtectedRoute && !hasValidSession && !hasValidSellerToken) {
     const loginUrl = new URL('/auth/sign-in', request.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
