@@ -12,6 +12,18 @@ import {
 import { Icon } from '@/components/atoms/icon'
 import { Product } from '@/features/reproduct/types'
 
+const getValidImageUrl = (imageUrl: string | undefined) => {
+  const defaultImage = 'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'
+  if (!imageUrl || imageUrl.trim() === '') return defaultImage
+  
+  try {
+    new URL(imageUrl)
+    return imageUrl
+  } catch {
+    return defaultImage
+  }
+}
+
 const ProductBoxSection = ({ product }: { product: Product }) => {
   const averageRating = product.rating_count
     ? product.rating_count.toFixed(1)
@@ -24,10 +36,7 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
           <div className='bg-gray-100 dark:bg-gray-800 relative lg:h-64 md:h-64 h-52 flex flex-col justify-center items-center rounded-lg'>
             <div className='h-[146px]'>
               <Image
-                src={
-                  product.image[0] ||
-                  'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'
-                }
+                src={getValidImageUrl(product.image?.[0])}
                 alt={product.name}
                 width={235}
                 height={235}
@@ -47,6 +56,22 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
                   Customizable
                 </Badge>
               )}
+              <div className='hidden lg:flex flex-col items-end invisible absolute end-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 gap-2'>
+                <Button
+                  size='icon'
+                  variant='secondary'
+                  className='rounded-full h-8 w-8 bg-white/80 backdrop-blur-sm hover:bg-white'
+                >
+                  <Icon icon='heroicons:heart' className='w-4 h-4' />
+                </Button>
+                <Button
+                  size='icon'
+                  variant='secondary'
+                  className='rounded-full h-8 w-8 bg-white/80 backdrop-blur-sm hover:bg-white'
+                >
+                  <Icon icon='heroicons:eye' className='w-4 h-4' />
+                </Button>
+              </div>
             </div>
           </div>
         </CardHeader>
