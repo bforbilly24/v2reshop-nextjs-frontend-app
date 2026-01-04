@@ -84,14 +84,20 @@ const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
 
       <div>
         <Label>Email</Label>
-        <Input
-          id='email'
-          type='email'
-          placeholder='name@example.com'
-          className='mt-4 border-none focus:ring-gray-300'
-          {...register('email')}
-          disabled={isLoading}
-        />
+        <div className='relative mt-4'>
+          <Icon
+            icon='ph:envelope-simple'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 dark:text-gray-400 z-10 pointer-events-none'
+          />
+          <Input
+            id='email'
+            type='email'
+            placeholder='name@example.com'
+            className='border-none focus:ring-gray-300 pl-10'
+            {...register('email')}
+            disabled={isLoading}
+          />
+        </div>
         {errors.email && (
           <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
         )}
@@ -100,11 +106,15 @@ const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
       <div>
         <Label>Password</Label>
         <div className='relative mt-4'>
+          <Icon
+            icon='ph:lock-simple'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 dark:text-gray-400 z-10 pointer-events-none'
+          />
           <Input
             id='password'
             type={showPassword ? 'text' : 'password'}
             placeholder='••••••••'
-            className='border-none focus:ring-gray-300 pr-10'
+            className='border-none focus:ring-gray-300 pl-10 pr-10'
             {...register('password')}
             disabled={isLoading}
           />
@@ -134,7 +144,10 @@ const SignInFormSection: React.FC<SignInFormSectionProps> = ({ onSuccess }) => {
             Signing in...
           </>
         ) : (
-          'Sign in'
+          <>
+            <Icon icon='ph:sign-in' className='mr-2 h-4 w-4' />
+            Sign in
+          </>
         )}
       </Button>
     </form>

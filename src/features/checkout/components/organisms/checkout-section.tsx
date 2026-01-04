@@ -1,20 +1,45 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Check, ChevronsUpDown } from 'lucide-react'
 import { toast } from 'sonner'
 import { fixWhatsAppUrl } from '@/utils/fix-whatsapp-url'
 import { formatPrice } from '@/utils/format-price'
+import { cn } from '@/lib/cn'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/atoms/command'
 import { Icon } from '@/components/atoms/icon'
-import { Input } from '@/components/atoms/input'
 import { Label } from '@/components/atoms/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/atoms/popover'
 import { Stepper } from '@/components/atoms/stepper'
 import { Textarea } from '@/components/atoms/textarea'
 import Wrapper from '@/components/atoms/wrapper'
 import { useCart } from '@/features/shopping-cart/context/cart-context'
-import { checkoutCart } from '../../actions'
+import { checkoutCart, fetchProvinces, fetchCities, fetchKecamatan } from '../../actions'
+
+const shippingServices = [
+  { value: 'jne', label: 'JNE' },
+  { value: 'jnt', label: 'J&T Express' },
+  { value: 'sicepat', label: 'SiCepat' },
+  { value: 'tiki', label: 'TIKI' },
+  { value: 'lionparcel', label: 'Lion Parcel' },
+  { value: 'pos', label: 'POS Indonesia' },
+  { value: 'ninjaxpress', label: 'Ninja Xpress' },
+  { value: 'anteraja', label: 'Anteraja' },
+]
 
 const CheckoutSection: React.FC = () => {
   const { cartItems, subtotal } = useCart()
@@ -24,12 +49,61 @@ const CheckoutSection: React.FC = () => {
     invoice: string
     whatsappUrl: string
   } | null>(null)
+  const [openShipping, setOpenShipping] = useState(false)
+  const [openProvince, setOpenProvince] = useState(false)
+  const [openCity, setOpenCity] = useState(false)
+  const [openKecamatan, setOpenKecamatan] = useState(false)
+  const [provinces, setProvinces] = useState<
+    Array<{ id: string; name: string }>
+  >([])
+  const [cities, setCities] = useState<Array<{ id: string; name: string }>>([])
+  const [kecamatans, setKecamatans] = useState<Array<{ id: string; name: string }>>([])
 
   const [formData, setFormData] = useState({
-    shipping_service: 'JNE',
+    shipping_service: '',
+    province: '',
+    city: '',
+    kecamatan: '',
     shipping_address: '',
     note: '',
   })
+
+  useEffect(() => {
+    const loadProvinces = async () => {
+      const provincesData = await fetchProvinces()
+      console.log('Provinces loaded:', provincesData)
+      setProvinces(provincesData)
+    }
+    loadProvinces()
+  }, [])
+
+  useEffect(() => {
+    if (formData.province) {
+      const loadCities = async () => {
+        const citiesData = await fetchCities(formData.province)
+        setCities(citiesData)
+      }
+      loadCities()
+      // Reset city and kecamatan when province changes
+      setFormData((prev) => ({ ...prev, city: '', kecamatan: '' }))
+    } else {
+      setCities([])
+    }
+  }, [formData.province])
+
+  useEffect(() => {
+    if (formData.city) {
+      const loadKecamatans = async () => {
+        const kecamatanData = await fetchKecamatan(formData.city)
+        setKecamatans(kecamatanData)
+      }
+      loadKecamatans()
+      // Reset kecamatan when city changes
+      setFormData((prev) => ({ ...prev, kecamatan: '' }))
+    } else {
+      setKecamatans([])
+    }
+  }, [formData.city])
 
   const steps = [
     { id: 'cart', label: 'Cart' },
@@ -46,6 +120,26 @@ const CheckoutSection: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (!formData.shipping_service) {
+      toast.error('Please select a shipping service')
+      return
+    }
+
+    if (!formData.province) {
+      toast.error('Please select a province')
+      return
+    }
+
+    if (!formData.city) {
+      toast.error('Please select a city')
+      return
+    }
+
+    if (!formData.kecamatan) {
+      toast.error('Please select a kecamatan')
+      return
+    }
+
     if (!formData.shipping_address.trim()) {
       toast.error('Please enter your shipping address')
       return
@@ -54,7 +148,18 @@ const CheckoutSection: React.FC = () => {
     setIsSubmitting(true)
 
     try {
-      const response = await checkoutCart(formData)
+      // Build complete address with province, city, and kecamatan
+      const provinceName =
+        provinces.find((p) => p.id === formData.province)?.name || ''
+      const cityName = cities.find((c) => c.id === formData.city)?.name || ''
+      const kecamatanName = kecamatans.find((k) => k.id === formData.kecamatan)?.name || ''
+      const completeAddress = `${formData.shipping_address}, ${kecamatanName}, ${cityName}, ${provinceName}`
+
+      const response = await checkoutCart({
+        shipping_service: formData.shipping_service,
+        shipping_address: completeAddress,
+        note: formData.note,
+      })
 
       if (response.status && response.data) {
         setCheckoutData({
@@ -177,20 +282,238 @@ const CheckoutSection: React.FC = () => {
                 </h2>
 
                 <div className='space-y-2'>
-                  <Label htmlFor='shipping_service'>Shipping Service</Label>
-                  <Input
-                    id='shipping_service'
-                    name='shipping_service'
-                    value={formData.shipping_service}
-                    onChange={handleInputChange}
-                    placeholder='e.g. JNE, J&T, SiCepat'
-                    required
-                    className='bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
-                  />
+                  <Label htmlFor='shipping_service'>Shipping Service *</Label>
+                  <Popover open={openShipping} onOpenChange={setOpenShipping}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant='outline'
+                        role='combobox'
+                        aria-expanded={openShipping}
+                        className='w-full justify-between bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+                      >
+                        {formData.shipping_service
+                          ? shippingServices.find(
+                              (service) =>
+                                service.value === formData.shipping_service
+                            )?.label
+                          : 'Select shipping service...'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
+                      <Command>
+                        <CommandInput
+                          placeholder='Search shipping service...'
+                          className='h-9'
+                        />
+                        <CommandList>
+                          <CommandEmpty>No shipping service found.</CommandEmpty>
+                          <CommandGroup>
+                            {shippingServices.map((service) => (
+                              <CommandItem
+                                key={service.value}
+                                value={service.value}
+                                onSelect={(currentValue) => {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    shipping_service:
+                                      currentValue === prev.shipping_service
+                                        ? ''
+                                        : currentValue,
+                                  }))
+                                  setOpenShipping(false)
+                                }}
+                              >
+                                {service.label}
+                                <Check
+                                  className={cn(
+                                    'ml-auto h-4 w-4',
+                                    formData.shipping_service === service.value
+                                      ? 'opacity-100'
+                                      : 'opacity-0'
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
 
                 <div className='space-y-2'>
-                  <Label htmlFor='shipping_address'>Shipping Address *</Label>
+                  <Label htmlFor='province'>Province *</Label>
+                  <Popover open={openProvince} onOpenChange={setOpenProvince}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant='outline'
+                        role='combobox'
+                        aria-expanded={openProvince}
+                        className='w-full justify-between bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+                      >
+                        {formData.province
+                          ? provinces.find((p) => p.id === formData.province)
+                              ?.name
+                          : 'Select province...'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
+                      <Command>
+                        <CommandInput
+                          placeholder='Search province...'
+                          className='h-9'
+                        />
+                        <CommandList>
+                          <CommandEmpty>No province found.</CommandEmpty>
+                          <CommandGroup>
+                            {provinces.map((province) => (
+                              <CommandItem
+                                key={province.id}
+                                value={province.name}
+                                onSelect={() => {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    province: province.id,
+                                  }))
+                                  setOpenProvince(false)
+                                }}
+                              >
+                                {province.name}
+                                <Check
+                                  className={cn(
+                                    'ml-auto h-4 w-4',
+                                    formData.province === province.id
+                                      ? 'opacity-100'
+                                      : 'opacity-0'
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className='space-y-2'>
+                  <Label htmlFor='city'>City/Regency *</Label>
+                  <Popover open={openCity} onOpenChange={setOpenCity}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant='outline'
+                        role='combobox'
+                        aria-expanded={openCity}
+                        disabled={!formData.province}
+                        className='w-full justify-between bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+                      >
+                        {formData.city
+                          ? cities.find((c) => c.id === formData.city)?.name
+                          : 'Select city...'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
+                      <Command>
+                        <CommandInput
+                          placeholder='Search city...'
+                          className='h-9'
+                        />
+                        <CommandList>
+                          <CommandEmpty>No city found.</CommandEmpty>
+                          <CommandGroup>
+                            {cities.map((city) => (
+                              <CommandItem
+                                key={city.id}
+                                value={city.name}
+                                onSelect={() => {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    city: city.id,
+                                  }))
+                                  setOpenCity(false)
+                                }}
+                              >
+                                {city.name}
+                                <Check
+                                  className={cn(
+                                    'ml-auto h-4 w-4',
+                                    formData.city === city.id
+                                      ? 'opacity-100'
+                                      : 'opacity-0'
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className='space-y-2'>
+                  <Label htmlFor='kecamatan'>Kecamatan (Sub-district) *</Label>
+                  <Popover open={openKecamatan} onOpenChange={setOpenKecamatan}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant='outline'
+                        role='combobox'
+                        aria-expanded={openKecamatan}
+                        disabled={!formData.city}
+                        className='w-full justify-between bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600'
+                      >
+                        {formData.kecamatan
+                          ? kecamatans.find((k) => k.id === formData.kecamatan)?.name
+                          : 'Select kecamatan...'}
+                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className='w-[--radix-popover-trigger-width] p-0'>
+                      <Command>
+                        <CommandInput
+                          placeholder='Search kecamatan...'
+                          className='h-9'
+                        />
+                        <CommandList>
+                          <CommandEmpty>No kecamatan found.</CommandEmpty>
+                          <CommandGroup>
+                            {kecamatans.map((kecamatan) => (
+                              <CommandItem
+                                key={kecamatan.id}
+                                value={kecamatan.name}
+                                onSelect={() => {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    kecamatan: kecamatan.id,
+                                  }))
+                                  setOpenKecamatan(false)
+                                }}
+                              >
+                                {kecamatan.name}
+                                <Check
+                                  className={cn(
+                                    'ml-auto h-4 w-4',
+                                    formData.kecamatan === kecamatan.id
+                                      ? 'opacity-100'
+                                      : 'opacity-0'
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                <div className='space-y-2'>
+                  <Label htmlFor='shipping_address'>
+                    Street Address, Building, etc. *
+                  </Label>
                   <Textarea
                     id='shipping_address'
                     name='shipping_address'

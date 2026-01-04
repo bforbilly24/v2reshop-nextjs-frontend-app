@@ -17,10 +17,6 @@ export const registerSchema = z.object({
     .string()
     .min(1, 'Email is required')
     .email('Email must be valid and contain @'),
-  phone: z
-    .string()
-    .min(1, 'Phone number is required')
-    .regex(/^[0-9]+$/, 'Phone number must contain only numbers'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
