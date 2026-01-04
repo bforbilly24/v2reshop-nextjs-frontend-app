@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, EyeClosed } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { setSellerToken } from '@/utils/secure-token'
+import { signIn } from 'next-auth/react'
 import { Alert, AlertDescription } from '@/components/atoms/alert'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
@@ -50,19 +50,33 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
         role: 'seller',
       })
 
-      if (response.status && response.redirect_url) {
-        await setSellerToken(response.token)
-
-        toast.success('Sign Up Successful', {
-          description:
-            'Your seller account has been created. Start exploring products!',
+      if (response.status) {
+        // Auto login after successful registration
+        const result = await signIn('credentials', {
+          email: data.email,
+          password: data.password,
+          role: 'seller',
+          redirect: false,
         })
 
-        if (onSuccess) {
-          onSuccess()
-        }
+        if (result?.ok) {
+          toast.success('Sign Up Successful', {
+            description:
+              'Your seller account has been created. Start exploring products!',
+          })
 
-        router.push('/reproduct')
+          if (onSuccess) {
+            onSuccess()
+          }
+
+          router.push('/reproduct')
+        } else {
+          setError('Registration successful but auto-login failed. Please sign in manually.')
+          toast.warning('Registration Successful', {
+            description: 'Please sign in with your credentials.',
+          })
+          router.push('/seller/auth/sign-in')
+        }
       } else {
         setError('Sign up failed. Please try again.')
         toast.error('Sign Up Failed', {

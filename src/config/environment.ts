@@ -8,6 +8,10 @@ export const env = {
         register: '/auth/register',
         me: '/auth/me',
         logout: '/auth/logout',
+        seller: {
+          login: '/auth/login-seller',
+          register: '/auth/register-seller',
+        },
       },
       cart: {
         get: '/cart',

@@ -40,33 +40,18 @@ export async function middleware(request: NextRequest) {
     request.cookies.get('next-auth.session-token') ||
     request.cookies.get('__Secure-next-auth.session-token')
 
-  const sellerToken = request.cookies.get('seller_token')
-
   const isBuyerAuthPage =
     pathname.startsWith('/auth/sign-in') || pathname.startsWith('/auth/sign-up')
   const isSellerAuthPage =
     pathname.startsWith('/seller/auth/sign-in') ||
     pathname.startsWith('/seller/auth/sign-up')
 
-  if (sellerToken?.value && isTokenExpired(sellerToken.value)) {
-    if (!isSellerAuthPage) {
-      const response = NextResponse.redirect(
-        new URL('/seller/auth/sign-in', request.url)
-      )
-      response.cookies.delete('seller_token')
-      return response
-    } else {
-      const response = NextResponse.next()
-      response.cookies.delete('seller_token')
-      return response
-    }
-  }
-
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
 
+  // If session token exists but no valid JWT token, clear cookies and redirect
   if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
@@ -78,10 +63,15 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  // Check if access token is expired
   if (token?.accessToken && typeof token.accessToken === 'string') {
     if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
+      const redirectUrl = token.role === 'seller' 
+        ? '/seller/auth/sign-in'
+        : '/auth/sign-in'
+      
       const response = NextResponse.redirect(
-        new URL('/auth/sign-in', request.url)
+        new URL(redirectUrl, request.url)
       )
 
       response.cookies.delete('next-auth.session-token')
@@ -103,30 +93,33 @@ export async function middleware(request: NextRequest) {
   )
 
   const hasValidSession = token && token.accessToken
-  const hasValidSellerToken =
-    sellerToken?.value && !isTokenExpired(sellerToken.value)
+  const isBuyerSession = hasValidSession && token.role === 'buyer'
+  const isSellerSession = hasValidSession && token.role === 'seller'
 
+  // Buyer auth pages: redirect if already logged in
   if (isBuyerAuthPage) {
-    if (hasValidSession) {
+    if (isBuyerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
-    if (hasValidSellerToken) {
+    if (isSellerSession) {
       return NextResponse.redirect(new URL('/reproduct', request.url))
     }
     return NextResponse.next()
   }
 
+  // Seller auth pages: redirect if already logged in
   if (isSellerAuthPage) {
-    if (hasValidSellerToken) {
+    if (isSellerSession) {
       return NextResponse.redirect(new URL('/reproduct', request.url))
     }
-    if (hasValidSession) {
+    if (isBuyerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     return NextResponse.next()
   }
 
-  if (isProtectedRoute && !hasValidSession && !hasValidSellerToken) {
+  // Protected routes: require valid session
+  if (isProtectedRoute && !hasValidSession) {
     const loginUrl = new URL('/auth/sign-in', request.url)
     loginUrl.searchParams.set('callbackUrl', pathname)
     return NextResponse.redirect(loginUrl)

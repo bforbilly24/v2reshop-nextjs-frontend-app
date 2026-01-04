@@ -42,11 +42,17 @@ export const authOptions = {
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
+        role: { label: 'Role', type: 'text' },
       },
       async authorize(credentials) {
         try {
+          const role = credentials?.role || 'buyer'
+          const endpoint = role === 'seller' 
+            ? env.api.endpoints.auth.seller.login 
+            : env.api.endpoints.auth.login
+
           const response = await fetch(
-            `${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.login}`,
+            `${env.api.baseUrl}${env.api.version}${endpoint}`,
             {
               method: 'POST',
               headers: {
@@ -71,6 +77,7 @@ export const authOptions = {
               email: data.user.email,
               name: data.user.name,
               accessToken: data.token,
+              role: role,
             }
           }
 
@@ -86,6 +93,7 @@ export const authOptions = {
       if (user && 'accessToken' in user) {
         token.accessToken = user.accessToken
         token.id = user.id
+        token.role = (user as any).role || 'buyer'
 
         const decoded = decodeJWT(user.accessToken as string)
         if (decoded?.exp) {
@@ -95,19 +103,22 @@ export const authOptions = {
 
       if (token.accessToken && typeof token.accessToken === 'string') {
         if (isTokenExpired(token.accessToken)) {
-          return {} as JWT
+          token.error = 'TokenExpiredError'
+          return token
         }
       }
 
       return token
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      if (!token.accessToken) {
-        throw new Error('Token expired')
+      if (!token.accessToken || token.error) {
+        session.error = 'TokenExpiredError'
+        return session
       }
 
       if (token) {
         session.user.id = token.id as string
+        session.user.role = token.role as string
         if (token.accessToken) {
           session.accessToken = token.accessToken as string
         }
@@ -141,5 +152,3 @@ export const authOptions = {
 
   useSecureCookies: process.env.NODE_ENV === 'production',
 }
-
-export default NextAuth(authOptions)
