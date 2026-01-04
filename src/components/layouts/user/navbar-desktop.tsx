@@ -122,6 +122,7 @@ export function NavbarDesktop({
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [hasSellerAuth, setHasSellerAuth] = useState(false)
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
 
   useEffect(() => {
     const checkSellerAuth = async () => {
@@ -207,6 +208,10 @@ export function NavbarDesktop({
                       {link.menu ? (
                         <>
                           <NavigationMenuTrigger
+                            onClick={() => setOpenMenu(openMenu === link.title ? null : link.title)}
+                            onPointerEnter={(e) => e.preventDefault()}
+                            onPointerLeave={(e) => e.preventDefault()}
+                            onPointerMove={(e) => e.preventDefault()}
                             className={cn(
                               'bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[active]:bg-transparent',
                               isAboutUsNotScrolled
@@ -217,26 +222,33 @@ export function NavbarDesktop({
                                 'font-bold',
                               pathname === '/' &&
                                 link.href === '/' &&
-                                'font-bold'
+                                'font-bold',
+                              openMenu === link.title && 'data-[state=open]'
                             )}
                           >
                             {link.title}
                           </NavigationMenuTrigger>
-                          <NavigationMenuContent>
-                            <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]'>
-                              {link.menu.map((item) => (
-                                <ListItem
-                                  key={item.title}
-                                  title={item.title}
-                                  href={item.href}
-                                  icon={item.icon}
-                                  isComingSoon={item.isComingSoon}
-                                >
-                                  {item.tagline}
-                                </ListItem>
-                              ))}
-                            </ul>
-                          </NavigationMenuContent>
+                          {openMenu === link.title && (
+                            <NavigationMenuContent
+                              onPointerEnter={(e) => e.preventDefault()}
+                              onPointerLeave={(e) => e.preventDefault()}
+                            >
+                              <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]'>
+                                {link.menu.map((item) => (
+                                  <ListItem
+                                    key={item.title}
+                                    title={item.title}
+                                    href={item.href}
+                                    icon={item.icon}
+                                    isComingSoon={item.isComingSoon}
+                                    onClick={() => setOpenMenu(null)}
+                                  >
+                                    {item.tagline}
+                                  </ListItem>
+                                ))}
+                              </ul>
+                            </NavigationMenuContent>
+                          )}
                         </>
                       ) : (
                         <Link href={link.href} legacyBehavior passHref>
