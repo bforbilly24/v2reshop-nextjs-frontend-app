@@ -7,6 +7,18 @@ import { Card } from '@/components/atoms/card'
 import { Icon } from '@/components/atoms/icon'
 import { Product } from '@/features/reproduct/types'
 
+const getValidImageUrl = (imageUrl: string | undefined) => {
+  const defaultImage = 'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'
+  if (!imageUrl || imageUrl.trim() === '') return defaultImage
+  
+  try {
+    new URL(imageUrl)
+    return imageUrl
+  } catch {
+    return defaultImage
+  }
+}
+
 const ProductListSection = ({ product }: { product: Product }) => {
   const averageRating = product.rating_count
     ? product.rating_count.toFixed(1)
@@ -18,10 +30,7 @@ const ProductListSection = ({ product }: { product: Product }) => {
         <div className='bg-gray-100 dark:bg-gray-800 relative h-[259px] flex flex-col justify-center items-center rounded-lg mb-3 lg:mb-0 ltr:md:mr-0 ltr:sm:mr-0 rtl:md:ml-0 rtl:sm:ml-0 ltr:lg:mr-3 rtl:lg:ml-3'>
           <div className='h-[235px] w-[266px] p-12'>
             <Image
-              src={
-                product.image[0] ||
-                'https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image'
-              }
+              src={getValidImageUrl(product.image?.[0])}
               alt={product.name}
               width={235}
               height={235}
@@ -36,6 +45,35 @@ const ProductListSection = ({ product }: { product: Product }) => {
                 % OFF
               </Badge>
             )}
+            <div className='flex flex-col items-end invisible absolute end-2 top-2 opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 gap-2'>
+              <Button
+                size='icon'
+                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
+              >
+                <Icon
+                  icon='ph:heart-fill'
+                  className='text-slate-400 group-hover/item:text-destructive'
+                />
+              </Button>
+              <Button
+                size='icon'
+                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
+              >
+                <Icon
+                  icon='ph:eye'
+                  className='text-slate-400 group-hover/item:text-destructive'
+                />
+              </Button>
+              <Button
+                size='icon'
+                className='rounded-full group/item hover:ring-offset-0 bg-slate-50 hover:bg-slate-50 dark:bg-slate-700 hover:ring-0'
+              >
+                <Icon
+                  icon='jam:refresh-reverse'
+                  className='text-slate-400 group-hover/item:text-destructive'
+                />
+              </Button>
+            </div>
           </div>
         </div>
       </Link>

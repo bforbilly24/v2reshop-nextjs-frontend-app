@@ -355,7 +355,7 @@ export function NavbarDesktop({
                               </div>
                             </DropdownMenuItem>
                           </>
-                        ) : (
+                        ) : hasSellerAuth ? (
                           <>
                             <DropdownMenuItem
                               onClick={() => setIsProfileModalOpen(true)}
@@ -372,7 +372,8 @@ export function NavbarDesktop({
                                   method: 'POST',
                                   credentials: 'include',
                                 })
-                                window.location.href = '/seller/auth/sign-in'
+                                setHasSellerAuth(false)
+                                window.location.reload()
                               }}
                               className='cursor-pointer rounded-lg'
                             >
@@ -382,7 +383,7 @@ export function NavbarDesktop({
                               </div>
                             </DropdownMenuItem>
                           </>
-                        )}
+                        ) : null}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   ) : (

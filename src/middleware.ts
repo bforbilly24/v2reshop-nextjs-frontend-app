@@ -48,7 +48,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/seller/auth/sign-in') ||
     pathname.startsWith('/seller/auth/sign-up')
 
-  // Handle seller token expiry
   if (sellerToken?.value && isTokenExpired(sellerToken.value)) {
     if (!isSellerAuthPage) {
       const response = NextResponse.redirect(
@@ -110,11 +109,7 @@ export async function middleware(request: NextRequest) {
     sellerToken?.value && !isTokenExpired(sellerToken.value)
 
   if (isBuyerAuthPage) {
-    if (hasValidSellerToken) {
-      return NextResponse.redirect(
-        new URL(env.seller.dashboardUrl, request.url)
-      )
-    }
+    // Only check buyer session, ignore seller token
     if (hasValidSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
