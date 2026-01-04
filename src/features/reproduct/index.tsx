@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/atoms/button'
 import { Empty } from '@/components/atoms/empty'
@@ -18,6 +19,7 @@ import { PRICES } from './constants'
 import type { Category, ProductParams } from './types'
 
 const ReProductView = () => {
+  const searchParams = useSearchParams()
   const [categories, setCategories] = useState<Category[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -32,6 +34,13 @@ const ReProductView = () => {
     boolean[]
   >([])
 
+  // Read category from URL parameter on mount
+  useEffect(() => {
+    const categoryParam = searchParams.get('category')
+    if (categoryParam) {
+      setSelectedCategories([categoryParam])
+    }
+  }, [searchParams])
   useEffect(() => {
     const fetchCategories = async () => {
       try {

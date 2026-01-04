@@ -99,8 +99,6 @@ export async function middleware(request: NextRequest) {
   const protectedRoutes = [
     '/checkout',
     '/shopping-cart',
-    '/reproduct',
-    '/recommunity',
   ]
 
   const isProtectedRoute = protectedRoutes.some((route) =>
