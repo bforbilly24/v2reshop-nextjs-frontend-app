@@ -4,13 +4,14 @@ import { ReCommunityDetail } from '@/features/recommunity/recommunity-detail'
 import { extractIdFromSlug } from '@/features/recommunity/utils/generate-slug'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function CommunityDetailPage({ params }: PageProps) {
-  const communityId = extractIdFromSlug(params.slug)
+  const { slug } = await params
+  const communityId = extractIdFromSlug(slug)
 
   if (!communityId) {
     return (
