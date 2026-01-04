@@ -155,7 +155,7 @@ const BannerSection: React.FC = () => {
                     variant='secondary'
                     className='px-6 sm:px-8 w-full sm:w-auto'
                   >
-                    <Link href=''>Learn More</Link>
+                    <Link href='/about-us'>Learn More</Link>
                   </Button>
                 </AnimationContainer>
               </div>
