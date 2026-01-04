@@ -44,16 +44,6 @@ const AboutSection: React.FC = () => {
                 partiality estimating terminated day everything.
               </p>
             </AnimationContainer>
-            <AnimationContainer animation='fadeLeft' delay={1}>
-              <Button
-                asChild
-                variant='default'
-                size='lg'
-                className='bg-emerald-500 hover:bg-emerald-600 h-14 lg:h-16 text-base lg:text-lg uppercase text-white w-full sm:w-auto'
-              >
-                <Link href='/about'>More About Us</Link>
-              </Button>
-            </AnimationContainer>
           </div>
           <div className='flex justify-center lg:justify-end order-1 lg:order-2 relative'>
             <Image

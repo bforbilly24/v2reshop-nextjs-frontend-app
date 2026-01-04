@@ -42,7 +42,7 @@ const CategoryItem = React.memo(({ category }: CategoryItemProps) => {
     <div className='max-w-lg w-full'>
       <div className='group relative transition-all duration-500'>
         <Link
-          href={`/categories/${category.slug}`}
+          href={`/reproduct?category=${category.id}`}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onClick={handleClick}
