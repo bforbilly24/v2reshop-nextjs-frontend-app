@@ -11,11 +11,11 @@ export async function GET(request: NextRequest) {
     const token = cookieStore.get('seller_token')
 
     if (!token?.value) {
-      return NextResponse.json({ exists: false }, { status: 401 })
+      return NextResponse.json({ exists: false }, { status: 200 })
     }
 
     return NextResponse.json({ exists: true })
   } catch (error) {
-    return NextResponse.json({ exists: false }, { status: 500 })
+    return NextResponse.json({ exists: false }, { status: 200 })
   }
 }

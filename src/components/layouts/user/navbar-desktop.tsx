@@ -130,13 +130,9 @@ export function NavbarDesktop({
         const response = await fetch('/api/auth/seller/check-token', {
           credentials: 'include',
         })
-        if (response.ok) {
-          setHasSellerAuth(true)
-        } else {
-          setHasSellerAuth(false)
-        }
+        const data = await response.json()
+        setHasSellerAuth(data.exists === true)
       } catch (error) {
-        console.error('Error checking seller auth:', error)
         setHasSellerAuth(false)
       }
     }
