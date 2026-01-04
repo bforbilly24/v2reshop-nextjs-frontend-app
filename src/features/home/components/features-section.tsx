@@ -93,7 +93,6 @@ const FeaturesSection: React.FC = () => {
                   console.error('Image failed to load:', e)
                 }}
                 onLoad={() => {
-                  console.log('Image loaded successfully')
                 }}
               />
             </AnimationContainer>

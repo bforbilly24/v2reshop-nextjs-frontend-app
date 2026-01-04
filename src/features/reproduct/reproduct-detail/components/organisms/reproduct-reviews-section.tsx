@@ -57,7 +57,6 @@ const ReProductReviewsSection: React.FC<ReProductReviewsSectionProps> = ({
 
   const formattedRating = averageRating.toFixed(1)
 
-  // Check if current user has already reviewed this product
   const userReview = reviews.find(
     (review) => review.user_id === Number(session?.user?.id)
   )

@@ -14,7 +14,6 @@ const Empty: React.FC<EmptyProps> = ({
   Title = "There's nothing here",
   Desc = 'Try exploring our products to find something you love',
   ButtonText = 'Browse Products',
-  onClick = () => console.log('Button clicked'),
 }) => {
   return (
     <div className='grid gap-4 w-60 mx-auto flex-flex-col items-center justify-center text-center'>
@@ -24,7 +23,6 @@ const Empty: React.FC<EmptyProps> = ({
       <Button
         variant={'default'}
         size={'lg'}
-        onClick={onClick}
         className='w-full'
       >
         {ButtonText}

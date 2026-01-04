@@ -29,6 +29,15 @@ export const env = {
       checkout: {
         create: '/checkout',
       },
+      communities: {
+        list: '/communities',
+        join: (id: number) => `/communities/${id}/join`,
+        posts: (id: number) => `/communities/${id}/posts`,
+        approveMember: (communityId: number, memberId: number) =>
+          `/communities/${communityId}/members/${memberId}/approve`,
+        rejectMember: (communityId: number, memberId: number) =>
+          `/communities/${communityId}/members/${memberId}/reject`,
+      },
     },
   },
   auth: {
