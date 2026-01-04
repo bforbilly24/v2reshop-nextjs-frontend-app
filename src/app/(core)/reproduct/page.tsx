@@ -23,10 +23,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ReProductPage({
+export default async function ReProductPage({
   searchParams,
 }: {
-  searchParams: { category?: string }
+  searchParams: Promise<{ category?: string }>
 }) {
-  return <ReProductView initialCategory={searchParams.category} />
+  const params = await searchParams
+  return <ReProductView initialCategory={params.category} />
 }
