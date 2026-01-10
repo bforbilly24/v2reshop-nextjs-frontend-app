@@ -36,6 +36,15 @@ function isTokenExpired(token: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  const protectedRoutes = [
+    '/checkout',
+    '/shopping-cart',
+  ]
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  )
+
   const sessionToken =
     request.cookies.get('next-auth.session-token') ||
     request.cookies.get('__Secure-next-auth.session-token')
@@ -50,6 +59,22 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
+
+  const hasValidToken = !!(
+    token &&
+    token.accessToken &&
+    typeof token.accessToken === 'string' &&
+    !isTokenExpired(token.accessToken)
+  )
+
+  const isBuyerSession = hasValidToken && token.role === 'buyer'
+  const isSellerSession = hasValidToken && token.role === 'seller'
+
+  if (isProtectedRoute && !hasValidToken) {
+    const loginUrl = new URL('/auth/sign-in', request.url)
+    loginUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(loginUrl)
+  }
 
   if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
@@ -81,19 +106,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const protectedRoutes = [
-    '/checkout',
-    '/shopping-cart',
-  ]
-
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  )
-
-  const hasValidSession = token && token.accessToken
-  const isBuyerSession = hasValidSession && token.role === 'buyer'
-  const isSellerSession = hasValidSession && token.role === 'seller'
-
   if (isBuyerAuthPage) {
     if (isBuyerSession) {
       return NextResponse.redirect(new URL('/', request.url))
@@ -112,12 +124,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     return NextResponse.next()
-  }
-
-  if (isProtectedRoute && !hasValidSession) {
-    const loginUrl = new URL('/auth/sign-in', request.url)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()
