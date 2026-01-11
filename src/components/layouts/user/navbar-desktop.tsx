@@ -119,7 +119,7 @@ export function NavbarDesktop({
 }: NavbarDesktopProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { data: session, update } = useSession()
+  const { data: session, status } = useSession()
   const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
@@ -322,7 +322,9 @@ export function NavbarDesktop({
                     </span>
                   </Button>
                 ) : item.menu && item.menu.length > 0 ? (
-                  session ? (
+                  status === 'loading' ? (
+                    <div className='h-10 w-24 animate-pulse rounded-lg bg-gray-200/20' />
+                  ) : session ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
