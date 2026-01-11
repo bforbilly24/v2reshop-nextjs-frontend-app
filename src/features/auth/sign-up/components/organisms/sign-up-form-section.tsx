@@ -43,6 +43,7 @@ const SignUpFormSection: React.FC<SignUpFormSectionProps> = ({ onSuccess }) => {
       const response = await registerUser({
         name: data.name,
         email: data.email,
+        phone: data.phone,
         password: data.password,
         password_confirmation: data.password,
         role: 'customer',
@@ -135,6 +136,27 @@ const SignUpFormSection: React.FC<SignUpFormSectionProps> = ({ onSuccess }) => {
         </div>
         {errors.email && (
           <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
+        )}
+      </div>
+
+      <div>
+        <Label>Phone Number</Label>
+        <div className='relative mt-4'>
+          <Icon
+            icon='ph:phone'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 dark:text-gray-400 z-10 pointer-events-none'
+          />
+          <Input
+            id='phone'
+            type='tel'
+            placeholder='081234567890'
+            className='border-none focus:ring-gray-300 pl-10'
+            {...register('phone')}
+            disabled={isLoading}
+          />
+        </div>
+        {errors.phone && (
+          <p className='text-sm text-red-500 mt-1'>{errors.phone.message}</p>
         )}
       </div>
 

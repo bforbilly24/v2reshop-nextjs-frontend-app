@@ -36,11 +36,20 @@ function isTokenExpired(token: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  const protectedRoutes = [
+    '/checkout',
+    '/shopping-cart',
+  ]
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  )
+
   const sessionToken =
     request.cookies.get('next-auth.session-token') ||
     request.cookies.get('__Secure-next-auth.session-token')
 
-  const isBuyerAuthPage =
+  const isCustomerAuthPage =
     pathname.startsWith('/auth/sign-in') || pathname.startsWith('/auth/sign-up')
   const isSellerAuthPage =
     pathname.startsWith('/seller/auth/sign-in') ||
@@ -51,7 +60,23 @@ export async function middleware(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
+  const hasValidToken = !!(
+    token &&
+    token.accessToken &&
+    typeof token.accessToken === 'string' &&
+    !isTokenExpired(token.accessToken)
+  )
+
+  const isCustomerSession = hasValidToken && token.role === 'customer'
+  const isSellerSession = hasValidToken && token.role === 'seller'
+
+  if (isProtectedRoute && !hasValidToken) {
+    const loginUrl = new URL('/auth/sign-in', request.url)
+    loginUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(loginUrl)
+  }
+
+  if (sessionToken && !token && !isCustomerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
     )
@@ -63,7 +88,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (token?.accessToken && typeof token.accessToken === 'string') {
-    if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
+    if (isTokenExpired(token.accessToken) && !isCustomerAuthPage && !isSellerAuthPage) {
       const redirectUrl = token.role === 'seller' 
         ? '/seller/auth/sign-in'
         : '/auth/sign-in'
@@ -81,21 +106,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const protectedRoutes = [
-    '/checkout',
-    '/shopping-cart',
-  ]
-
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  )
-
-  const hasValidSession = token && token.accessToken
-  const isBuyerSession = hasValidSession && token.role === 'buyer'
-  const isSellerSession = hasValidSession && token.role === 'seller'
-
-  if (isBuyerAuthPage) {
-    if (isBuyerSession) {
+  if (isCustomerAuthPage) {
+    if (isCustomerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     if (isSellerSession) {
@@ -108,16 +120,10 @@ export async function middleware(request: NextRequest) {
     if (isSellerSession) {
       return NextResponse.redirect(new URL('/reproduct', request.url))
     }
-    if (isBuyerSession) {
+    if (isCustomerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     return NextResponse.next()
-  }
-
-  if (isProtectedRoute && !hasValidSession) {
-    const loginUrl = new URL('/auth/sign-in', request.url)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    return NextResponse.redirect(loginUrl)
   }
 
   return NextResponse.next()

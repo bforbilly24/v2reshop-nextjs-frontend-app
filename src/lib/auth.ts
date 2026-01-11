@@ -46,7 +46,7 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          const role = credentials?.role || 'buyer'
+          const role = credentials?.role || 'customer'
           const endpoint = role === 'seller' 
             ? env.api.endpoints.auth.seller.login 
             : env.api.endpoints.auth.login
@@ -72,12 +72,35 @@ export const authOptions = {
           const data: AuthResponse = await response.json()
 
           if (data.status === true && data.user) {
+            const meResponse = await fetch(
+              `${env.api.baseUrl}${env.api.version}/auth/me`,
+              {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${data.token}`,
+                  'Accept': 'application/json',
+                },
+              }
+            )
+
+            let actualRole = role === 'seller' ? 'seller' : 'customer'
+            if (meResponse.ok) {
+              const meData = await meResponse.json()
+              if (meData.status && meData.user?.roles) {
+                if (meData.user.roles.includes('seller')) {
+                  actualRole = 'seller'
+                } else if (meData.user.roles[0]) {
+                  actualRole = meData.user.roles[0]
+                }
+              }
+            }
+
             return {
               id: data.user.id.toString(),
               email: data.user.email,
               name: data.user.name,
               accessToken: data.token,
-              role: role,
+              role: actualRole,
             }
           }
 
@@ -93,7 +116,7 @@ export const authOptions = {
       if (user && 'accessToken' in user) {
         token.accessToken = user.accessToken
         token.id = user.id
-        token.role = ('role' in user ? user.role : 'buyer') as string
+        token.role = ('role' in user ? user.role : 'customer') as string
 
         const decoded = decodeJWT(user.accessToken as string)
         if (decoded?.exp) {

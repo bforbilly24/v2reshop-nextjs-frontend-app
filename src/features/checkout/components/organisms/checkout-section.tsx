@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { cn } from '@/lib/cn'
 import { fixWhatsAppUrl } from '@/utils/fix-whatsapp-url'
@@ -47,7 +48,8 @@ const shippingServices = [
 ]
 
 const CheckoutSection: React.FC = () => {
-  const { cartItems, subtotal } = useCart()
+  const { cartItems, subtotal, initialLoading } = useCart()
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [checkoutSuccess, setCheckoutSuccess] = useState(false)
   const [checkoutData, setCheckoutData] = useState<{

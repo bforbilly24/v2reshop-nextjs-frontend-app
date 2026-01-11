@@ -83,11 +83,11 @@ const ProductBoxSection = ({ product }: { product: Product }) => {
               </p>
             </div>
 
-            <div className='flex flex-col space-y-1 mb-2 lg:h-20 md:h-20 h-14'>
-              <h6 className='text-gray-900 dark:text-white lg:text-lg md:text-lg text-base font-semibold line-clamp-2'>
+            <div className='flex flex-col mb-2 lg:h-auto md:h-auto h-14'>
+              <h6 className='text-gray-900 dark:text-white lg:text-lg md:text-lg text-base font-semibold lg:line-clamp-1 md:line-clamp-1 line-clamp-2 mb-1'>
                 {product.name}
               </h6>
-              <p className='text-muted-foreground text-sm font-normal line-clamp-2 lg:flex md:flex hidden'>
+              <p className='text-muted-foreground text-sm font-normal hidden lg:line-clamp-2 md:line-clamp-2'>
                 {product.description}
               </p>
             </div>

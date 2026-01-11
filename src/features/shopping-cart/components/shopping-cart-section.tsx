@@ -3,6 +3,8 @@
 import { Minus, Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { formatPrice } from '@/utils/format-price'
 import { Button } from '@/components/atoms/button'
 import { Card, CardContent } from '@/components/atoms/card'
@@ -22,6 +24,7 @@ const ShoppingCartSection: React.FC = () => {
     initialLoading,
     updatingItemIds,
   } = useCart()
+  const router = useRouter()
 
   const handleUpdateQuantity = async (id: number, newQuantity: number) => {
     if (newQuantity >= 1) {
@@ -37,6 +40,14 @@ const ShoppingCartSection: React.FC = () => {
     { id: 'cart', label: 'Cart' },
     { id: 'checkout', label: 'Checkout' },
   ]
+
+  if (!initialLoading && cartItems.length === 0) {
+    return (
+      <Wrapper className='py-20 lg:py-32'>
+        <Empty />
+      </Wrapper>
+    )
+  }
 
   return (
     <Wrapper className='py-20 lg:py-32'>

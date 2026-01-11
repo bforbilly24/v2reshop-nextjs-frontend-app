@@ -8,6 +8,7 @@ export const env = {
         register: '/auth/register',
         me: '/auth/me',
         logout: '/auth/logout',
+        upgradeToSeller: '/auth/upgrade-to-seller',
         seller: {
           login: '/auth/login-seller',
           register: '/auth/register-seller',

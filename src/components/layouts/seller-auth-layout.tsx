@@ -81,7 +81,7 @@ export function SellerAuthLayout({ children }: SellerAuthLayoutProps) {
             href='/auth/sign-in'
             className='text-emerald-600 hover:text-emerald-700 font-medium hover:underline'
           >
-            Sign In as Buyer
+            Sign In as Customer
           </Link>
         </div>
       </div>
