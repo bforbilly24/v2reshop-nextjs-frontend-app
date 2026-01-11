@@ -41,7 +41,7 @@ export default function NavbarMobile({
   onOpenCart,
 }: NavbarMobileProps) {
   const router = useRouter()
-  const { data: session, update } = useSession()
+  const { data: session, status } = useSession()
   const [isOpen, setIsOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string>('')
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
@@ -199,7 +199,11 @@ export default function NavbarMobile({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className='w-min rounded-xl bg-white/80 backdrop-blur-md p-2 shadow-xl border border-white/20'>
-                  {session ? (
+                  {status === 'loading' ? (
+                    <div className='flex justify-center p-2'>
+                      <div className='h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent' />
+                    </div>
+                  ) : session ? (
                     <>
                       <DropdownMenuItem
                         onClick={() => {
