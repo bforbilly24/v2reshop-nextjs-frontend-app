@@ -9,6 +9,8 @@ import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { upgradeToSeller } from '@/features/auth/actions'
 import { cn } from '@/lib/cn'
 import { type NavbarItem } from '@/components/layouts/user/data/navbar'
 import {
@@ -39,7 +41,7 @@ export default function NavbarMobile({
   onOpenCart,
 }: NavbarMobileProps) {
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const [isOpen, setIsOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState<string>('')
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
@@ -50,6 +52,23 @@ export default function NavbarMobile({
 
   const handleNavigation = () => {
     setIsOpen(false)
+  }
+
+  const handleUpgradeToSeller = async () => {
+    try {
+      const result = await upgradeToSeller()
+      if (result.status) {
+        toast.success('Upgrade Successful', {
+          description: 'You are now a seller! Redirecting to seller login...',
+        })
+        await signOut({ redirect: false })
+        router.push('/seller/auth/sign-in')
+      }
+    } catch (error) {
+      toast.error('Upgrade Failed', {
+        description: error instanceof Error ? error.message : 'Failed to upgrade to seller',
+      })
+    }
   }
 
   const renderNavItem = (item: NavbarItem, level: number = 0) => {
@@ -139,6 +158,17 @@ export default function NavbarMobile({
             </Link>
 
             <div className='flex items-center gap-2'>
+              {session?.user?.role === 'customer' && (
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={handleUpgradeToSeller}
+                  className='lg:hidden flex items-center gap-1.5 px-3 bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700'
+                >
+                  <LayoutDashboard className='size-4' />
+                  <span className='text-xs font-medium'>Be Seller</span>
+                </Button>
+              )}
               {isSellerRole && (
                 <Button
                   variant='ghost'

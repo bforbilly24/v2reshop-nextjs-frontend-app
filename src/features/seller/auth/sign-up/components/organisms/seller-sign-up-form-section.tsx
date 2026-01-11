@@ -45,9 +45,8 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
       const response = await registerSeller({
         name: data.name,
         email: data.email,
+        phone: data.phone,
         password: data.password,
-        password_confirmation: data.password,
-        role: 'seller',
       })
 
       if (response.status) {
@@ -140,6 +139,26 @@ const SellerSignUpFormSection: React.FC<SellerSignUpFormSectionProps> = ({
         </div>
         {errors.email && (
           <p className='text-sm text-red-500 mt-1'>{errors.email.message}</p>
+        )}
+      </div>
+
+      <div>
+        <div className='relative'>
+          <Icon
+            icon='ph:phone'
+            className='absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10 pointer-events-none'
+          />
+          <Input
+            id='phone'
+            type='tel'
+            placeholder='Phone Number'
+            className='!bg-background/20 h-10 placeholder:opacity-40 pl-10'
+            {...register('phone')}
+            disabled={isLoading}
+          />
+        </div>
+        {errors.phone && (
+          <p className='text-sm text-red-500 mt-1'>{errors.phone.message}</p>
         )}
       </div>
 

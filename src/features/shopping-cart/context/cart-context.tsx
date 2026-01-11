@@ -88,6 +88,18 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
           return
         }
 
+        if (
+          errorMessage.includes('403') ||
+          errorMessage.includes('404') ||
+          errorMessage.toLowerCase().includes('forbidden')
+        ) {
+          setCartItems([])
+          setSubtotal(0)
+          setInitialLoading(false)
+          setIsLoading(false)
+          return
+        }
+
         setCartItems([])
         setSubtotal(0)
 

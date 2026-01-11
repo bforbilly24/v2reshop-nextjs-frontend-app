@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
     request.cookies.get('next-auth.session-token') ||
     request.cookies.get('__Secure-next-auth.session-token')
 
-  const isBuyerAuthPage =
+  const isCustomerAuthPage =
     pathname.startsWith('/auth/sign-in') || pathname.startsWith('/auth/sign-up')
   const isSellerAuthPage =
     pathname.startsWith('/seller/auth/sign-in') ||
@@ -67,7 +67,7 @@ export async function middleware(request: NextRequest) {
     !isTokenExpired(token.accessToken)
   )
 
-  const isBuyerSession = hasValidToken && token.role === 'buyer'
+  const isCustomerSession = hasValidToken && token.role === 'customer'
   const isSellerSession = hasValidToken && token.role === 'seller'
 
   if (isProtectedRoute && !hasValidToken) {
@@ -76,7 +76,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  if (sessionToken && !token && !isBuyerAuthPage && !isSellerAuthPage) {
+  if (sessionToken && !token && !isCustomerAuthPage && !isSellerAuthPage) {
     const response = NextResponse.redirect(
       new URL('/auth/sign-in', request.url)
     )
@@ -88,7 +88,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (token?.accessToken && typeof token.accessToken === 'string') {
-    if (isTokenExpired(token.accessToken) && !isBuyerAuthPage && !isSellerAuthPage) {
+    if (isTokenExpired(token.accessToken) && !isCustomerAuthPage && !isSellerAuthPage) {
       const redirectUrl = token.role === 'seller' 
         ? '/seller/auth/sign-in'
         : '/auth/sign-in'
@@ -106,8 +106,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (isBuyerAuthPage) {
-    if (isBuyerSession) {
+  if (isCustomerAuthPage) {
+    if (isCustomerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     if (isSellerSession) {
@@ -120,7 +120,7 @@ export async function middleware(request: NextRequest) {
     if (isSellerSession) {
       return NextResponse.redirect(new URL('/reproduct', request.url))
     }
-    if (isBuyerSession) {
+    if (isCustomerSession) {
       return NextResponse.redirect(new URL('/', request.url))
     }
     return NextResponse.next()

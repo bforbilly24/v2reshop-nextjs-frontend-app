@@ -7,6 +7,7 @@ import {
   AuthResponse,
   LoginRequest,
   RegisterRequest,
+  SellerRegisterRequest,
   UserProfileResponse,
   SellerAuthResponse,
 } from './types'
@@ -136,7 +137,7 @@ export const loginSeller = async (
 }
 
 export const registerSeller = async (
-  data: RegisterRequest
+  data: SellerRegisterRequest
 ): Promise<SellerAuthResponse> => {
   const res = await fetch(
     `${env.api.baseUrl}${env.api.version}/auth/register-seller`,
@@ -154,6 +155,34 @@ export const registerSeller = async (
   if (!res.ok) {
     const errorBody = await res.json()
     throw new Error(errorBody.message || 'Failed to register')
+  }
+
+  return res.json()
+}
+
+export const upgradeToSeller = async (): Promise<{ status: boolean; message: string }> => {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.accessToken) {
+    throw new Error('Unauthorized')
+  }
+
+  const res = await fetch(
+    `${env.api.baseUrl}${env.api.version}${env.api.endpoints.auth.upgradeToSeller}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+      cache: 'no-store',
+    }
+  )
+
+  if (!res.ok) {
+    const errorBody = await res.json()
+    throw new Error(errorBody.message || 'Failed to upgrade to seller')
   }
 
   return res.json()

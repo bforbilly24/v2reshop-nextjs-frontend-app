@@ -14,6 +14,8 @@ import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
+import { toast } from 'sonner'
+import { upgradeToSeller } from '@/features/auth/actions'
 import { cn } from '@/lib/cn'
 import AnimationContainer from '@/components/atoms/animation-container'
 import { Button } from '@/components/atoms/button'
@@ -117,7 +119,7 @@ export function NavbarDesktop({
 }: NavbarDesktopProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const { cartItems: _cartItems, itemCount } = useCart()
   const isAboutUsNotScrolled = pathname === '/about-us' && !visible
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
@@ -133,6 +135,23 @@ export function NavbarDesktop({
       signOut({ callbackUrl: '/auth/sign-in' })
     } else {
       router.push(href)
+    }
+  }
+
+  const handleUpgradeToSeller = async () => {
+    try {
+      const result = await upgradeToSeller()
+      if (result.status) {
+        toast.success('Upgrade Successful', {
+          description: 'You are now a seller! Redirecting to seller login...',
+        })
+        await signOut({ redirect: false })
+        router.push('/seller/auth/sign-in')
+      }
+    } catch (error) {
+      toast.error('Upgrade Failed', {
+        description: error instanceof Error ? error.message : 'Failed to upgrade to seller',
+      })
     }
   }
 
@@ -255,6 +274,16 @@ export function NavbarDesktop({
         </div>
         <AnimationContainer animation='fadeLeft' delay={0.1}>
           <div className='flex items-center gap-x-2'>
+            {session?.user?.role === 'customer' && (
+              <Button
+                variant='outline'
+                onClick={handleUpgradeToSeller}
+                className='rounded-lg bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700 hover:text-emerald-800 flex items-center gap-2'
+              >
+                <LayoutDashboard className='size-4' />
+                <span className='text-sm font-medium'>Become a Seller</span>
+              </Button>
+            )}
             {isSellerRole && (
               <Button
                 variant='ghost'

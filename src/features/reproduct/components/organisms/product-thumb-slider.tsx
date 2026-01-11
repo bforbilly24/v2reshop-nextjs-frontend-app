@@ -1,15 +1,73 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide'
 import '@splidejs/splide/css'
 import Image from 'next/image'
 import { Button } from '@/components/atoms/button'
 import { Icon } from '@/components/atoms/icon'
+import { Skeleton } from '@/components/atoms/skeleton'
 import { ProductDetail } from '@/features/reproduct/reproduct-detail/types'
+import { cn } from '@/lib/cn'
 
 interface ProductThumbSliderProps {
   product: ProductDetail
+}
+
+const ProductImageWithFallback = ({
+  src,
+  alt,
+  className,
+  priority,
+  width,
+  height,
+}: {
+  src: string
+  alt: string
+  className?: string
+  priority?: boolean
+  width: number
+  height: number
+}) => {
+  const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  if (error) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg',
+          className
+        )}
+      >
+        <div className='flex flex-col items-center gap-2 text-gray-400'>
+          <Icon icon='lucide:image-off' className='w-8 h-8' />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {isLoading && <Skeleton className={cn('w-full h-full', className)} />}
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className={cn(
+          className,
+          isLoading ? 'opacity-0 absolute' : 'opacity-100'
+        )}
+        priority={priority}
+        onLoad={() => setIsLoading(false)}
+        onError={() => {
+          setError(true)
+          setIsLoading(false)
+        }}
+      />
+    </>
+  )
 }
 
 interface SplideRef {
@@ -28,10 +86,11 @@ const ProductThumbSlider: React.FC<ProductThumbSliderProps> = ({ product }) => {
     }
   }, [])
 
-  const images =
-    product.images && product.images.length > 0
-      ? product.images
-      : ['https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image']
+  const images = Array.isArray(product.images) && product.images.length > 0
+    ? product.images
+    : typeof product.images === 'string' && product.images
+    ? [product.images]
+    : ['https://dummyimage.com/600x600/cccccc/ffffff&text=No+Image']
 
   const mainOptions = {
     type: 'fade' as const,
@@ -87,12 +146,12 @@ const ProductThumbSlider: React.FC<ProductThumbSliderProps> = ({ product }) => {
           {images.map((image, index) => (
             <SplideSlide key={`main-${index}`}>
               <div className='relative w-full h-[25rem] bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center p-8'>
-                <Image
+                <ProductImageWithFallback
                   src={image}
                   alt={`${product.name} ${index + 1}`}
                   width={500}
                   height={400}
-                  className='h-[350px] w-full  object-contain  transition-all duration-300 group-hover:scale-105'
+                  className='h-[350px] w-full object-contain transition-all duration-300 group-hover:scale-105'
                   priority={index === 0}
                 />
                 <Button
@@ -133,7 +192,7 @@ const ProductThumbSlider: React.FC<ProductThumbSliderProps> = ({ product }) => {
             {images.map((image, index) => (
               <SplideSlide key={`thumb-${index}`}>
                 <div className='aspect-square w-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 p-2'>
-                  <Image
+                  <ProductImageWithFallback
                     src={image}
                     alt={`${product.name} thumbnail ${index + 1}`}
                     width={100}

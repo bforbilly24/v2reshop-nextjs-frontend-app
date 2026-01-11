@@ -6,9 +6,17 @@ export interface LoginRequest {
 export interface RegisterRequest {
   name: string
   email: string
+  phone: string
   password: string
   password_confirmation: string
   role: string
+}
+
+export interface SellerRegisterRequest {
+  name: string
+  email: string
+  phone: string
+  password: string
 }
 
 export interface AuthUser {

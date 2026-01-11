@@ -86,7 +86,7 @@ const SellerSignInView = () => {
             >
               <Link href='/auth/sign-in'>
                 <Icon icon='ph:shopping-bag' className='w-5 h-5' />
-                Sign In as Buyer
+                Sign In as Customer
               </Link>
             </Button>
 
