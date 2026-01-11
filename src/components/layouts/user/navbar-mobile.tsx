@@ -173,7 +173,7 @@ export default function NavbarMobile({
                 <Button
                   variant='ghost'
                   onClick={() => {
-                    window.location.href = env.seller.dashboardUrl
+                    window.location.href = session.user.redirectUrl || env.seller.dashboardUrl
                   }}
                   className={cn(
                     'lg:hidden flex items-center gap-1.5 px-3',

@@ -8,11 +8,14 @@ declare module 'next-auth' {
     user: {
       id: string
       role?: string
+      redirectUrl?: string
     } & DefaultSession['user']
   }
 
   interface User {
     accessToken?: string
+    role?: string
+    redirectUrl?: string
   }
 }
 
@@ -22,6 +25,7 @@ declare module 'next-auth/jwt' {
     accessTokenExpires?: number
     id?: string
     role?: string
+    redirectUrl?: string
     error?: string
   }
 }
