@@ -101,6 +101,7 @@ export const authOptions = {
               name: data.user.name,
               accessToken: data.token,
               role: actualRole,
+              redirectUrl: data.redirect_url,
             }
           }
 
@@ -117,6 +118,7 @@ export const authOptions = {
         token.accessToken = user.accessToken
         token.id = user.id
         token.role = ('role' in user ? user.role : 'customer') as string
+        token.redirectUrl = user.redirectUrl as string
 
         const decoded = decodeJWT(user.accessToken as string)
         if (decoded?.exp) {
@@ -142,6 +144,7 @@ export const authOptions = {
       if (token) {
         session.user.id = token.id as string
         session.user.role = token.role as string
+        session.user.redirectUrl = token.redirectUrl as string
         if (token.accessToken) {
           session.accessToken = token.accessToken as string
         }

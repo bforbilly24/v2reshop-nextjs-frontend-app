@@ -32,6 +32,7 @@ export interface AuthResponse {
   status: boolean
   message: string
   token: string
+  redirect_url?: string
   user: {
     id: number
     name: string

@@ -288,7 +288,7 @@ export function NavbarDesktop({
               <Button
                 variant='ghost'
                 onClick={() => {
-                  window.location.href = env.seller.dashboardUrl
+                  window.location.href = session.user.redirectUrl || env.seller.dashboardUrl
                 }}
                 className={cn(
                   'rounded-lg transition-all duration-500 flex items-center gap-2',
